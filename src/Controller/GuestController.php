@@ -15,8 +15,6 @@ class GuestController extends AbstractController
      */
     public function index(EntityManagerInterface $em)
     {
-//        $vehicules = $em->getRepository(Vehicule::class)->findAll();
-//        dump($vehicules); die();
-        return $this->render('guest/home.html.twig');
+        return $this->render('guest/home/home.html.twig');
     }
 }

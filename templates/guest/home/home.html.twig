@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('home') }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  {% include 'guest/home/partial/header.html.twig' %}
+
+  {% include 'guest/home/partial/info_login.html.twig' %}
+
+  {% include 'guest/home/partial/zoom.html.twig' %}
+
+  {% include 'guest/home/partial/info_plus.html.twig' %}
+
+  {% include 'guest/home/partial/footer.html.twig' %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('home') }}
+{% endblock %}
