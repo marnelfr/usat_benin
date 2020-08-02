@@ -1,0 +1,109 @@
+@import "~bootstrap/scss/bootstrap";
+
+.body {
+  background-color: #ffffff;
+}
+
+.menu-top-item {
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.menu-top-item:hover {
+  color: #007bff;
+}
+
+.second-menu-item {
+  cursor: pointer;
+}
+
+.second-menu-item:hover {
+  color: white;
+  background-color: #007bff;
+}
+
+.title {
+  width: 100%;
+  height: 5em;
+}
+
+.title img {
+  height: 5em;
+  width: 100%;
+  border-top: 2px solid blue;
+  border-bottom: 2px solid blue;
+}
+
+.top-menu {
+  font-size: small;
+}
+
+.second-menu {
+  margin-top: 0.5em;
+  margin-left: 0.4em;
+}
+
+.logo {
+  padding-right: 0;
+}
+
+.large-logo {
+  padding-left: 0;
+}
+
+.logo img {
+  height: 100%;
+  width: 100%;
+}
+
+.ambition {
+  padding: 1em;
+}
+
+.ambition > .logo > img {
+  width: 100%;
+  padding-left: 2em;
+  padding-right: 1em;
+}
+
+.second-menu span {
+  border: 1px solid blue;
+  margin-right: 1em;
+  padding: 0.2em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  border-radius: 5em;
+}
+
+.linker {
+  padding: 0.7em;
+  border: 1px solid #007bff;
+  margin-left: 1em;
+  margin-right: 1em;
+  border-radius: 50px;
+}
+
+.carousele {
+  margin-top: 1em;
+  padding-bottom: 0.5em;
+  height: 300px;
+  overflow: hidden;
+}
+
+.img-carousel {
+  width: 100%;
+  max-height: 290px;
+}
+
+.parc-title {
+  border: 1px solid #007bff;
+  background-color: #007bff;
+}
+
+.parc-container {
+  border: 1px solid #007bff;
+}
+
+.panel-inscription {
+  background-color: #ebebeb;
+}
