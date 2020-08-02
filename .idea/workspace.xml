@@ -2,6 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf8c6f9d-71b4-4542-8270-bc1fd0171c64" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/css/guest/home.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/auto1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/auto2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/auto3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/auto4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/auto5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/gmlg.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/img.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/img2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/img3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/jarre.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/logo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/logo2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/plus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/rubon1-ad5fc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/rubon3-920f9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/guest/tel.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/guest/home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/guest/register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/home.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/partial/footer.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/partial/header.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/partial/info_login.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/partial/info_plus.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/guest/home/partial/zoom.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/usat_benin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/usat_benin.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -12,7 +38,7 @@
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/GuestController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/GuestController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/guest/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/guest/home/home.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/guest/home.html.twig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -509,13 +535,13 @@
       <updated>1596374404195</updated>
       <workItem from="1596374415650" duration="932000" />
       <workItem from="1596378039581" duration="2491000" />
-      <workItem from="1596380600362" duration="9586000" />
+      <workItem from="1596380600362" duration="9960000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13009000" />
+    <option name="totallyTimeSpent" value="13383000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
