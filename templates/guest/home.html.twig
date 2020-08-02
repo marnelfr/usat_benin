@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('build/home.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  {#<div class="col-12 col-sm-10 col-md-10 offset-md-1 offset-sm-1 body">#}
+  <div style="position: relative;" class="col-12 col-sm-12 col-md-12 body">
+    <div class="mb-1">
+      <div class="top-menu text-center">
+        <span class="menu-top-item btn-plus">Contact/Aide</span>|
+        <span class="menu-top-item btn-plus">Nous joindre</span>|
+        <span class="menu-top-item btn-plus">Plan du site</span>|
+        <span class="menu-top-item btn-plus">Plan d'accès</span>|
+        <span class="menu-top-item btn-plus">Condition d'utilisation</span>|
+        <span class="menu-top-item btn-plus last">Mentions légales</span>
+      </div>
+    </div>
+    <div class="row mt-2 mb-2">
+      <div class="col-12 col-sm-5 col-md-4 logo">
+        <img src="{{ asset('img/logo.jpg') }}" alt="Logo USAT-BENIN">
+      </div>
+      <div class="col-12 col-ms-7 col-md-8 large-logo">
+        <div class="title">
+          <img src="{{ asset('img/tel.jpg') }}" alt="Definition sigle USAT">
+        </div>
+        <div class="second-menu mt-3 mb-1 text-center">
+          <span class="second-menu-item btn-ambition">NOTRE AMBITION</span>
+          <span class="second-menu-item btn-service">NOS SERVICES</span>
+          <span class="second-menu-item btn-contacte">CONTACTEZ-NOUS</span>
+          <span class="second-menu-item btn-enregistrement">ENREGISTREMENT</span>
+        </div>
+      </div>
+    </div>
+    <div class="details ambition row mt-2 mb-2 ml-0 pl-0" style="position: absolute; display: none; z-index: 20; background-color: white;margin-right: 0px;">
+      <div class="col-12 col-sm-2 col-md-2 logo">
+        <img src="{{ asset('img/jarre.jpg') }}" alt="Symbole Jarre">
+      </div>
+      <div class="col-12 col-ms-10 col-md-10 large-logo text-justify">
+        Rendre  visibles  les merveilleuses réformes.   La souscription  à  la police  d’assurance  pour  tous  les véhicules  d’occasion  avant  leurs transferts  vers  les  différents  parcs de  vente  en  application  du code  CIMA et  finir définitivement avec  le  phénomène des  multiples faux  frais lors des  enlèvements  desdits  véhicules par les transitaires mandataires.
+        <br>
+        <a class="mt-1 btn-plus" href="#">>> En savoir plus</a><br>
+        <p class="mt-3 mb-0"><b>PARTENARIART : USAT - CCIB - MIT - The NewWays Enterprise</b></p>
+      </div>
+    </div>
+    <div class="details services row mt-2 mb-2" style="position: absolute; display: none; width: 100%; z-index: 20; background-color: white;margin-right: 0px;">
+      <div class="col-12 col-sm-12 col-md-10 offset-md-2">
+        <ul class="mt-3">
+          <li class="mb-2">Assurance des véhicules d’occasion avant leurs transferts vers les différents parcs de vente.</li>
+          <li>Venir au  secours  des acteurs  lors  de  la  sortie  des  véhicules sans  aucuns  faux  frais.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="details contacte row mt-2 mb-2" style="position: absolute; display: none; width: 100%; z-index: 20; background-color: white;margin-right: 0px;">
+      <div class="col-12 col-sm-2 col-md-2 logo">
+      </div>
+      <div class="col-12 col-sm-10 col-md-10 offset-md-2">
+        <ul class="mt-3">
+          <li class="mb-2"><b>Adresse: </b>Carré  4233 Lot  40  Zone  Résidentielle  Camp  Guézo, Cotonou</li>
+          <li><b>E-mail: </b>usatbenin@gmail.com</li>
+          <li><b>Téléphone: </b> +229 97 98 34 78 / +229 96 07 53 84</li>
+        </ul>
+      </div>
+    </div>
+    <div class="details enregistrement row text-center mt-2 pt-4 pb-4" style="position: absolute; display: none; width: 100%; z-index: 20; background-color: white;margin-right: 0px;">
+      <div class="col-12 col-sm-8 col-md-9 offset-sm-4 offset-md-3">
+        <a class="linker btn-plus second-menu-item" href="#">Gestionnaire de Parc</a>
+        <a class="linker btn-plus second-menu-item" href="#">Commissionnaire agréé des Douanes</a>
+      </div>
+    </div>
+
+    <div class="carousele mb-1" style="z-index: -15">
+      <img class="img-carousel" id="imgc1" src="{{ asset('img/img.jpg') }}" alt="Image Parcking">
+      <img class="img-carousel" style="display: none;" id="imgc2" src="{{ asset('img/img2.jpg') }}" alt="Image Parcking">
+      <img class="img-carousel" id="imgc3" style="display: none;" src="{{ asset('img/img3.jpg') }}" alt="Image Parcking">
+    </div>
+  </div>
+
+  {#<div class="col-12 col-sm-10 col-md-10 pl-1 pr-2 offset-md-1 offset-sm-1 body">#}
+  <div class="col-12 col-sm-12 col-md-12 pl-1 pr-2 body">
+    <div class="row p-2">
+      <div class="col-12 col-sm-4 p-2 pl-0">
+
+        <div class="parc-container col-12 text-center pl-0 pr-0">
+          <h3 class="parc-title mb-3 p-2">Parcs de ventes</h3>
+          <p>Liste des gestionnaire de parc. Veuillez selectionner un parc pour voir ses informations</p>
+          <div class="form-group m-2">
+            <select name="" id="pack" class="form-control">
+              <option>Selectionnez un parc</option>
+            </select>
+          </div>
+          <div class="form-group mt-3 mb-2">
+            <button onclick="alert('Fonctionnaité non codé pour le momment')" class="btn btn-info pl-4 pr-4">Afficher Info</button>
+          </div>
+        </div>
+
+        <div class="parc-container col-12 text-center pl-0 pr-0 mt-3">
+          <h3 class="parc-title mb-3 p-2">Commissionnaires</h3>
+          <p>Liste des commissionnaire agrées en Douanes. Veuillez selectionnner un commissionnaire pour afficher ses informations</p>
+          <div class="form-group m-2">
+            <select name="" id="pack" class="form-control">
+              <option>Selectionnez un commissionnaire</option>
+            </select>
+          </div>
+          <div class="form-group mt-3 mb-2">
+            <button onclick="alert('Fonctionnaité non codée pour le momment')" class="btn btn-info pl-4 pr-4">Afficher Info</button>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-12 col-sm-8 p-1 pl-1">
+            <div class="info text-justify mr-2">
+              <h5>COMMUNIQUE URGENTE</h5>
+              <ul>
+                <li class="mb-3">
+                  Depuis le 1er mars 2020, le Gouvernement du Bénin accorde une réduction de 30% sur les droits de douane des véhicules d'occasion acquis et mis à la consommation au Bénin.
+                </li>
+                <li>
+                  D'importants dégâts enregistrés dans un incendie le dimanche 15 mars 2020 sur le parc automobile de vente de véhicules d'occasion Micha à Sèkandji. Des douzaines de voitures ont été touchées par les flammes.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-4 p-1 pl-1">
+            <div class="text-center panel-inscription p-2">
+              <div class="mb-3">
+                <img style="margin-bottom: 0.7em;" width="100%" src="{{ asset('img/logo2.png') }}" alt="">
+              </div>
+              <div>
+                <div class="form-group">
+                  <input type="text" placeholder="Identifiant" name="id" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="password" placeholder="Code d'accès" name="pwd"
+                         class="form-control">
+                </div>
+              </div>
+              <div>
+                <button class="btn btn-info pl-3 pr-3">
+                  <i class="fa fa-connectdevelop"></i>
+                  Connexion
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="img">
+              <img width="100%" src="{{ asset('img/rubon1-ad5fc.png') }}" alt="">
+            </div>
+            <div class="text">
+              <ul>
+                <li>Usat-Bénin  et  ses structures  de fonctionnement</li>
+                <li>Historique de la  filière et Recommandations</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="img">
+              <img width="100%" src="{{ asset('img/rubon3-920f9.png') }}" alt="">
+            </div>
+            <div class="text">
+              <ul>
+                <li>Forme et  système juridique</li>
+                <li>Activités et les cibles</li>
+                <li>Visions, Missions  et  Objectifs de  Usat-Benin</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-12 col-md-12 mt-2 pl-1 pr-2 pb-5 body">
+    <div class="row">
+      <div class="col-7 text-center">
+        <img src="{{ asset('img/auto1.png') }}" id="auto1" alt="Auto">
+        <img style="display: none;" id="auto2" src="{{ asset('img/auto3.png') }}" alt="Auto">
+        <img style="display: none;" id="auto3" src="{{ asset('img/auto4.png') }}" alt="Auto">
+        <img style="display: none;" id="auto4" src="{{ asset('img/auto5.png') }}" alt="Auto">
+        <img style="display: none;" id="auto5" src="{{ asset('img/auto2.png') }}" alt="Auto">
+      </div>
+      <div class="col-5 mt-5">
+        <div>
+          <h4 style="background-color:#007bff" class="p-3 pl-0">Global Zoom</h4>
+          <p>
+            Tout connaitre sur la procédure de transfert de vos véhicules depuis le port vers les parcs<br>
+            <a class="btn-plus" href="#">>> Lire la suite</a>
+          </p>
+          <p>
+            Tout connaitre sur la procédure d'enlèvement de vos véhicules des différents parcs<br>
+            <a class="btn-plus" href="#">>> Lire la suite</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-12 col-md-12 pt-4 pb-3 body">
+    <div class="row">
+      <div class="col-6 col-sm-3">
+        <h3>SÉCURITÉ</h3>
+        <p>Tout savoir sur la sécurité et la vitesse maximale d'une voiture sans permis dans notre localité</p>
+        <a class="btn-plus" href="#"><img src="{{ asset('img/plus.png') }}" alt="Plus"></a>
+      </div>
+      <div class="col-6 col-sm-3">
+        <h3>LÉGISLATION</h3>
+        <p>Tout savoir sur le permis AM et la législation des voitures sans permis en République du Bénin</p>
+        <a class="btn-plus" href="#"><img src="{{ asset('img/plus.png') }}" alt="Plus"></a>
+      </div>
+      <div class="col-6 col-sm-3">
+        <h3>TRANSFERT</h3>
+        <p>Tout savoir sur le transfert des véhicules après importation vers les parcs</p>
+        <a class="btn-plus" href="#"><img src="{{ asset('img/plus.png') }}" alt="Plus"></a>
+      </div>
+      <div class="col-6 col-sm-3">
+        <h3>ENLÈVEMENT</h3>
+        <p>Tout savoir sur les procédures à suivre pour l'enlèvement de votre véhicules en quelques heures</p>
+        <a class="btn-plus" href="#"><img src="{{ asset('img/plus.png') }}" alt="Plus"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-12 col-md-12 pt-3 pb-3 body bg-dark" style="color: white">
+    <div class="mb-1">
+      <hr>
+      <div class="top-menu">
+        <span class="menu-top-item">Plan du site</span>|
+        <span class="menu-top-item">Mentions légales</span>|
+        <span class="menu-top-item">Conditions générales d'utilisation</span>|
+        <span class="menu-top-item">Réalisé par NELDEV <img src="{{ asset('img/favicon.ico') }}" class="ml-2" width="20" alt="LOGO NelDev"></span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="application/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+  <script type="application/javascript" src="{{ asset('js/app.js') }}"></script>
+  {#<script type="application/javascript" src="{{ asset('build/home.js') }}"></script>#}
+{% endblock %}
