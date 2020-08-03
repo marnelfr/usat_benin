@@ -314,25 +314,7 @@
         </div>
 
         <div class="col-12 col-sm-4 p-1 pl-1">
-          <div class="text-center panel-inscription p-2">
-            <div class="mb-3">
-              <img style="margin-bottom: 0.7em;" width="100%" src="{{ asset('build/images/guest/logo2.png') }}" alt="">
-            </div>
-            <div>
-              <div class="form-group">
-                <input type="text" placeholder="Identifiant" name="id" class="form-control">
-              </div>
-              <div class="form-group">
-                <input type="password" placeholder="Code d'accès" name="pwd" class="form-control">
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-info pl-3 pr-3">
-                <i class="fa fa-connectdevelop"></i>
-                Connexion
-              </button>
-            </div>
-          </div>
+          {{ render(controller('App\\Controller\\SecurityController::login')) }}
         </div>
       </div>
 
