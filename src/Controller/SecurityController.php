@@ -10,10 +10,29 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/home", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $login = $this->renderView('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+
+        return $this->forward('App\Controller\GuestController:index', [], ['login' => $login]);
+    }
+
+    /**
+     * @Route("/login/form", name="app_login_form")
+     * @return Response
+     */
+    public function login_form(AuthenticationUtils $authenticationUtils): Response {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
@@ -32,8 +51,6 @@ class SecurityController extends AbstractController
     public function check_user_profil() {
         dd($this->getUser());
     }
-
-
 
 
 
