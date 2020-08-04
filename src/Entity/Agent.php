@@ -46,6 +46,9 @@ class Agent extends User
 
     public function __construct()
     {
+        $this->compagny = 'NelDev';
+        $this->ifu = '65465465';
+        $this->registerNum = 'sdmlfkdslsdf';
         $this->removals = new ArrayCollection();
         $this->removers = new ArrayCollection();
     }

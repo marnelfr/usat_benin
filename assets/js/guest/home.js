@@ -35,9 +35,9 @@ $(function () {
     $('.contacte').hide('slow')
   })
 
-  $('.btn-enregistrement').on('click', function(){
+  /*$('.btn-enregistrement').on('click', function(){
     $('.enregistrement').toggle('slow')
-  })
+  })*/
 
   $('.btn-ambition').on('click', function (e) {
     e.preventDefault()
