@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Agent;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -29,9 +30,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        // TODO: to del
-        $p = $this->getDoctrine()->getRepository(Profil::class)->find(1);
-        $user = new User($p);
+        $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -46,6 +45,7 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+            dd($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -57,7 +57,8 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
-            $request->getSession()->getFlashBag()->add('registration', true);
+//            $request->getSession()->getFlashBag()->add('registration', true);
+            $this->addFlash('registration', true);
 
             return $this->redirectToRoute('home_page');
         }

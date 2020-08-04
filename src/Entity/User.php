@@ -14,12 +14,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /*
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields="email", message="Email already taken")
  */
 
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields="email", message="Email already taken")
+ * @UniqueEntity(fields="username", message="There is already an account with this username")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="user_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -120,19 +122,19 @@ class User implements UserInterface
 
 
 
-    public function __construct($p)
+    public function __construct()
     {
-        $this->name = 'Admin';
+        /*$this->name = 'Admin';
         $this->lastName = 'Admin';
         $this->address = '0:0';
-        $this->createdAt = new \DateTime();
-        $this->lastConnection = new \DateTime();
         $this->email = 'marnognac@gmail.com';
         $this->phone ='';
-        $this->profil = $p;
-        $this->roles[] = 'ROLE_ADMIN';
+        $this->profil = $p;*/
+//        $this->roles[] = 'ROLE_ADMIN';
         $this->status= 0;
 
+        $this->lastConnection = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->processings = new ArrayCollection();
         $this->fleets = new ArrayCollection();
     }
