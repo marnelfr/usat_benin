@@ -6,22 +6,76 @@
 # For tabs in the control_sidebar (right screen) add the 'control_sidebar' config key:
 # https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/control_sidebar.md
 
+#admin_lte:
+#    options:
+#        default_avatar: 'bundles/adminlte/images/default_avatar.png'
+#        skin: skin-red-light #https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/bundle_options.md
+#        fixed_layout: false
+#        boxed_layout: false
+#        collapsed_sidebar: false
+#        mini_sidebar: false
+#
+#    knp_menu:
+#        enable: false
+#
+#    control_sidebar:
+#
+#    routes:
+#        adminlte_welcome: home
+#        adminlte_login: login
+#        adminlte_profile: profile
+#        adminlte_registration: app_register
+#
+#
+
 admin_lte:
     options:
-        default_avatar: 'bundles/adminlte/images/default_avatar.png'
-        skin: skin-red-light #https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/bundle_options.md
+        default_avatar: bundles/adminlte/images/default_avatar.png
         fixed_layout: false
         boxed_layout: false
         collapsed_sidebar: false
         mini_sidebar: false
+        #max_navbar_notifications: 10
+        #max_navbar_tasks: 10
+        #max_navbar_messages: 10
+
+    control_sidebar: ~
+#        home:
+#            icon: fas fa-home
+#            template: control-sidebar/home.html.twig
+#        settings:
+#            icon: fas fa-cogs
+#            controller: 'App\Controller\DefaultController::userPreferences'
+
+#    theme:
+#        widget:
+#            type: warning
+#            bordered: true
+#            collapsible: true
+#            collapsible_title: 'Collapse'
+#            removable: false
+#            removable_title: 'Remove'
+#            solid: false
+#            use_footer: false
+#        button:
+#            type: 'primary'
+#            size: false
 
     knp_menu:
         enable: false
-
-#    control_sidebar:
+        # the default value is adminlte_main, so we don't need to set it manually
+        #main_menu: adminlte_main
+        breadcrumb_menu: true
 
     routes:
-        adminlte_welcome: home
-        adminlte_login: login
-        adminlte_profile: profile
+        adminlte_login: fos_user_security_login
         adminlte_registration: app_register
+        adminlte_profile: app_register #todo: change this to the real path of the user profile
+        adminlte_password_reset: fos_user_resetting_request
+        adminlte_welcome: home_page
+        adminlte_message: home_page
+        adminlte_messages: home_page
+        adminlte_notification: home_page
+        adminlte_notifications: home_page
+        adminlte_task: home_page
+        adminlte_tasks: home_page

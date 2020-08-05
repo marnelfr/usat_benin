@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use KevinPapst\AdminLTEBundle\Model\UserInterface as AdminInterface;
 
 /*
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *   "Manager" = "Manager"
  * })
  */
-class User implements UserInterface
+class User implements UserInterface, AdminInterface
 {
     /**
      * @ORM\Id()
@@ -401,5 +401,45 @@ class User implements UserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getMemberSince()
+    {
+        return $this->getCreatedAt();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnline(){
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'Identifier Test';
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(){
+        return 'Title Test';
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getAvatar() {
+        return '';
     }
 }
