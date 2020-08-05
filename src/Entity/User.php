@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -20,8 +21,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="There is already an account with this username")
+ * @UniqueEntity(fields="email", message="Un utilisateur existe déjà avec cet adresse email")
+ * @UniqueEntity(fields="username", message="Un utilisateur existe déjà avec cet identifiant")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="user_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -73,6 +74,8 @@ class User implements UserInterface
     private $phone;
 
     /**
+     * @Assert\NotBlank(message="entity.user.email.notblank")
+     * @Assert\Email(message="entity.user.email.type")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;

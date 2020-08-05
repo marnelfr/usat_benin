@@ -3,42 +3,51 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-
-
-    <h1>Register</h1>
+  <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+    <h1 class="text-center">Inscription</h1>
     {% for flashError in app.flashes('verify_email_error') %}
       <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
+    {{ form_start(registrationForm) }}
     {% if form_errors(registrationForm) %}
       <div class="alert alert-danger" role="alert">{{ form_errors(registrationForm) }}</div>
     {% endif %}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.name, {
-            label: 'Prénom'
-        }) }}
-        {{ form_row(registrationForm.lastName, {
-            label: 'Nom'
-        }) }}
-        {{ form_row(registrationForm.phone, {
-            label: 'Téléphone'
-        }) }}
-        {{ form_row(registrationForm.email, {
-            label: 'Email'
-        }) }}
-        {{ form_row(registrationForm.address, {
-            label: 'Adresse'
-        }) }}
-        {{ form_row(registrationForm.profil, {
-            label: 'Profil'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {{ form_row(registrationForm.username) }}
+    <div class="row">
+      <div class="col-sm-6 ml-0 d-inline">
+        {{ form_row(registrationForm.name) }}
+      </div>
+      <div class="col-sm-6 mr-0 d-inline">
+        {{ form_row(registrationForm.lastName) }}
+      </div>
+    </div>
 
-        <button type="submit" class="btn">Register</button>
+    <div class="row">
+      <div class="col-sm-6 d-inline">
+        {{ form_row(registrationForm.phone) }}
+      </div>
+      <div class="col-sm-6 d-inline">
+        {{ form_row(registrationForm.email) }}
+      </div>
+    </div>
+
+    {{ form_row(registrationForm.address) }}
+    {{ form_row(registrationForm.profil) }}
+    {{ form_row(registrationForm.plainPassword) }}
+
+    <div class="row">
+      <div class="col-sm-6 d-inline">
+        {{ form_row(registrationForm.agreeTerms) }}
+      </div>
+      <div class="col-sm-6 d-inline text-right">
+        <button class="btn btn-success" type="submit">
+          <i class="fa fa-user"></i>S'enregistrer
+        </button>
+        {#{{ form_row(registrationForm.save) }}#}
+      </div>
+    </div>
     {{ form_end(registrationForm) }}
+  </div>
 {% endblock %}
