@@ -75,7 +75,7 @@ admin_lte:
         adminlte_welcome: home_page
         adminlte_message: home_page
         adminlte_messages: home_page
-        adminlte_notification: home_page
-        adminlte_notifications: home_page
+        adminlte_notification: home_page #todo: change this to the real notification path
+        adminlte_notifications: home_page #todo: change this to the real notificationS path
         adminlte_task: home_page
         adminlte_tasks: home_page

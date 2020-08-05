@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use KevinPapst\AdminLTEBundle\Model\UserInterface as AdminInterface;
-
+use KevinPapst\AdminLTEBundle\Model\NotificationInterface;
 /*
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
@@ -33,7 +33,7 @@ use KevinPapst\AdminLTEBundle\Model\UserInterface as AdminInterface;
  *   "Manager" = "Manager"
  * })
  */
-class User implements UserInterface, AdminInterface
+class User implements UserInterface, AdminInterface, NotificationInterface
 {
     /**
      * @ORM\Id()
@@ -442,4 +442,27 @@ class User implements UserInterface, AdminInterface
     public function getAvatar() {
         return '';
     }
+
+
+    /**
+     * @return string
+     */
+    public function getMessage() {
+        return 'A demo message';
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return 'success';
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon() {
+        return 'far fa-envelope';
+    }
+
 }
