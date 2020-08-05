@@ -49,6 +49,7 @@ class SecurityController extends AbstractController
      * @Route("/check/user/profil", name="security_check_user_profil")
      */
     public function check_user_profil() {
+        return $this->redirectToRoute('dashboard');
         dd($this->getUser());
     }
 
