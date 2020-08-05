@@ -45,7 +45,6 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
-            dd($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
