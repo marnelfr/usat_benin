@@ -271,4 +271,4 @@ Les profils et hierachie
    usat: role_control et role_staff
    admin: role_admin
 
-
+Il faut penser à supprimer les templates de adminlte si je veux plus les utiliser
