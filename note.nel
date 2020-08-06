@@ -1,3 +1,6 @@
+npm config set strict-ssl false -g
+
+
 Tables
 	user
 		Toute personne qui veut accès à la plate forme doit être entregistré dans cette table
@@ -272,3 +275,239 @@ Les profils et hierachie
    admin: role_admin
 
 Il faut penser à supprimer les templates de adminlte si je veux plus les utiliser
+
+
+
+BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
+	Ajouter ceci au menu event subscriber permet d'afficher le menu dans le coin sup droit
+
+{% block page_content %}{% endblock %}
+	Permet de definir le contenu de la page
+	Donc le tableau de bord des utilisateurs devrait avoir par exemple le même template par exemple dont eux tous vont herité.
+	Maintenant pour chacun, on definiera simplement la page_content
+
+
+
+
+
+
+
+SECURITY
+
+composer require symfony/security-bundle		
+	To install it
+
+# config/packages/security.yaml
+security:
+    enable_authenticator_manager: true
+    #add this to use the new security experience
+
+
+php bin/console make:user
+	To create the class User
+
+The only rule about your User class is that it must implement Symfony\Component\Security\Core\User\UserInterface. Feel free to add any other fields or logic you need.
+
+After each update of our entity, we better make a migration and a d:m:m
+
+
+The “User Provider”
+https://symfony.com/doc/current/security/user_provider.html	
+	Add "Remember me" to our login
+	https://symfony.com/doc/current/security/remember_me.html
+
+	Be able to switch for a user to another one
+	https://symfony.com/doc/current/security/impersonating_user.html
+
+
+Encoding Passwords
+	security:
+	    # ...
+
+	    encoders:
+	        # use your user class name here
+	        App\Entity\User:
+	            # Use native password encoder
+	            # This value auto-selects the best possible hashing algorithm
+	            # (i.e. Sodium when available).
+	            algorithm: auto
+
+
+ php bin/console make:fixtures
+ 	Pour créer des fixtures.
+ 	ça necessite l'installation d'un composant
+
+  php bin/console security:encode-password
+  	Permet d'encoder les password manuellement pour la création de nos utilisateurs
+
+
+Authentication & Firewalls
+	The security system is configured in config/packages/security.yaml
+	The most important section is firewalls:
+	# config/packages/security.yaml
+	security:
+	    firewalls:
+	        dev: #makes sure that you don’t accidentally block Symfony’s dev tools
+	            pattern: ^/(_(profiler|wdt)|css|images|js)/
+	            security: false
+	        main:
+	            anonymous: true #for unknown use. They should only have access to the homepage or login page
+	            lazy: true
+
+	A firewall can have many modes of authentication
+	To say many ways to ask the question “Who are you?”
+
+	C'est la même chose avec les allow dans meteor. Si un seul firewall accept, tous accept.
+
+	The lazy anonymous mode prevents the session from being started if there is no need for authorization.
+
+Authenticating your Users
+	Authentication providers
+		https://symfony.com/doc/current/security/auth_providers.html
+
+	Third-party service authentication
+		https://github.com/hwi/HWIOAuthBundle
+
+Guard Authenticators
+	Gives complete control over the authentication process
+
+	How to Build a Login Form
+		https://symfony.com/doc/current/security/form_login_setup.html
+
+		see this for the most detailed description of authenticators and how they work:
+			https://symfony.com/doc/current/security/guard_authentication.html
+
+
+Denying Access, Roles and other Authorization
+	https://symfony.com/doc/current/security.html#denying-access-roles-and-other-authorization
+
+	Authorization is the way to decide if a user can access some resource (a URL, a model object, a method call, …)
+
+Roles
+	https://symfony.com/doc/current/security.html#roles
+	Roles are an array that’s stored in the database, and every user is always given at least one role: ROLE_USER
+	!!Mais chez moi par exemple, ils n'ont pas tous le ROLE_USER.
+	S'assurer donc de donner le role ROLE_USER à ceux qui doivent l'avoir à leur création.
+
+	Every role must start with ROLE_ (otherwise, things won’t work as expected)
+	Other than that, a role is just a string and you can invent what you need (e.g. ROLE_PRODUCT_ADMIN)
+
+Add Code to Deny Access
+	Securing URL patterns (access_control)
+	# config/packages/security.yaml
+	security:
+	    # ...
+	    firewalls:
+	    	# ...
+	    access_control:
+	        # require ROLE_ADMIN for /admin*
+	        - { path: '^/admin', roles: ROLE_ADMIN }
+
+	        # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*
+	        - { path: '^/admin', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+
+	        # the 'path' value can be any valid regular expression
+	        # (this one will match URLs like /api/post/7298 and /api/comment/528491)
+	        - { path: ^/api/(post|comment)/\d+$, roles: ROLE_USER }
+
+
+	You can define as many URL patterns as you need. The first match from the top will be used.
+
+	Prepending the path with ^ means that only URLs beginning with the pattern are matched.
+	More info
+		https://symfony.com/doc/current/security/access_control.html
+
+
+	In controller
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+	    // or add an optional message - seen by developers
+	    $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+
+	    /**
+		 * Require ROLE_ADMIN for *every* controller method in this class.
+		 *
+		 * @IsGranted("ROLE_ADMIN")
+		 */
+		class AdminController extends AbstractController
+
+		/**
+         * Require ROLE_ADMIN for only this controller method.
+	     *
+	     * @IsGranted("ROLE_ADMIN")
+	     */
+	    public function adminDashboard()
+
+    In twig
+    	{% if is_granted('ROLE_ADMIN') %}
+		    <a href="...">Delete</a>
+		{% endif %}
+
+
+
+Hierarchical Roles
+	# config/packages/security.yaml
+	security:
+	    # ...
+
+	    role_hierarchy:
+	        ROLE_ADMIN:       ROLE_USER
+	        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+Users with the ROLE_ADMIN role will also have the ROLE_USER role. And users with ROLE_SUPER_ADMIN, will automatically have ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH and ROLE_USER (inherited from ROLE_ADMIN).
+
+Using role hierarchy
+	// BAD - $user->getRoles() will not know about the role hierarchy
+	$hasAccess = in_array('ROLE_ADMIN', $user->getRoles());
+
+	// GOOD - use of the normal security methods
+	$hasAccess = $this->isGranted('ROLE_ADMIN');
+	$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+
+
+Add a Reset Password Feature
+	https://symfony.com/doc/current/security/reset_password.html
+
+	Generating the Reset Password Code
+		composer require symfonycasts/reset-password-bundle
+		php bin/console make:reset-password
+			The make:reset-password command will ask you a few questions to help setting up the 
+
+	Customization in
+		reset_password.yaml
+
+	For more information
+		https://github.com/symfonycasts/reset-password-bundle
+
+
+
+Customize Error Pages
+	https://symfony.com/doc/current/controller/error_pages.html
+
+
+Logging Out
+	# config/packages/security.yaml
+	security:
+	    # ...
+
+	    firewalls:
+	        main:
+	            # ...
+	            logout:
+	                path:   app_logout
+
+	                # where to redirect after logout
+	                # target: app_any_route
+
+
+Customizing Logout
+    https://symfony.com/doc/current/security.html#customizing-logout
+
+
+
+
+
+
+

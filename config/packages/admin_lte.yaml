@@ -5,29 +5,6 @@
 #
 # For tabs in the control_sidebar (right screen) add the 'control_sidebar' config key:
 # https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/control_sidebar.md
-
-#admin_lte:
-#    options:
-#        default_avatar: 'bundles/adminlte/images/default_avatar.png'
-#        skin: skin-red-light #https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/bundle_options.md
-#        fixed_layout: false
-#        boxed_layout: false
-#        collapsed_sidebar: false
-#        mini_sidebar: false
-#
-#    knp_menu:
-#        enable: false
-#
-#    control_sidebar:
-#
-#    routes:
-#        adminlte_welcome: home
-#        adminlte_login: login
-#        adminlte_profile: profile
-#        adminlte_registration: app_register
-#
-#
-
 admin_lte:
     options:
         default_avatar: bundles/adminlte/images/default_avatar.png
@@ -68,7 +45,6 @@ admin_lte:
 
     routes:
         adminlte_welcome: home_page
-        adminlte_login: fos_user_security_login
         adminlte_registration: app_register
         adminlte_profile: app_register #todo: change this to the real path of the user profile
         adminlte_password_reset: fos_user_resetting_request
