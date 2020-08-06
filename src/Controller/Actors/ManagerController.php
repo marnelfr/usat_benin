@@ -2,6 +2,7 @@
 
 namespace App\Controller\Actors;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Le controlleur des actions spécifiques des manager.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
+ * @IsGranted("ROLE_MANAGER")
  */
 class ManagerController extends AbstractController
 {

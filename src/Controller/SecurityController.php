@@ -49,8 +49,31 @@ class SecurityController extends AbstractController
      * @Route("/check/user/profil", name="security_check_user_profil")
      */
     public function check_user_profil() {
-        return $this->redirectToRoute('dashboard');
-        dd($this->getUser());
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //todo : Comment rediriger en utilisant ceci ??
+//        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+//            return $this->redirectToRoute('home_page');
+//        }
+        if ($this->isGranted('ROLE_AGENT')) {
+            return $this->redirectToRoute('actors_agent_dashboard');
+        }
+
+        if ($this->isGranted('ROLE_MANAGER')) {
+            return $this->redirectToRoute('actors_manager_dashboard');
+        }
+
+        if ($this->isGranted('ROLE_CONTROL')) {
+            return $this->redirectToRoute('actors_control_dashboard');
+        }
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('actors_admin_dashboard');
+        }
+
+        if ($this->isGranted('ROLE_STAFF')) {
+            return $this->redirectToRoute('actors_staff_dashboard');
+        }
+
+        return $this->redirectToRoute('home_page');
     }
 
 
