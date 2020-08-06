@@ -4,6 +4,7 @@
 {% block page_subtitle %}Sous-titre{% endblock %}
 
 {% block navbar_start %}
+    {#todo: a moi qu'on ne veuille à un moment donné gérer l'internationnalisation, ceci n'a pas besoin d'etre decommanté
     <li class="dropdown messages-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-globe"></i>
@@ -13,18 +14,18 @@
             <li class="header">Change language (scroll for more)</li>
             <li>
                 <ul class="menu">
-                    {#{% for locale in app_locales %}
+                    {% for locale in app_locales %}
                     <li>
                         <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': locale})) }}">
                             {{ locale|language(app.request.get('_locale')) }}
                             <span class="pull-right">{{ locale }}</span>
                         </a>
                     </li>
-                    {% endfor %}#}
+                    {% endfor %}
                 </ul>
             </li>
         </ul>
-    </li>
+    </li>#}
 {% endblock %}
 
 {% block javascripts %}
