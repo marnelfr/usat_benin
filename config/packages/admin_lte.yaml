@@ -67,11 +67,11 @@ admin_lte:
         breadcrumb_menu: false
 
     routes:
+        adminlte_welcome: home_page
         adminlte_login: fos_user_security_login
         adminlte_registration: app_register
         adminlte_profile: app_register #todo: change this to the real path of the user profile
         adminlte_password_reset: fos_user_resetting_request
-        adminlte_welcome: home_page
         adminlte_message: home_page
         adminlte_messages: home_page
         adminlte_notification: home_page #todo: change this to the real notification path
