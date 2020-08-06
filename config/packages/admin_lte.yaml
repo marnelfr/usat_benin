@@ -62,10 +62,9 @@ admin_lte:
 #            size: false
 
     knp_menu:
-        enable: false
-        # the default value is adminlte_main, so we don't need to set it manually
-        #main_menu: adminlte_main
-        breadcrumb_menu: true
+        enable: true
+        main_menu: adminlte_main
+        breadcrumb_menu: false
 
     routes:
         adminlte_login: fos_user_security_login
