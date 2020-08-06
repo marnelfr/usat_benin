@@ -481,7 +481,7 @@ Add a Reset Password Feature
 	For more information
 		https://github.com/symfonycasts/reset-password-bundle
 
-
+	Then open your browser, go to "/reset-password" and enjoy!
 
 Customize Error Pages
 	https://symfony.com/doc/current/controller/error_pages.html
