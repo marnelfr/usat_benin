@@ -1,0 +1,274 @@
+Tables
+	user
+		Toute personne qui veut accès à la plate forme doit être entregistré dans cette table
+		Attributs:
+			name: le prénom de l'utilisateur
+			lastName: le nom de famille de l'utilisateur
+			fullname: le nom complet de l'utilisateur
+				Je vais juste créer un getter pour ça
+			phone: le numéro de téléphone de l'utilisateur
+			email: l'adresse email de l'utilisateur
+			address: l'adresse physique de l'utilisateur
+			status: passe à 1 si l'utilisateur peu se connecté à la plateforme
+			-roles: le role de l'utilisateur
+			-username: le username
+			-password: le mot de passe
+			createdAt: date d'enregistrement
+			lastConnection: date de dernière connexion
+
+
+	gestionnaire ou manager
+		En plus d'être enregistré dans la table 'user', les gestionnaires de parc doivent également être enregistré dans cette table
+		Attributs:
+			userID
+			fleetID
+			compagny: la raison sociale de l'utilisateur
+			ifu: le numero ifu
+			registerNum: le numero du registre de commerce
+
+
+
+
+	commissionnaire ou agent
+		En plus d'être enreigstré dans la table 'user', les commissionnaires agréés en douane doivent également être enregistré dans cette table
+		Attributs:
+			userID
+			compagny: la raison sociale de l'utilisateur
+			ifu: le numero ifu
+			registerNum: le numero du registre de commerce
+
+
+	parc ou fleet
+		Va garder la liste de toutes les parcs. L'administrateur du site doit pouvoir ajouter de nouveaux parcs au besoin.
+		Attributs:
+			name: le nom du parc
+			info
+			deleted
+			createdAt
+			userID
+
+
+	vehicule ou vehicle
+		Va garder la liste de toutes les véhicules pour lesquels sera fait des demandes d'enlèvements ou de transfert.
+		Attributs:
+			brandID: la marque du vehicule
+			chassis: le chassis complet du vehicule
+			putInUseAt: la date de mise en circulation
+			shipID: le navire d'arrivée au port
+			cameAt: date d'arriver au port
+			consignee: le consignataire du navire
+			importerID: l'importateur
+
+	importer
+		Va garder la liste des importateurs.
+		Attributs:
+			managerID: le gestionnaire l'ayant enregistrer
+			userID: les informations de l'importateur dans la table user
+			deleted
+			createdAt
+
+
+	marque ou brand
+		Va garder la liste de toutes la marques de vehicules. L'administrateur du site doit pouvoir ajouter de nouvelles marques au besoin
+		Attributs:
+			name: le nom de la marque
+			deleted
+			createdAt
+
+
+	navire ou ship
+		Va garder la liste de toutes les navires qui ramène des véhicules au port de Cotonou. L'administrateur du site doit pouvoir ajouter de nouveaux navires au besoin
+		Attributs:
+			name: le nom du navie
+			deleted
+			createdAt
+
+
+	file
+		Gardera la liste de fichier updloader et le lien vers ses fichiers. Les fichiers n'ont pas se seront pas supprimper logiquement mais définitivement à la demande
+		Attributs:
+			userID: l'utilisateur ayant uploader le fichier
+			clientName: le nom du fichier à son upload
+			size: la taille du fichier
+			link: le chemin menant au fichier
+			deleted
+			createdAt
+
+
+	transfert ou transfer
+		Toute demande de transfert fait par un gestionnaire de parc sera enregistré dans cette tables
+		Attributs:
+			managerID: le gestionnaire ayant fait la demande
+			vehicleID: le vehicule par rapport auquel la demande a été fait
+			status: l'etat de la demande (rejeter, approver, en attente, annuler)
+			bolID: (bill of landing) la copie scannée du connaissement. redirige vers la table file
+			deleted
+			createdAt
+
+
+	enlevement ou removal
+		Toute demande d'enlevement fait par un commissionnaire agréé en douane sera enregistré dans cette tables
+		Attributs:
+			agentID: le commissionnaire ayant fait la demande
+			vehicleID: le vehicule pour lequel la demande est fait
+			removerID: l'enleveur
+			status: l'etat de la demande (rejeter, approver, en attente, annuler)
+			bfuNum: le numero BFU réglé
+				---Je ne l'ai plus utilisé. Ils seront sauvegarder dans demande_file
+				payBankID: le banque de payement
+				entryNum: le numero de la declaration de douane
+				bolID: (bill of landing) la copie scannée du connaissement. redirige vers la table file
+				entryID: l'id de la copie scanné de la déclaration de douane. renvoie à file
+				receiptID: l'id de la copie scanné du reçu de banque. renvoie à file
+				bfuID: l'id de la copie scanné du BFU réglé
+
+	demande_file
+		Attributs:
+			removalID
+			transferID
+			fileID
+			usedFor: le type de fichier
+			createdAt
+			deteled
+
+	bank
+		Va garder la liste de toutes les banques
+		Attributs:
+			name:
+			deleted
+			createdAt
+
+
+	remover
+		Gadera la liste des enleveur de vehicule enregistré par les commisionnaire agréés en douane
+		Attributs:
+			agentID: le commissionnaire ayant enregistré l'enleveur
+			userID: les informations de l'enleveur se trouvant dans la table user
+			cinID: l'id de la copie scanné de la CIN de l'enleveur. renvoie à la table file
+			deleted
+			createdAt
+
+
+
+	processing
+		Le traitement des demandes de transfert ou d'enlevement
+		Attributs:
+			transferID: le tranfert concerné. nullable
+			removalID: l'enlevement concerné. nullable
+			userID: l'utilisateur ayant fait le traitement
+			verdict: l'avis après traitement
+				0 pour rejet
+				1 pour accepter
+			reason: raison de rejet de transfert ou l'envelement
+
+	profil
+		La table contiendra la liste des profiles de l'application.
+		Attributs:
+			name: le nom du profile
+			deleted
+			createdAt
+
+	home_announce
+		La table contiendra toutes le communiqués du site. Le deux dernières apparaitrons sur la page d'accueil
+		Attributs:
+			summery: le resumé du communiqué qui apparaitra sur la page d'accueil
+			content: le comuniqué en détail. Penser à mettre en place, un outil d'édition de text pour ça
+			deleted
+			createdAt
+
+	notification
+		Gardera la liste des changements d'états qu'a subit les demandes d'un gestionnaire ou commissionnaire.
+		Attributs:
+			userID
+			removalID
+			transferID
+			typeID
+			message: en cas de refus, c'est la raison du refus. Sinon c'est un message par defaut de succès
+
+
+	type
+		Gardera la liste des types de message qu'on peut avoir
+		Attributs:
+			name
+			icon
+			deleted
+			createdAt
+
+
+
+Les acteurs du système
+	Les gestionnaires de parc
+		- Modification de profil
+		- Visualiser la liste des véhicules traités (pour lesquelles des demandes ont été faites)
+		sur divers périodes
+		- Gérer la liste des importateurs avec qui ils travaillent
+		- Accéder à un menu Message pour notifier de l’évolution de leurs demandes
+		- Accéder au sous menu des demandes pour avoir la possibilité de modifier ou
+		supprimer des demandes en cas d’erreur
+
+	Les commissionnaires
+		- Modifier les informations de leur profil ;
+		- Visualiser la liste des véhicules traités (pour lesquelles des demandes ont été faites)
+		sur divers périodes
+		- Suivre les demandes d’enlèvements envoyés
+		- Connaitre l’étape du traitement de leur demande
+		- Voir les statistiques de leurs activités sur diverses périodes
+
+	Le personnel de CCIB ou Le personnel du MIT
+		- Modifier les informations de leur profil ;
+		- Le nombre de véhicule transféré sur les différents parcs sur une période de temps définie
+		- Le nombre de véhicule enlevé
+		- Les statistiques sur l’utilisation de la plateforme (nombre moyens d’utilisation par mois,
+		heure etc.), les opérations les plus fréquentes.
+
+		(herite de personnel de CCIB ou MIT)
+		Le personnel de USAT Benin
+			- valider le compte des inscrits
+			- traiter les differents demandes
+				- accepter demande
+				- rejeter demande
+			- enregistrer dans les tables de configuration
+
+
+
+
+jsonViewerAwesome chrome
+
+
+http://www.nom-domaine.bj
+
+
+Controllers
+	Je pense mettre en place des controlleurs pour chaque type d'acteur du système.
+	Ce sont:
+		Commissionnaire ou Agent
+		Gestionnaire ou Manager
+		Admin
+		Staff : pour le personnel de USAT qui seront charger d'etudier les demandes
+		Control: pour le personnel de CCIB et MIT
+
+      Pour le moment, je ne vois que le codage des tables de bord ici.
+      Même que beaucoup seront pratiquement les mêmes choses vu que
+      le menu sera géré directement dans le eventsubscriber
+
+Voir dans quel mesure mettre en place les differentes profil d'utilisateur et finaliser complement l'inscription.
+L'inscription et la changement de mot de passe.
+Après on va passer au tableaux de bords
+Après à l'enregistrer de transfère
+  et sous-actions
+Après à l'enregistrer d'enlevement
+  et sous-actions
+Après l'etude des demandes par usat
+Après la creation de personne usat, ccib et mit par usat
+Après creation de usat par les admin
+
+Les profils et hierachie
+  Les users comme importer et autres n'ont aucun role
+   Tous les autres ont le rôle user
+   agent: role_agent
+   manager: role_manager
+   ccib et mit: role_control
+   usat: role_control et role_staff
+   admin: role_admin
+
+

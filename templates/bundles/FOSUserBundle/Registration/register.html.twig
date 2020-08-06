@@ -1,0 +1,31 @@
+{% extends '@AdminLTE/layout/security-layout.html.twig' %}
+
+{% block login_social_auth %}{% endblock %}
+
+{% block login_box_msg %}
+  {{ 'Register a new account' }}
+{% endblock %}
+
+{% block login_form %}
+  {% form_theme form '@AdminLTE/layout/form-theme-security.html.twig' %}
+
+
+
+
+  {{ form_start(form, {'method': 'post', 'action': path('app_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+  {{ form_widget(form) }}
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block btn-flat">{{ 'registration.submit' }}</button>
+  </div>
+  {{ form_end(form) }}
+{% endblock %}
+
+{% block login_actions %}
+  <br>
+  <a href="{{ path('adminlte_login'|route_alias) }}">
+    {{ 'Back to login' }}
+  </a>
+{% endblock %}
+
+
+{% block logo_login %}<b>Demo</b> Login{% endblock %}
