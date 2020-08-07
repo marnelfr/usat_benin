@@ -14,6 +14,8 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        //C'est dans le Security/AppCustomAuthenticator que ça se passe
+
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
@@ -52,6 +54,12 @@ class SecurityController extends AbstractController
 //        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //todo : Comment rediriger en utilisant ceci ??
 //        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
 //            return $this->redirectToRoute('home_page');
+//        }
+        // TODO: Est-ce qu'il faut vraiment interdit à cex qui n'ont pas valider leur email de se connecter
+//        $user = $this->getUser();
+//        if (!$user->getIsVerified()) {
+//            $this->addFlash('emailNotVerified', true);
+//            return $this->redirectToRoute('app_logout');
 //        }
         if ($this->isGranted('ROLE_AGENT')) {
             return $this->redirectToRoute('actors_agent_dashboard');

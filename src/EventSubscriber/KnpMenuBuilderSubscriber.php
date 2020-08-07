@@ -5,20 +5,34 @@ namespace App\EventSubscriber;
 
 use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Security;
 
 class KnpMenuBuilderSubscriber implements EventSubscriberInterface
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
 
     public static function getSubscribedEvents(): array
     {
         return [
             KnpMenuEvent::class => ['onSetupMenu', 100],
+            BreadcrumbMenuEvent::class => ['onSetupNavbar', 100]
         ];
     }
 
     public function onSetupMenu(KnpMenuEvent $event): void
     {
         $menu = $event->getMenu();
+        $user = $this->security->getUser();
+
+        if (!$user) {
+            return;
+        }
+
 
         $menu->addChild('MainNavigationMenuItem', [
             'label' => 'MENU PRINCIPAL',
@@ -26,7 +40,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         ])->setAttribute('class', 'header');
 
         $menu->addChild('dashboard', [
-            'route' => 'dashboard',
+            'route' => $this->getDashboardPath($user),
             'label' => 'Tableau de bord',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
@@ -60,5 +74,18 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'label' => 'ChildTwoDisplayName',
             'childOptions' => $event->getChildOptions()
         ]);
+    }
+
+
+    private function getDashboardPath($user) {
+        try {
+            $role = $user->getRoles()[0];
+            $role = strtolower($role);
+            $role = str_replace('role_', '', $role);
+            return 'actors_' . $role . '_dashboard';
+        } catch (\Exception $e) {
+            return 'home_page';
+        }
+
     }
 }

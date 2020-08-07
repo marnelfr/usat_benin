@@ -48,7 +48,7 @@ Tables
 			info
 			deleted
 			createdAt
-			userID
+			userID: l'utilisateur ayant créer le parc
 
 
 	vehicule ou vehicle
@@ -254,8 +254,10 @@ Controllers
       Même que beaucoup seront pratiquement les mêmes choses vu que
       le menu sera géré directement dans le eventsubscriber
 
-Voir dans quel mesure mettre en place les differentes profil d'utilisateur et finaliser complement l'inscription.
-L'inscription et la changement de mot de passe.
++Voir dans quel mesure mettre en place les differentes profil d'utilisateur
+-et finaliser complement l'inscription.
+-Mettre en place le champ slug à toutes les tables utilitaires
+-L'inscription et le reset de mot de passe.
 Après on va passer au tableaux de bords
 Après à l'enregistrer de transfère
   et sous-actions

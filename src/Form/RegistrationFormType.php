@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Fleet;
+use App\Entity\Profil;
 use App\Entity\User;
+use App\Repository\ProfilRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -37,13 +41,21 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Téléphone'
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'Adresse Email',
             ])
             ->add('address', TextType::class, [
-                'label' => 'Adresse'
+                'label' => 'Votre adresse'
             ])
-            ->add('profil', null, [
-                'label' => 'Profil'
+            ->add('profil', EntityType::class, [
+                'label' => 'Profil',
+                'class' => Profil::class,
+                'placeholder' => 'Sélectionnez votre profil',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->where('p.public = 1')
+                        ->orderBy('p.name', 'ASC');
+                },
+                'choice_value' => 'slug'
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -72,29 +84,26 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ]
-            ])/*
-            ->add('save', SubmitType::class, [
-                'label' => 'S\'enregistrer',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])*/
-            /*->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ])->add('compagny', TextType::class, [
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])*/
+                'label' => 'Compagnie'
+            ])->add('ifu', TextType::class, [
+                'mapped' => false,
+                'label' => 'N° IFU'
+            ])->add('registerNum', TextType::class, [
+                'mapped' => false,
+                'label' => 'N° d\'enregistrement'
+            ])->add('fleet', null, [
+                'mapped' => false,
+                'label' => 'Parc'
+            ])
+            ->add('fleet', EntityType::class, [
+                'mapped' => false,
+                'label' => 'Parc',
+                'required' => false,
+                'class' => Fleet::class,
+                'placeholder' => 'Sélectionnez votre parc'
+            ])
         ;
     }
 

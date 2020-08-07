@@ -1,24 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reinitialisez votre mot de passe{% endblock %}
+{% block title %}Récupération de compte{% endblock %}
 
 {% block body %}
+  <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 mt-5">
+
+    <h3 class="text-center">Récupération de compte</h3>
+    <div class="text-center">
+      <small>
+        {#Vous avez oublié votre mot de passe ? Pas de problème.  <br>#}
+        Veuillez entrer votre <b>adresse email</b>. <br>
+        Nous vous enverrons un lien de reinitialisation.
+        {#Enter your email address and we we will send you a#}
+        {#link to reset your password.#}
+      </small>
+    </div>
     {% for flashError in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+      <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1>Reset your password</h1>
-
     {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Veuillez entrer votre adresse email. <br>
-                Nous vous enverrons un lien de reinitialisation.
-                {#Enter your email address and we we will send you a#}
-                {#link to reset your password.#}
-            </small>
-        </div>
+    <div class="form-group mt-3">
+      {{ form_widget(requestForm.email) }}
+    </div>
 
-        <button class="btn btn-primary">Envoyez moi un mail</button>
+    <div class="text-right">
+      <button class="btn btn-info"><i class="fas fa-envelope"></i> Envoyez moi un mail</button>
+    </div>
     {{ form_end(requestForm) }}
+  </div>
+  <div class="text-center mt-4">
+    <a href="{{ path('home_page') }}">Retourner à l'accueil</a>
+  </div>
 {% endblock %}

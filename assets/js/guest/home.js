@@ -1,6 +1,7 @@
 import '../../css/guest/home.scss';
-import $ from 'jquery';
-
+// import $ from 'jquery';
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
 
 $(function () {
   $('.btn-plus').on('click', (e) => {
@@ -44,7 +45,9 @@ $(function () {
     alter('okkdsdss')
   })
 
-
+  $('#connexion').on('click', function (e) {
+    $(this).button('loading')
+  })
 
   let i = 1
   let ff = function () {

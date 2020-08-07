@@ -30,6 +30,11 @@ class Profil
     private $deleted;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $public;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -38,6 +43,11 @@ class Profil
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="profil")
      */
     private $users;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -118,6 +128,30 @@ class Profil
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->name;
+    }
+
+    public function getPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): self
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }
