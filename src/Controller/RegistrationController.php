@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Agent;
+use App\Entity\Manager;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\FleetRepository;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -28,15 +32,48 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, FleetRepository $fleetRepo): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //On recupère toutes les données du formulaire même les champs non mappés
+            $data = $request->request->all('registration_form');
+
+            if ($user->getProfil()->getSlug() === 'gestionnaire') {
+                //On recupère le parc du guestionnaire
+                $fleet = $fleetRepo->find($data['fleet']);
+
+                //Si le parc n'existe pas...
+                if (!$fleet) {
+                    $form->addError(new FormError('Parc inexistant'));
+                    goto END_GET;
+                }
+
+                $newUser = new Manager();
+                $newUser->setFleet($fleet);
+                $newUser->setRoles(['ROLE_MANAGER']);
+            } else {
+                $newUser = new Agent();
+                $newUser->setRoles(['ROLE_AGENT']);
+            }
+
+            $newUser->setAddress($user->getAddress())
+                ->setEmail($user->getEmail())
+                ->setLastName($user->getLastName())
+                ->setName($user->getName())
+                ->setPhone($user->getPhone())
+                ->setProfil($user->getProfil())
+                ->setUsername($user->getUsername())
+                ->setCompagny($data['compagny'])
+                ->setIfu($data['ifu'])
+                ->setRegisterNum($data['registerNum'])
+            ;
+
             // encode the plain password
-            $user->setPassword(
+            $newUser->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
@@ -44,14 +81,14 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
+            $entityManager->persist($newUser);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $newUser,
                 (new TemplatedEmail())
                     ->from(new Address('marnelginola@gmail.com', 'Usat Benin'))
-                    ->to($user->getEmail())
+                    ->to($newUser->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
@@ -62,6 +99,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('home_page');
         }
 
+        END_GET:
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);

@@ -127,15 +127,7 @@ class User implements UserInterface, AdminInterface, NotificationInterface
 
     public function __construct()
     {
-        /*$this->name = 'Admin';
-        $this->lastName = 'Admin';
-        $this->address = '0:0';
-        $this->email = 'marnognac@gmail.com';
-        $this->phone ='';
-        $this->profil = $p;*/
-//        $this->roles[] = 'ROLE_ADMIN';
         $this->status= 0;
-
         $this->lastConnection = new \DateTime();
         $this->createdAt = new \DateTime();
         $this->processings = new ArrayCollection();
@@ -463,6 +455,11 @@ class User implements UserInterface, AdminInterface, NotificationInterface
      */
     public function getIcon() {
         return 'far fa-envelope';
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 
 }

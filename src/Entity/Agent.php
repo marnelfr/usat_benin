@@ -12,12 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Agent extends User
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -46,17 +40,11 @@ class Agent extends User
 
     public function __construct()
     {
-        $this->compagny = 'NelDev';
-        $this->ifu = '65465465';
-        $this->registerNum = 'sdmlfkdslsdf';
+        parent::__construct();
         $this->removals = new ArrayCollection();
         $this->removers = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getCompagny(): ?string
     {
