@@ -12,6 +12,9 @@ use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Exception\LogicException;
+use Symfony\Component\Form\Exception\OutOfBoundsException;
+use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +33,15 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/register", name="app_register")
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param FleetRepository              $fleetRepo
+     *
+     * @return Response
+     * @throws LogicException
+     * @throws OutOfBoundsException
+     * @throws RuntimeException
+     * @throws \Symfony\Component\HttpFoundation\Exception\BadRequestException
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, FleetRepository $fleetRepo): Response
     {
