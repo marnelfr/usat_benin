@@ -39,8 +39,15 @@ class Ship
      */
     private $vehicles;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
         $this->vehicles = new ArrayCollection();
     }
 
@@ -114,5 +121,22 @@ class Ship
         }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

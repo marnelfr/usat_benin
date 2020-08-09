@@ -17,10 +17,12 @@ class VehicleType extends AbstractType
                 'label' => 'N° Châssis'
             ])
             ->add('brand', null, [
-                'label' => 'Marque'
+                'label' => 'Marque',
+                'placeholder' => 'Choississez une marque'
             ])
             ->add('ship', null, [
-                'label' => 'Navire d\'arrivage'
+                'label' => 'Navire d\'arrivage',
+                'placeholder' => 'Choississez un navire'
             ])
             ->add('consignee', TextType::class, [
                 'label' => 'Consignataire'
