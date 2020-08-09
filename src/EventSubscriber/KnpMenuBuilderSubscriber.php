@@ -3,7 +3,9 @@
 
 namespace App\EventSubscriber;
 
+use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\KnpMenuEvent;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -33,7 +35,6 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             return;
         }
 
-
         $menu->addChild('MainNavigationMenuItem', [
             'label' => 'MENU PRINCIPAL',
             'childOptions' => $event->getChildOptions()
@@ -45,36 +46,141 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
-        $menu->addChild('blogId', [
+        if ($user->getProfil()->getSlug() === 'manager') {
+            $this->getManagerMenu($menu, $event);
+        }
+        if ($user->getProfil()->getSlug() === 'agent') {
+            $this->getAgentMenu($menu, $event);
+        }
+
+        $menu->addChild('vehicle', [
             'route' => 'app_register',
-            'label' => 'Transfert de véhicule',
+            'label' => 'Mes véhicules',
             'childOptions' => $event->getChildOptions(),
-//            'extras' => [
-//                'badge' => [
-//                    'color' => 'yellow',
-//                    'value' => 4,
-//                ],
-//            ],
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
-        $menu->getChild('blogId')->addChild('ChildOneItemId', [
+        $menu->getChild('vehicle')->addChild('new_vehicle', [
             'route' => 'app_register',
-            'label' => 'ChildOneDisplayName',
-            'extras' => [
-                'badges' => [
-                    [ 'value' => 6, 'color' => 'blue' ],
-                    [ 'value' => 5, ],
-                ],
-            ],
+            'label' => 'Nouveau véhicule',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
-        $menu->getChild('blogId')->addChild('ChildTwoItemId', [
+        $menu->getChild('vehicle')->addChild('list_vehicle', [
             'route' => 'app_register',
-            'label' => 'ChildTwoDisplayName',
+            'label' => 'Liste des véhicules',
             'childOptions' => $event->getChildOptions()
-        ]);
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+
     }
+
+
+
+
+    private function getManagerMenu(ItemInterface $menu, KnpMenuEvent $event) {
+        $menu->addChild('transfer', [
+            'route' => 'app_register',
+            'label' => 'Transfert de véhicule',
+            'childOptions' => $event->getChildOptions(),
+        ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
+
+        $menu->getChild('transfer')->addChild('new_transfer', [
+            'route' => 'app_register',
+            'label' => 'Nouvelle demande',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('transfer')->addChild('list_transfer', [
+            'route' => 'app_register',
+            'label' => 'Liste des transferts',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('transfer')->getChild('list_transfer')->addChild('remain_transfer', [
+            'route' => 'app_register',
+            'label' => 'En cours',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('transfer')->getChild('list_transfer')->addChild('done_transfer', [
+            'route' => 'app_register',
+            'label' => 'Finalisés',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+
+        $menu->addChild('importer', [
+            'route' => 'app_register',
+            'label' => 'Mes importateurs',
+            'childOptions' => $event->getChildOptions(),
+        ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
+
+        $menu->getChild('importer')->addChild('new_importer', [
+            'route' => 'app_register',
+            'label' => 'Nouveau importateur',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('importer')->addChild('list_importer', [
+            'route' => 'app_register',
+            'label' => 'Liste des importateurs',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+    }
+
+
+    private function getAgentMenu(ItemInterface $menu, KnpMenuEvent $event) {
+        $menu->addChild('removal', [
+            'route' => 'app_register',
+            'label' => 'Enlèvement de véhicule',
+            'childOptions' => $event->getChildOptions(),
+        ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
+
+        $menu->getChild('removal')->addChild('new_removal', [
+            'route' => 'app_register',
+            'label' => 'Nouvelle demande',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('removal')->addChild('list_removal', [
+            'route' => 'app_register',
+            'label' => 'Liste des enlèvements',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('removal')->getChild('list_removal')->addChild('remain_removal', [
+            'route' => 'app_register',
+            'label' => 'En cours',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('removal')->getChild('list_removal')->addChild('done_removal', [
+            'route' => 'app_register',
+            'label' => 'Finalisés',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+
+        $menu->addChild('remover', [
+            'route' => 'app_register',
+            'label' => 'Mes enleveurs',
+            'childOptions' => $event->getChildOptions(),
+        ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
+
+        $menu->getChild('remover')->addChild('new_remover', [
+            'route' => 'app_register',
+            'label' => 'Nouveau enleveur',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+
+        $menu->getChild('remover')->addChild('list_remover', [
+            'route' => 'app_register',
+            'label' => 'Liste des enleveurs',
+            'childOptions' => $event->getChildOptions()
+        ])->setLabelAttribute('icon', 'fas fa-rss-square');
+    }
+
+
 
 
     private function getDashboardPath($user) {

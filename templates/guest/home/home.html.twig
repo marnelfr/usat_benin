@@ -16,6 +16,20 @@
       })
     </script>
   {% endif %}
+  {% if onTheVerificationWay %}
+    <script type="application/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        alert('Merci de vous connecter pour finaliser votre inscription.')
+      })
+    </script>
+  {% endif %}
+  {% if emailNotVerified %}
+    <script type="application/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        alert('Veuillez comfimer votre mail pour vous connecter.')
+      })
+    </script>
+  {% endif %}
 
   {% include 'guest/home/partial/header.html.twig' %}
 
