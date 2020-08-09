@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VehicleRepository::class)
@@ -18,40 +19,54 @@ class Vehicle
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Unique(message="Un véhicule a déjà été enregistré avec ce numéro châssis")
+     * @Assert\NotBlank(message="Vous devez renseigner un numéro châssis")
      */
     private $chassis;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
+     * @Assert\LessThanOrEqual(
+     *     value="today",
+     *     message="Veuillez renseigner une date valide"
+     * )
      */
     private $putInUseAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
+     * @Assert\LessThanOrEqual(
+     *     value="today",
+     *     message="Veuillez renseigner une date valide"
+     * )
      */
     private $cameAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner le consignataire")
      */
     private $consignee;
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez choisir une marque")
      */
     private $brand;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ship::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez choisir un navire")
      */
     private $ship;
 
     /**
      * @ORM\ManyToOne(targetEntity=Importer::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez choisir un importateur")
      */
     private $importer;
 
@@ -64,6 +79,16 @@ class Vehicle
      * @ORM\OneToOne(targetEntity=Transfer::class, mappedBy="vehicle", cascade={"persist", "remove"})
      */
     private $transfer;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -118,6 +143,18 @@ class Vehicle
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
     public function getBrand(): ?Brand
     {
         return $this->brand;
@@ -159,13 +196,14 @@ class Vehicle
         return $this->removal;
     }
 
-    public function setRemoval(Removal $removal): self
+    public function setRemoval(?Removal $removal): self
     {
         $this->removal = $removal;
 
-        // set the owning side of the relation if necessary
-        if ($removal->getVehicle() !== $this) {
-            $removal->setVehicle($this);
+        // set (or unset) the owning side of the relation if necessary
+        $newVehicle = null === $removal ? null : $this;
+        if ($removal->getVehicle() !== $newVehicle) {
+            $removal->setVehicle($newVehicle);
         }
 
         return $this;
@@ -176,13 +214,14 @@ class Vehicle
         return $this->transfer;
     }
 
-    public function setTransfer(Transfer $transfer): self
+    public function setTransfer(?Transfer $transfer): self
     {
         $this->transfer = $transfer;
 
-        // set the owning side of the relation if necessary
-        if ($transfer->getVehicle() !== $this) {
-            $transfer->setVehicle($this);
+        // set (or unset) the owning side of the relation if necessary
+        $newVehicle = null === $transfer ? null : $this;
+        if ($transfer->getVehicle() !== $newVehicle) {
+            $transfer->setVehicle($newVehicle);
         }
 
         return $this;

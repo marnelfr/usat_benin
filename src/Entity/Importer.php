@@ -32,6 +32,7 @@ class Importer extends User
 
     public function __construct()
     {
+        parent::__construct();
         $this->vehicles = new ArrayCollection();
     }
 

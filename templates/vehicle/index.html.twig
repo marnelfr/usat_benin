@@ -13,6 +13,7 @@
                 <th>PutInUseAt</th>
                 <th>CameAt</th>
                 <th>Consignee</th>
+                <th>CreatedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,9 +22,10 @@
             <tr>
                 <td>{{ vehicle.id }}</td>
                 <td>{{ vehicle.chassis }}</td>
-                <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('Y-m-d') : '' }}</td>
+                <td>{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d') : '' }}</td>
                 <td>{{ vehicle.consignee }}</td>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}">show</a>
                     <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}">edit</a>
@@ -31,7 +33,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

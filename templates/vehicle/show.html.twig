@@ -17,15 +17,19 @@
             </tr>
             <tr>
                 <th>PutInUseAt</th>
-                <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>CameAt</th>
-                <td>{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>Consignee</th>
                 <td>{{ vehicle.consignee }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
