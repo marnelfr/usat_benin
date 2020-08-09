@@ -46,6 +46,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
+
         if ($user->getProfil()->getSlug() === 'manager') {
             $this->getManagerMenu($menu, $event);
         }
@@ -53,20 +54,21 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             $this->getAgentMenu($menu, $event);
         }
 
+
         $menu->addChild('vehicle', [
-            'route' => 'app_register',
+            'route' => 'vehicle_index',
             'label' => 'Mes véhicules',
             'childOptions' => $event->getChildOptions(),
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
         $menu->getChild('vehicle')->addChild('new_vehicle', [
-            'route' => 'app_register',
+            'route' => 'vehicle_new',
             'label' => 'Nouveau véhicule',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
         $menu->getChild('vehicle')->addChild('list_vehicle', [
-            'route' => 'app_register',
+            'route' => 'vehicle_index',
             'label' => 'Liste des véhicules',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');

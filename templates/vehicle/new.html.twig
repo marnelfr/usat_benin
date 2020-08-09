@@ -1,11 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}New Vehicle{% endblock %}
+{% block title %}Ajout de véhicule{% endblock %}
 
-{% block body %}
-    <h1>Create new Vehicle</h1>
+{% block page_title %}Véhicule{% endblock %}
+{% block page_subtitle %}Nouveau véhicule{% endblock %}
 
-    {{ include('vehicle/_form.html.twig') }}
+{% block page_content %}
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a href="{{ path('vehicle_index') }}">back to list</a>
+        </div>
+    </div>
 
-    <a href="{{ path('vehicle_index') }}">back to list</a>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+          {# ... box widget with some options ... #}
+          {% embed '@AdminLTE/Widgets/box-widget.html.twig' with {
+            'boxtype' : 'success',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+            'removable' : 'widget-box.remove'|trans ~ '...',
+          } %}
+
+            {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+            {% block box_title %}Ajout de véhicule{% endblock %}
+            {% block box_body %}
+
+                <div class="row">
+                    <div class="col-12 col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2">
+                      {{ include('vehicle/_form.html.twig') }}
+                    </div>
+                </div>
+
+            {% endblock %}
+            {#{% block box_footer %}
+              <div class="pull-right">
+                {{ btn.link_button('save', '#', 'far fa-save', 'success', 'lg') }}
+              </div>
+            {% endblock %}#}
+          {% endembed %}
+        </div>
+    </div>
 {% endblock %}
