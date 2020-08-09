@@ -18,10 +18,13 @@ class GuestController extends AbstractController
     {
         $login = $request->get('login');
 
+//        dump($request->getSession()->getFlashBag()->get('registration'), $request->getSession()->getFlashBag()->get('emailNotVerified'));
+        $flashBag = $request->getSession()->getFlashBag();
         $data = [
-            'login_form'        => $login === null ? 0 : $login,
-            'registration'      => isset($request->getSession()->getFlashBag()->get('registration')[0]),
-            'emailNotVerified'      => isset($request->getSession()->getFlashBag()->get('emailNotVerified')[0])
+            'login_form'            => $login ?? 0,
+            'onTheVerificationWay'  => isset($flashBag->get('onTheVerificationWay')[0]),
+            'emailNotVerified'  => count($flashBag->get('emailNotVerified')),
+            'registration'          => isset($flashBag->get('registration')[0])
         ];
         dump($data);
         return $this->render('guest/home/home.html.twig', $data);

@@ -33,6 +33,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
+     * @Route("/register", name="app_register")
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param FleetRepository              $fleetRepo
@@ -53,7 +54,7 @@ class RegistrationController extends AbstractController
             //On recupère toutes les données du formulaire même les champs non mappés
             $data = $request->request->all('registration_form');
 
-            if ($user->getProfil()->getSlug() === 'gestionnaire') {
+            if ($user->getProfil()->getSlug() === 'manager') {
                 //On recupère le parc du guestionnaire
                 $fleet = $fleetRepo->find($data['fleet']);
 
@@ -65,10 +66,10 @@ class RegistrationController extends AbstractController
 
                 $newUser = new Manager();
                 $newUser->setFleet($fleet);
-                $newUser->setRoles(['ROLE_MANAGER']);
+//                $newUser->setRoles(['ROLE_MANAGER']);
             } else {
                 $newUser = new Agent();
-                $newUser->setRoles(['ROLE_AGENT']);
+//                $newUser->setRoles(['ROLE_AGENT']);
             }
 
             $newUser->setAddress($user->getAddress())
@@ -121,6 +122,9 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->addFlash('onTheVerificationWay', true);
+        }
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // validate email confirmation link, sets User::isVerified=true and persists
@@ -132,9 +136,18 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
+        $user = $this->getUser();
+        if ($user->getProfil()->getSlug() === 'manager') {
+            $user->setRoles(['ROLE_MANAGER']);
+            $this->getDoctrine()->getManager()->flush();
+        }
+        if ($user->getProfil()->getSlug() === 'agent') {
+            $user->setRoles(['ROLE_AGENT']);
+            $this->getDoctrine()->getManager()->flush();
+        }
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Votre adresse email a été vérifié avec succès');
 
-        return $this->redirectToRoute('home_page');
+        return $this->redirectToRoute('security_check_user_profil');
     }
 }

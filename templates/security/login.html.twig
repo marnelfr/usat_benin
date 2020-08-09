@@ -29,7 +29,8 @@
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
+    {% if app.user and app.user.roles|length > 1 %}
+      {# TODO: deconnecter l'utilisateur par ajax ou une meilleur manière #}
       <div class="mb-3">
         You are logged in as <br>
         <p class="mt-3">
@@ -42,6 +43,9 @@
         </a>
       </div>
     {% else %}
+      {% if app.user %}
+        <input type="hidden" id="lph" value="{{ path('app_logout') }}">
+      {% endif %}
       <div>
         {#<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>#}
         <div align="left" class="form-group mb-2">

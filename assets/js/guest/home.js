@@ -123,5 +123,11 @@ $(function () {
     }, 2000)
   }
   fff()
+
+
+  let logoutPath = document.querySelector('#lph')
+  if (!!logoutPath) {
+    $.get(logoutPath.value)
+  }
 })
 

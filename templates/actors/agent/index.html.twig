@@ -1,39 +1,42 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Hello DashboardController!{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
 
+{% block page_title %}Tableau de bord{% endblock %}
+{% block page_subtitle %}Commissionnaire agréé en Douane{% endblock %}
 
 {% block document_title %}Dashboard browser title{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
-{% block page_subtitle %}You are using the language{% endblock %}
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-6">
-          {# ... infobox widget, solid background ... #}
-          {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
-            'solid' : 'red',
-            'icon'  : 'far fa-star',
-            'progress' : 40
-          } %}
-
-            {% block box_text %}Vestibulum ante ipsum primis{% endblock %}
-            {% block progress_description %}The progress description{% endblock %}
-          {% endembed %}
-
-        </div>
-        <div class="col-md-6">
-
-          {# ... infobox widget, colored icon ... #}
-          {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
-            'color' : 'aqua',
-            'icon'  : 'fas fa-comments',
-          } %}
-            {% block box_text %}Vestibulum ante ipsum primis{% endblock %}
-            {% block box_number %}999.9{% endblock %}
-            {% block progress_description %}Works as well without progress bar{% endblock %}
-          {% endembed %}
-        </div>
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: '2',
+        name_bloc: 'Enlèvements en cours',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-red'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: '2',
+        name_bloc: 'Enlèvements finalisés',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-yellow'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: '2',
+        name_bloc: 'Enleveurs',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-green'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: '2',
+        name_bloc: 'Véhicules',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-aqua'
+      } %}
     </div>
 
     <div class="row">

@@ -56,11 +56,11 @@ class SecurityController extends AbstractController
 //            return $this->redirectToRoute('home_page');
 //        }
         // TODO: Est-ce qu'il faut vraiment interdit à cex qui n'ont pas valider leur email de se connecter
-//        $user = $this->getUser();
-//        if (!$user->getIsVerified()) {
-//            $this->addFlash('emailNotVerified', true);
-//            return $this->redirectToRoute('app_logout');
-//        }
+        $user = $this->getUser();
+        if (!$user->getIsVerified()) {
+            $this->addFlash('emailNotVerified', true);
+            return $this->redirectToRoute('home_page');
+        }
         if ($this->isGranted('ROLE_AGENT')) {
             return $this->redirectToRoute('actors_agent_dashboard');
         }

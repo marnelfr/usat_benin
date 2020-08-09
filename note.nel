@@ -278,7 +278,7 @@ Les profils et hierachie
 
 Il faut penser à supprimer les templates de adminlte si je veux plus les utiliser
 
-
+!!!TROUVER LE MOYEN DE RALLONGER LE DELAIT DE VALIDATION DES MAILS
 
 BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
 	Ajouter ceci au menu event subscriber permet d'afficher le menu dans le coin sup droit
@@ -287,6 +287,35 @@ BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
 	Permet de definir le contenu de la page
 	Donc le tableau de bord des utilisateurs devrait avoir par exemple le même template par exemple dont eux tous vont herité.
 	Maintenant pour chacun, on definiera simplement la page_content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
