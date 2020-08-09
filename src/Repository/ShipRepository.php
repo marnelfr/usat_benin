@@ -19,6 +19,22 @@ class ShipRepository extends ServiceEntityRepository
         parent::__construct($registry, Ship::class);
     }
 
+    public function add(string $name, string $slug): ?Ship
+    {
+        try{
+            $ship = new Ship();
+            $ship->setName($name)
+                ->setSlug($slug)
+            ;
+            $this->_em->persist($ship);
+            $this->_em->flush();
+            return $ship;
+        }catch (\Exception $e) {
+            return null;
+        }
+
+    }
+
     // /**
     //  * @return Ship[] Returns an array of Ship objects
     //  */

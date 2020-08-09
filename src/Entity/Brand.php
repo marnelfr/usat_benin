@@ -46,6 +46,8 @@ class Brand
 
     public function __construct()
     {
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
         $this->vehicles = new ArrayCollection();
     }
 
@@ -131,5 +133,10 @@ class Brand
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

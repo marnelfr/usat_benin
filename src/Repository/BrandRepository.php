@@ -19,6 +19,21 @@ class BrandRepository extends ServiceEntityRepository
         parent::__construct($registry, Brand::class);
     }
 
+    public function add(string $name, string $slug): ?Brand
+    {
+        try{
+            $brand = new Brand();
+            $brand->setName($name)
+                ->setSlug($slug)
+            ;
+            $this->_em->persist($brand);
+            $this->_em->flush();
+            return $brand;
+        }catch (\Exception $e) {
+            return null;
+        }
+    }
+
     // /**
     //  * @return Brand[] Returns an array of Brand objects
     //  */
