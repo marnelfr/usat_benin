@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Importer{% endblock %}
+
+{% block body %}
+    <h1>Edit Importer</h1>
+
+    {{ include('importer/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('importer_index') }}">back to list</a>
+
+    {{ include('importer/_delete_form.html.twig') }}
+{% endblock %}

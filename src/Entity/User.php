@@ -246,6 +246,8 @@ class User implements UserInterface, AdminInterface, NotificationInterface
 
     public function getEmail(): ?string
     {
+        if (str_contains((string)$this->email, 'default@dev.fr'))
+            return '';
         return $this->email;
     }
 
@@ -378,7 +380,7 @@ class User implements UserInterface, AdminInterface, NotificationInterface
         return $this;
     }
     
-    public function getFullname(): ?string
+    public function getFullname(): string
     {
         return $this->getName() . ' ' . $this->getLastName();
     }

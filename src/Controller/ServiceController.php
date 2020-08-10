@@ -47,7 +47,7 @@ class ServiceController extends AbstractController
         foreach ($ships as $ship) {
             $repo->add(
                 $ship,
-                strtolower($slugger->slug($ship))
+                $slugger->slug($ship)->lower()
             );
         }
         dump('done...'); die();

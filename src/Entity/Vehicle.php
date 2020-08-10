@@ -66,7 +66,6 @@ class Vehicle
     /**
      * @ORM\ManyToOne(targetEntity=Importer::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank(message="Veuillez choisir un importateur")
      */
     private $importer;
 

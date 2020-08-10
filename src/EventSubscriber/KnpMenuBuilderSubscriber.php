@@ -73,7 +73,6 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
-
     }
 
 
@@ -112,19 +111,19 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
 
 
         $menu->addChild('importer', [
-            'route' => 'app_register',
+            'route' => 'importer_index',
             'label' => 'Mes importateurs',
             'childOptions' => $event->getChildOptions(),
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
         $menu->getChild('importer')->addChild('new_importer', [
-            'route' => 'app_register',
+            'route' => 'importer_new',
             'label' => 'Nouveau importateur',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
         $menu->getChild('importer')->addChild('list_importer', [
-            'route' => 'app_register',
+            'route' => 'importer_index',
             'label' => 'Liste des importateurs',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');

@@ -6,6 +6,7 @@ use App\Repository\ImporterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ImporterRepository::class)
@@ -83,4 +84,9 @@ class Importer extends User
 
         return $this;
     }
+
+//    public function __toString()
+//    {
+//        return $this->getFullname();
+//    }
 }

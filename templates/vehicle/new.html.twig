@@ -1,44 +1,32 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Ajout de véhicule{% endblock %}
+{% block title %}Ajout de Véhicule{% endblock %}
 
 {% block page_title %}Véhicule{% endblock %}
-{% block page_subtitle %}Nouveau véhicule{% endblock %}
+{% block page_subtitle %}Nouveau Véhicule{% endblock %}
 
 {% block page_content %}
-    <div class="row">
+    <div class="row pb1em">
         <div class="col-12 col-sm-12 col-md-12">
-            <a href="{{ path('vehicle_index') }}">back to list</a>
+            <a class="btn btn-default" href="{{ path('vehicle_index') }}"><i class="fas fa-reply"></i> Mes Véhicules</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-12 col-sm-12 col-md-12">
-          {# ... box widget with some options ... #}
-          {% embed '@AdminLTE/Widgets/box-widget.html.twig' with {
-            'boxtype' : 'success',
-            'solid' : 0,
-            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
-            'removable' : 'widget-box.remove'|trans ~ '...',
-          } %}
-
-            {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
-            {% block box_title %}Ajout de véhicule{% endblock %}
-            {% block box_body %}
-
-                <div class="row">
-                    <div class="col-12 col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2">
-                      {{ include('vehicle/_form.html.twig') }}
+        <div class="col-md-12">
+            <div class="nav-tabs-custom">
+                <!-- Tabs within a box -->
+                <ul class="nav nav-tabs pull-right ui-sortable-handle nav-title">
+                    <li class="pull-left header"><i class="fas fa-plus-circle"></i> Ajout de Véhicule</li>
+                </ul>
+                <div class="tab-content">
+                    <div class="row">
+                        <div class="col-12 col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2">
+                          {{ include('vehicle/_form.html.twig') }}
+                        </div>
                     </div>
                 </div>
-
-            {% endblock %}
-            {#{% block box_footer %}
-              <div class="pull-right">
-                {{ btn.link_button('save', '#', 'far fa-save', 'success', 'lg') }}
-              </div>
-            {% endblock %}#}
-          {% endembed %}
+            </div>
         </div>
     </div>
 {% endblock %}
