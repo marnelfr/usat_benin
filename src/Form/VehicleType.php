@@ -43,7 +43,14 @@ class VehicleType extends AbstractType
             ->add('consignee', TextType::class, [
                 'label' => 'Consignataire'
             ])
-            ->add('importateur', ChoiceType::class, [
+            ->add('importer', null, [
+                'label' => 'Importateur',
+                'placeholder' => 'Selectionnez un importateur',
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+/*            ->add('importateur', ChoiceType::class, [
                 'mapped' => false,
                 'required' => true,
                 'choice_loader' => new CallbackChoiceLoader(function() {
@@ -57,7 +64,7 @@ class VehicleType extends AbstractType
                     return $tab;
                 }),
                 'label' => 'Importateur'
-            ])
+            ])*/
             ->add('putInUseAt', DateType::class, [
                 'label' => 'Mise en circulation le',
                 'widget' => 'single_text',

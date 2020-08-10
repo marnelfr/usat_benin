@@ -9,13 +9,18 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Password</th>
                 <th>Name</th>
                 <th>LastName</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Address</th>
-                <th>Deleted</th>
+                <th>Status</th>
                 <th>CreatedAt</th>
+                <th>LastConnection</th>
+                <th>IsVerified</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,13 +28,18 @@
         {% for importer in importers %}
             <tr>
                 <td>{{ importer.id }}</td>
+                <td>{{ importer.username }}</td>
+                <td>{{ importer.roles ? importer.roles|json_encode : '' }}</td>
+                <td>{{ importer.password }}</td>
                 <td>{{ importer.name }}</td>
                 <td>{{ importer.lastName }}</td>
                 <td>{{ importer.phone }}</td>
                 <td>{{ importer.email }}</td>
                 <td>{{ importer.address }}</td>
-                <td>{{ importer.deleted ? 'Yes' : 'No' }}</td>
+                <td>{{ importer.status ? 'Yes' : 'No' }}</td>
                 <td>{{ importer.createdAt ? importer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ importer.lastConnection ? importer.lastConnection|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ importer.isVerified ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('importer_show', {'id': importer.id}) }}">show</a>
                     <a href="{{ path('importer_edit', {'id': importer.id}) }}">edit</a>
@@ -37,7 +47,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="9">no records found</td>
+                <td colspan="14">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

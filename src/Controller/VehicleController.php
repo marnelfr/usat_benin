@@ -48,6 +48,8 @@ class VehicleController extends AbstractController
         ]);
     }
 
+
+
     /**
      * @Route("/{id}", name="vehicle_show", methods={"GET"})
      */

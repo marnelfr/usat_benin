@@ -12,6 +12,18 @@
                 <td>{{ importer.id }}</td>
             </tr>
             <tr>
+                <th>Username</th>
+                <td>{{ importer.username }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ importer.roles ? importer.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ importer.password }}</td>
+            </tr>
+            <tr>
                 <th>Name</th>
                 <td>{{ importer.name }}</td>
             </tr>
@@ -32,12 +44,20 @@
                 <td>{{ importer.address }}</td>
             </tr>
             <tr>
-                <th>Deleted</th>
-                <td>{{ importer.deleted ? 'Yes' : 'No' }}</td>
+                <th>Status</th>
+                <td>{{ importer.status ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>CreatedAt</th>
                 <td>{{ importer.createdAt ? importer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>LastConnection</th>
+                <td>{{ importer.lastConnection ? importer.lastConnection|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsVerified</th>
+                <td>{{ importer.isVerified ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>

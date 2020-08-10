@@ -34,22 +34,35 @@ class ImporterController extends AbstractController
     {
         $importer = new Importer();
         $form = $this->createForm(ImporterType::class, $importer);
-        $form->handleRequest($request);
 
-        $uniqid = uniqid();
-        $data = $request->request->all('importer');
-        if ($request->getMethod() === 'POST') {
-            $importer->setEmail($data['e_mail'] === '' ? $uniqid . '_default@dev.fr' : $data['e_mail']);
-        }
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $slug = $slugger->slug($importer->getName() . '-' . $importer->getLastName())->lower() . '-' . $uniqid;
-            $importer->setUsername($slug);
-            $importer->setPassword('-');
-            $importer->setProfil($profilRepo->findOneBy(['slug' => 'importer']));
             $importer->setManager($this->getUser());
 
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($importer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('importer_index');
+        }
+
+        return $this->render('importer/new.html.twig', [
+            'importer' => $importer,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
+    public function neww(Request $request): Response
+    {
+        $importer = new Importer();
+        $form = $this->createForm(ImporterType::class, $importer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($importer);
             $entityManager->flush();

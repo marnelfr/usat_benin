@@ -42,7 +42,7 @@ class ServiceController extends AbstractController
      */
     public function ship(ShipRepository $repo, SluggerInterface $slugger)
     {
-        $list = 'Ship 1|Ship 2|Ship 3';
+        $list = 'ARGO|BSL CAPE TOWN|CPO NORFOLK|GRANDE ATLANTICO|GRANDE BENIN|GRANDE DAKAR|GRANDE TEMA|GRANDE TOGO|JPO SCORPIUS|LPG LAPEROUSE|MAERSK CAPE COAST|MERKUR FJORD|MSC DONATA|MSC INDIA|MSC KATYAYNI|MSC SANDRA|MSC SANDRA|MSC SHAULA|NESTOS REEFER|NORDIC MACAU|NORTHERN PRELUDE|PORT GDYNIA|SFL TRENT|SILVER MOON|SURVILLE|THERESE SELMER|TOMMI RITSCHER';
         $ships = explode('|', $list);
         foreach ($ships as $ship) {
             $repo->add(
