@@ -28,12 +28,10 @@ use KevinPapst\AdminLTEBundle\Model\NotificationInterface;
  * @ORM\DiscriminatorMap({
  *   "User" = "User",
  *   "Agent" = "Agent",
- *   "Importer" = "Importer",
- *   "Remover" = "Remover",
  *   "Manager" = "Manager"
  * })
  */
-class User implements UserInterface, AdminInterface, NotificationInterface
+class User implements UserInterface, AdminInterface, NotificationInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -464,4 +462,44 @@ class User implements UserInterface, AdminInterface, NotificationInterface
         return $this->isVerified;
     }
 
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->name,
+            $this->lastName,
+            $this->password
+        ]);
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     *
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     *
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->name,
+            $this->lastName,
+            $this->password
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
 }
