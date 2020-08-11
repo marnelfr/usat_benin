@@ -319,7 +319,7 @@ BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
 
 
 
-
+https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
 
 
 

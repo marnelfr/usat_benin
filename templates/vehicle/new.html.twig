@@ -4,6 +4,10 @@
 
 {% block page_title %}Véhicule{% endblock %}
 {% block page_subtitle %}Nouveau Véhicule{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('vehicle_new') }}
+{% endblock %}
 
 {% block page_content %}
   <div class="row pb1em">
@@ -29,4 +33,21 @@
       </div>
     </div>
   </div>
+
+  <div class="modal modal-info fade" id="nellement"><div class="modal-dialog"></div></div>
+
+
+  <div class="modal fade" id="modal-vehicle-new-importer">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <i class="fas fa-spin fa-spinner"></i>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('vehicle_new') }}
 {% endblock %}

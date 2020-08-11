@@ -12,18 +12,20 @@
     <div class="input-group pb1em">
       {{ form_widget(form.importer) }}
       <span class="input-group-btn">
-        <button type="button" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nouveau</button>
+        <button type="button" id="vehicle-new-importer" data-toggle="modal" data-target="#modal-vehicle-new-importer" class="btn btn-primary">
+          <i class="fas fa-plus-circle"></i> Nouveau
+        </button>
       </span>
     </div>
 
     {{ form_row(form.putInUseAt) }}
     {{ form_row(form.cameAt) }}
 
-
-
-<div class="row text-right">
-  <div class="col-md-12">
-    <button class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>
-  </div>
-</div>
+    <div class="row text-right">
+      <div class="col-md-12">
+        <button class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>
+      </div>
+    </div>
 {{ form_end(form) }}
+
+

@@ -10,6 +10,8 @@ import '../css/app.scss';
 // import 'jquery'
 import 'bootstrap';
 import '@fortawesome/fontawesome-free/js/all'
+//fas fa-spin fa-spinner
+
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';

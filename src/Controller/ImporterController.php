@@ -7,6 +7,7 @@ use App\Form\ImporterType;
 use App\Repository\ImporterRepository;
 use App\Repository\ProfilRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +29,7 @@ class ImporterController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="importer_new", methods={"GET","POST"})
+     * @Route("/new", name="importer_new", options={"expose"=true}, methods={"GET","POST"})
      */
     public function new(Request $request, SluggerInterface $slugger, ProfilRepository $profilRepo): Response
     {
@@ -48,10 +49,17 @@ class ImporterController extends AbstractController
             return $this->redirectToRoute('importer_index');
         }
 
-        return $this->render('importer/new.html.twig', [
+        $data = [
             'importer' => $importer,
             'form' => $form->createView(),
-        ]);
+        ];
+
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('importer/modal_add.html.twig', $data);
+            return new JsonResponse($view);
+        }
+
+        return $this->render('importer/new.html.twig', $data);
     }
 
 
