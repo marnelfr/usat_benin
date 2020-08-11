@@ -1,39 +1,39 @@
-{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+<!DOCTYPE html>
+<html class="" style="height: auto;">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}{% endblock %} | USAT-Benin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block page_title %}___Titre{% endblock %}
-{% block page_subtitle %}___Sous-titre{% endblock %}
-{% block stylesheets %}
-  {{ parent() }}
-  {{ encore_entry_link_tags('admin') }}
-{% endblock %}
+  {% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+  {% endblock %}
 
-{% block navbar_start %}
-    {#todo: a moi qu'on ne veuille à un moment donné gérer l'internationnalisation, ceci n'a pas besoin d'etre decommanté
-    <li class="dropdown messages-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-globe"></i>
-            <span class="label label-primary">{{ 6 }}</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">Change language (scroll for more)</li>
-            <li>
-                <ul class="menu">
-                    {% for locale in app_locales %}
-                    <li>
-                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': locale})) }}">
-                            {{ locale|language(app.request.get('_locale')) }}
-                            <span class="pull-right">{{ locale }}</span>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
-    </li>#}
-{% endblock %}
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
 
-{% block javascripts %}
-    {{ parent() }}
-    {% include 'includes/javascript.html.twig' %}
+<body class="sidebar-mini" style="height: auto;">
+  <div class="wrapper">
+    {% include 'includes/nav.html.twig' %}
+
+    {% include 'includes/menu.html.twig' %}
+
+    <div class="content-wrapper">
+
+      {% include 'includes/header.html.twig' %}
+
+      <section class="content">
+        {% block page_content %}{% endblock %}
+      </section>
+
+    </div>
+
+    {% include 'includes/footer.html.twig' %}
+  </div>
+
+  {% block javascripts %}
     {{ encore_entry_script_tags('admin') }}
-{% endblock %}
+  {% endblock %}
+</body>
+</html>

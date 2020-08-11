@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use KevinPapst\AdminLTEBundle\Model\UserInterface as AdminInterface;
-use KevinPapst\AdminLTEBundle\Model\NotificationInterface;
 /*
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
@@ -31,7 +29,7 @@ use KevinPapst\AdminLTEBundle\Model\NotificationInterface;
  *   "Manager" = "Manager"
  * })
  */
-class User implements UserInterface, AdminInterface, NotificationInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -395,67 +393,6 @@ class User implements UserInterface, AdminInterface, NotificationInterface, \Ser
         return $this;
     }
 
-
-
-    /**
-     * @return \DateTime
-     */
-    public function getMemberSince()
-    {
-        return $this->getCreatedAt();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOnline(){
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return 'Identifier Test';
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(){
-        return 'Title Test';
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getAvatar() {
-        return '';
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getMessage() {
-        return 'A demo message';
-    }
-
-    /**
-     * @return string
-     */
-    public function getType() {
-        return 'success';
-    }
-
-    /**
-     * @return string
-     */
-    public function getIcon() {
-        return 'far fa-envelope';
-    }
 
     public function getIsVerified(): ?bool
     {
