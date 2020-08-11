@@ -22,8 +22,11 @@ class ManagerController extends AbstractController
      */
     public function index()
     {
+        return $this->render('base-admin.html.twig', [
+            'controller_name' => 'ManagerController',
+        ]);/*
         return $this->render('actors/manager/index.html.twig', [
             'controller_name' => 'ManagerController',
-        ]);
+        ]);*/
     }
 }
