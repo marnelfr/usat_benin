@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "friendsofsymfony/jsrouting-bundle": "^2.6",
         "kevinpapst/adminlte-bundle": "^3.0",
         "knplabs/knp-menu-bundle": "^3.0",
         "phpdocumentor/reflection-docblock": "^5.2",
