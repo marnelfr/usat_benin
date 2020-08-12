@@ -38,7 +38,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         $menu->addChild('MainNavigationMenuItem', [
             'label' => 'MENU PRINCIPAL',
             'childOptions' => $event->getChildOptions()
-        ])->setAttribute('class', 'header');
+            ])->setAttribute('class', 'header');
 
         $menu->addChild('dashboard', [
             'route' => $this->getDashboardPath($user),
@@ -57,19 +57,19 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
 
         $menu->addChild('vehicle', [
             'route' => 'vehicle_index',
-            'label' => 'Mes véhicules',
+            'label' => '',
             'childOptions' => $event->getChildOptions(),
         ])->setLabelAttribute('icon', 'fas fa-tachometer-alt');
 
         $menu->getChild('vehicle')->addChild('new_vehicle', [
-            'route' => 'vehicle_new',
-            'label' => 'Nouveau véhicule',
+            'route' => '',
+            'label' => '',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
         $menu->getChild('vehicle')->addChild('list_vehicle', [
-            'route' => 'vehicle_index',
-            'label' => 'Liste des véhicules',
+            'route' => '',
+            'label' => 'Liste des ',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
@@ -123,7 +123,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
 
         $menu->getChild('importer')->addChild('list_importer', [
-            'route' => 'importer_index',
+            'route' => '',
             'label' => 'Liste des importateurs',
             'childOptions' => $event->getChildOptions()
         ])->setLabelAttribute('icon', 'fas fa-rss-square');
@@ -183,16 +183,4 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
 
 
 
-
-    private function getDashboardPath($user) {
-        try {
-            $role = $user->getRoles()[0];
-            $role = strtolower($role);
-            $role = str_replace('role_', '', $role);
-            return 'actors_' . $role . '_dashboard';
-        } catch (\Exception $e) {
-            return 'home_page';
-        }
-
-    }
 }

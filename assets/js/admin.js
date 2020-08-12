@@ -7,3 +7,10 @@ import 'bootstrap'
 
 import '../js/adminlte.min'
 import '../js/demo'
+import Button from './import/button'
+
+
+$(function () {
+  let btn = new Button('#nellement')
+  btn.click(btn.loading)
+})

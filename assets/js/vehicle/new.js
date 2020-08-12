@@ -14,7 +14,16 @@ $(function () {
       btnImporter.reset()
       let modal = new Modal()
       modal.setContent(view)
-      modal.show()
+
+      modal.show(function () {
+        let modalBtnSaver = new Button('#modal-importer-saver')
+        modalBtnSaver.click(function (e) {
+          e.preventDefault()
+          modalBtnSaver.loading()
+          
+        })
+      })
     })
   })
+
 })

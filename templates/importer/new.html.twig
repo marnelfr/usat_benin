@@ -3,30 +3,35 @@
 {% block title %}Ajout d'importateur{% endblock %}
 
 {% block page_title %}Importateur{% endblock %}
+{% block page_title2 %}Importateur{% endblock %}
 {% block page_subtitle %}Nouveau Importateur{% endblock %}
 
 {% block page_content %}
-    <div class="row pb1em">
+    <div class="row pb-3">
         <div class="col-12 col-sm-12 col-md-12">
             <a class="btn btn-default" href="{{ path('importer_index') }}"><i class="fas fa-reply"></i> Mes Importateurs</a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="nav-tabs-custom">
-                <!-- Tabs within a box -->
-                <ul class="nav nav-tabs pull-right ui-sortable-handle nav-title">
-                    <li class="pull-left header"><i class="fas fa-plus-circle"></i> Ajout d'Importateur</li>
-                </ul>
-                <div class="tab-content">
-                    <div class="row">
-                        <div class="col-12 col-sm-8 col-md-6 col-md-offset-3 col-sm-offset-2">
-                          {{ include('importer/_form.html.twig') }}
-                        </div>
-                    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-plus-circle"></i> Ajout d'Importateur</h3>
+            {#<div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i></button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i></button>
+            </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+                  {{ include('importer/_form.html.twig') }}
                 </div>
             </div>
         </div>
+        {#<div class="card-footer">
+            Footer
+        </div>#}
     </div>
 {% endblock %}

@@ -209,6 +209,11 @@ class Importer
         return $this;
     }
 
+    public function getFullname()
+    {
+        return $this->name . ' ' . $this->lastName;
+    }
+
     public function __toString()
     {
         return $this->name . ' ' . $this->lastName;

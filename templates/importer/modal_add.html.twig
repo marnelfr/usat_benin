@@ -1,16 +1,19 @@
 <div class="modal-content">
-  {{ form_start(form) }}
+  {{ form_start(form, {action: path('importer_new')}) }}
   <div class="modal-header">
+    <h4 class="modal-title"><i class="fas fa-plus-circle"></i> Ajout d'Importateur</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title"><i class="fas fa-plus-circle"></i> Ajout d'Importateur</h4>
   </div>
   <div class="modal-body">
     {{ form_widget(form) }}
   </div>
-  <div class="modal-footer">
-    <button type="reset" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-    <button class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
+  <div class="modal-footer text-left">
+    <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
+    <button id="modal-importer-saver" class="btn btn-success float-right"><i class="fas fa-save"></i> Enregistrer</button>
   </div>
   {{ form_end(form) }}
 </div>
+{% block javascripts %}
+  {{ encore_entry_script_tags('vehicle_new') }}
+{% endblock %}
