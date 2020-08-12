@@ -4,8 +4,7 @@ namespace App\Form;
 
 use App\Entity\Importer;
 use App\Entity\Vehicle;
-use App\Repository\ProfilRepository;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -17,14 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VehicleType extends AbstractType
 {
-    private $userRepo;
-    private $profilRepo;
-
-    public function __construct(UserRepository $repository, ProfilRepository $profilRepository)
-    {
-        $this->userRepo = $repository;
-        $this->profilRepo = $profilRepository;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,6 +37,10 @@ class VehicleType extends AbstractType
             ->add('importer', null, [
                 'label' => 'Importateur',
                 'placeholder' => 'Selectionnez un importateur',
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('i')
+                        ->orderBy('i.id', 'DESC');
+                },
                 'attr' => [
                     'class' => 'form-control'
                 ]

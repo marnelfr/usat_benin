@@ -40,7 +40,7 @@ $(function () {
                 if (data.typeMessage === 'success') {
                   // TODO: Recuperer le select
                   let select = $('')
-                  select.append(`<option value="${data.id}">${data.fullname}</option>`)
+                  select.prepend(`<option value="${data.id}">${data.fullname}</option>`)
 
                   //Ici, j'essaie d'afficher en même temps l'importer
                   select.val(data.id)

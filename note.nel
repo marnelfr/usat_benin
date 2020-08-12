@@ -103,7 +103,7 @@ Tables
 		Attributs:
 			managerID: le gestionnaire ayant fait la demande
 			vehicleID: le vehicule par rapport auquel la demande a été fait
-			status: l'etat de la demande (rejeter, approver, en attente, annuler)
+			status: l'etat de la demande (rejected, finalized, inprogress, canceled)
 			bolID: (bill of landing) la copie scannée du connaissement. redirige vers la table file
 			deleted
 			createdAt

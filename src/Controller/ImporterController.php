@@ -6,6 +6,7 @@ use App\Entity\Importer;
 use App\Form\ImporterType;
 use App\Repository\ImporterRepository;
 use App\Repository\ProfilRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/importer")
+ *
+ * @IsGranted("ROLE_MANAGER")
+ * @IsGranted("ROLE_ADMIN")
+ * @IsGranted("ROLE_STAFF")
+ * @IsGranted("ROLE_CONTROL")
  */
 class ImporterController extends AbstractController
 {
@@ -24,7 +30,7 @@ class ImporterController extends AbstractController
     public function index(ImporterRepository $importerRepository): Response
     {
         return $this->render('importer/index.html.twig', [
-            'importers' => $importerRepository->findAll(),
+            'importers' => $importerRepository->findBy(['deleted' => 0], ['id' => 'DESC']),
         ]);
     }
 
@@ -73,28 +79,6 @@ class ImporterController extends AbstractController
         return $this->render('importer/new.html.twig', $data);
     }
 
-
-
-    public function neww(Request $request): Response
-    {
-        $importer = new Importer();
-        $form = $this->createForm(ImporterType::class, $importer);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($importer);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('importer_index');
-        }
-
-        return $this->render('importer/new.html.twig', [
-            'importer' => $importer,
-            'form' => $form->createView(),
-        ]);
-    }
-
     /**
      * @Route("/{id}", name="importer_show", methods={"GET"})
      */
@@ -115,7 +99,7 @@ class ImporterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Modifications enregistrées avec succès');
             return $this->redirectToRoute('importer_index');
         }
 
@@ -131,9 +115,15 @@ class ImporterController extends AbstractController
     public function delete(Request $request, Importer $importer): Response
     {
         if ($this->isCsrfTokenValid('delete'.$importer->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($importer);
-            $entityManager->flush();
+            try{
+                $entityManager = $this->getDoctrine()->getManager();
+//                $entityManager->remove($importer);
+                $importer->setDeleted(1);
+                $entityManager->flush();
+                $this->addFlash('success', $importer->getFullname() . ' supprimer avec succès');
+            }catch (\Exception $e) {
+                $this->addFlash('danger', 'Impossible de supprimer ' . $importer->getFullname() . ' pour le moment');
+            }
         }
 
         return $this->redirectToRoute('importer_index');
