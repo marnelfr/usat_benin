@@ -1,25 +1,25 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Modification de Véhicule{% endblock %}
+{% block title %}Modification de Demande{% endblock %}
 
-{% block page_title %}Véhicule{% endblock %}
-{% block page_title2 %}Véhicule{% endblock %}
+{% block page_title %}Transfert{% endblock %}
+{% block page_title2 %}Transfert{% endblock %}
 {% block page_subtitle %}Modification{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
-  {{ encore_entry_link_tags('vehicle') }}
+  {{ encore_entry_link_tags('transfer') }}
 {% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
         <div class="col-12 col-sm-12 col-md-12">
-            <a class="btn btn-default" href="{{ path('vehicle_index') }}"><i class="fas fa-reply"></i> Mes Véhicules</a>
+            <a class="btn btn-default" href="{{ path('transfer_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Cours</a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-edit"></i> Modification de Véhicule</h3>
+            <h3 class="card-title"><i class="fas fa-edit"></i> Modification de Demande</h3>
           {#<div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                   <i class="fas fa-minus"></i></button>
@@ -30,7 +30,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                  {{ include('vehicle/_form.html.twig', {'button_label': 'Modifier'}) }}
+                  {{ include('transfer/_form.html.twig', {'button_label': 'Modifier'}) }}
                 </div>
             </div>
         </div>
@@ -39,7 +39,8 @@
       </div>#}
     </div>
 {% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
-  {{ encore_entry_script_tags('vehicle') }}
+  {{ encore_entry_script_tags('transfer') }}
 {% endblock %}

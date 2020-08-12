@@ -1,0 +1,99 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Demande{% endblock %}
+
+{% block page_title %}Transfert{% endblock %}
+{% block page_title2 %}Transfert{% endblock %}
+{% block page_subtitle %}Demande de Transfert{% endblock %}
+
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('transfer_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Cours</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-eye"></i> Demande de Transfert</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th colspan="2">Véhicule</th>
+                        </tr>
+                        <tr>
+                            <th>Chässis</th>
+                            <td>{{ transfer.vehicle.chassis }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marque</th>
+                            <td>{{ transfer.vehicle.brand.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Navire</th>
+                            <td>{{ transfer.vehicle.ship.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Importateur</th>
+                            <td>{{ transfer.vehicle.importer.fullname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mise en circulation</th>
+                            <td>{{ transfer.vehicle.putInUseAt ? transfer.vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'arrivée</th>
+                            <td>{{ transfer.vehicle.cameAt ? transfer.vehicle.cameAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Consignataire</th>
+                            <td>{{ transfer.vehicle.consignee }}</td>
+                        </tr>
+                        {#<tr>
+                            <th>Date d'enregistrement</th>
+                            <td>{{ transfer.vehicle.createdAt ? transfer.vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.vehicle.createdAt|date('H:i:s') : '' }}</td>
+                        </tr>#}
+
+
+
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ transfer.status }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Date de demande</th>
+                            <td>
+                              {{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-picture-o"></i> Connaissement</th>
+                            <td class="test-center">
+                                <button class="btn"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                  {{ include('transfer/_delete_form.html.twig', {label: 'Supprimer'}) }}
+                    <a class="btn btn-primary float-right" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Editer</a>
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
+{% endblock %}

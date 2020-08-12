@@ -21,7 +21,7 @@ class VehicleController extends AbstractController
     public function index(VehicleRepository $vehicleRepository): Response
     {
         return $this->render('vehicle/index.html.twig', [
-            'vehicles' => $vehicleRepository->findAll(),
+            'vehicles' => $vehicleRepository->findBy([], ['createdAt' => 'DESC']),
         ]);
     }
 
