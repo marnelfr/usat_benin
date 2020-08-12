@@ -2,8 +2,9 @@ import Button from '../import/button'
 // import Routing from 'rou'
 const routes = require('../../../public/js/fos_js_routes.json');
 import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-import Modal from '../import/modal'
 //https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
+import Modal from '../import/modal'
+import u from '../import/utility'
 
 $(function () {
   Routing.setRoutingData(routes);
@@ -20,6 +21,37 @@ $(function () {
         modalBtnSaver.click(function (e) {
           e.preventDefault()
           modalBtnSaver.loading()
+
+          $form = $('#modal_form_importer_new')
+          var formData = new FormData($form[0])
+          $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+              if (!!data.typeMessage) {
+                u.notif(data.message, data.typeMessage)
+                if (data.typeMessage === 'success') {
+                  // TODO: Recuperer le select
+                  let select = $('')
+                  select.append(`<option value="${data.id}">${data.fullname}</option>`)
+
+                  //Ici, j'essaie d'afficher en même temps l'importer
+                  select.val(data.id)
+                  modal.hide()
+                }
+              } else {
+                u.notif('Erreur fatale. Veuillez contacter le service informatique', 'danger')
+              }
+            },
+            error: function () {
+              u.notif("Echec de chargement. Veuillez réessayer", 'warning');
+            }
+          }).always(function () {
+            modalBtnSaver.reset()
+          });
           
         })
       })
