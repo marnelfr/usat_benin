@@ -8,9 +8,13 @@ import u from '../import/utility'
 
 $(function () {
   Routing.setRoutingData(routes);
+
+  let saver = new Button('#vehicle-new-saver')
+  saver.loadOnClick()
+
   let btnImporter = new Button('#vehicle-new-importer')
+
   btnImporter.click(function () {
-    btnImporter.loading()
     $.get(Routing.generate('importer_new')).then(function (view) {
       btnImporter.reset()
       let modal = new Modal()
@@ -22,7 +26,7 @@ $(function () {
           e.preventDefault()
           modalBtnSaver.loading()
 
-          $form = $('#modal_form_importer_new')
+          let $form = $('#modal_form_importer_new')
           var formData = new FormData($form[0])
           $.ajax({
             url: $form.attr('action'),
