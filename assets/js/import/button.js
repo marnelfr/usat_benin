@@ -7,7 +7,15 @@ export default class Button {
   }
 
   click(callable) {
+    this.loading()
     this.btn.click(callable)
+  }
+
+  loadOnClick() {
+    let btn = this.btn
+    btn.click(function () {
+      btn.loading()
+    })
   }
 
   loading() {

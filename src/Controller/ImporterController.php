@@ -46,6 +46,17 @@ class ImporterController extends AbstractController
             $entityManager->persist($importer);
             $entityManager->flush();
 
+            $message = 'Importeur enregister avec succès';
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'typeMessage' => 'success',
+                    'message' => $message,
+                    'id' => $importer->getId(),
+                    'fullname' => $importer->getFullname()
+                ]);
+            }
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('importer_index');
         }
 
