@@ -1,42 +1,76 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}Vehicle{% endblock %}
+{% block title %}Véhicule{% endblock %}
 
-{% block body %}
-    <h1>Vehicle</h1>
+{% block page_title %}Véhicule{% endblock %}
+{% block page_title2 %}Véhicule{% endblock %}
+{% block page_subtitle %}{{ vehicle.brand.name }}{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ vehicle.id }}</td>
-            </tr>
-            <tr>
-                <th>Chassis</th>
-                <td>{{ vehicle.chassis }}</td>
-            </tr>
-            <tr>
-                <th>PutInUseAt</th>
-                <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>CameAt</th>
-                <td>{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Consignee</th>
-                <td>{{ vehicle.consignee }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('vehicle_index') }}"><i class="fas fa-reply"></i> Mes Véhicules</a>
+        </div>
+    </div>
 
-    <a href="{{ path('vehicle_index') }}">back to list</a>
-
-    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}">edit</a>
-
-    {{ include('vehicle/_delete_form.html.twig') }}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-eye"></i> Véhicule</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Chässis</th>
+                            <td>{{ vehicle.chassis }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marque</th>
+                            <td>{{ vehicle.brand.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Navire</th>
+                            <td>{{ vehicle.ship.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Importateur</th>
+                            <td>{{ vehicle.importer.fullname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mise en circulation</th>
+                            <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'arrivée</th>
+                            <td>{{ vehicle.cameAt ? vehicle.cameAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Consignataire</th>
+                            <td>{{ vehicle.consignee }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'enregistrement</th>
+                            <td>{{ vehicle.createdAt ? vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ vehicle.createdAt|date('H:i:s') : '' }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                  {{ include('vehicle/_delete_form.html.twig', {label: 'Supprimer'}) }}
+                    <a class="btn btn-primary float-right" href="{{ path('vehicle_edit', {'id': vehicle.id}) }}"><i class="fas fa-edit"></i> Editer</a>
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
 {% endblock %}

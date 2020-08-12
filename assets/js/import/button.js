@@ -11,7 +11,7 @@ export default class Button {
   }
 
   loading() {
-    this.i.attr('class', 'fas fa-spin fa-spinner')
+    this.i.attr('class', 'spinner-grow spinner-grow-sm')
     this.btn.attr('disabled', true)
   }
 

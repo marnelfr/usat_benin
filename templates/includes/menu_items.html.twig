@@ -1,0 +1,293 @@
+<li class="nav-item">
+  <a href="{{ path(dashboard_path) }}" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+      Tableau de bord
+    </p>
+  </a>
+</li>
+
+{% if app.user.profil.slug == 'manager' %}
+  {#Transfert de vehicule#}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-circle"></i>
+      <p>
+        Transfert de véhicule
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Nouvelle demande</p>
+        </a>
+      </li>
+      <li class="nav-item has-treeview">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>
+            Liste des transferts
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+              <i class="far fa-dot-circle nav-icon"></i>
+              <p>En cours</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+              <i class="far fa-dot-circle nav-icon"></i>
+              <p>Finalisés</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  {#Importateur#}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-tachometer-alt"></i>
+      <p>
+        Mes importateurs
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{{ path('importer_new') }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Nouveau importateur</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('importer_index') }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Liste des importateurs</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  {#Vehicule#}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-tachometer-alt"></i>
+      <p>
+        Mes véhicules
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{{ path('vehicle_new') }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Nouveau véhicule</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('vehicle_index') }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Liste des véhicules</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+{% endif %}
+
+{% if app.user.profil.slug == 'agent' %}
+  {#Transfert de vehicule#}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-circle"></i>
+      <p>
+        Enlèvement de véhicule
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Nouvelle demande</p>
+        </a>
+      </li>
+      <li class="nav-item has-treeview">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>
+            Liste des enlèvements
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+              <i class="far fa-dot-circle nav-icon"></i>
+              <p>En cours</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+              <i class="far fa-dot-circle nav-icon"></i>
+              <p>Finalisés</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  {#Importateur#}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-tachometer-alt"></i>
+      <p>
+        Mes enleveurs
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/flot.html" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Nouveau enleveur</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/inline.html" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Liste des enleveurs</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+{% endif %}
+
+{% if app.user.profil.slug == 'admin' %}
+
+{% endif %}
+
+{% if app.user.profil.slug == 'staff' %}
+
+{% endif %}
+
+{% if app.user.profil.slug == 'control' %}
+
+{% endif %}
+
+{#<!-- Niveau 2 -->
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+      Time line
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/flot.html" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Flot</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/inline.html" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Inline</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
+<!-- Niveau 3 -->
+<li class="nav-item has-treeview">
+  <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+    <i class="nav-icon fas fa-circle"></i>
+    <p>
+      Level 1
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Level 2</p>
+      </a>
+    </li>
+    <li class="nav-item has-treeview">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>
+          Level 2
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+            <i class="far fa-dot-circle nav-icon"></i>
+            <p>Level 3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+            <i class="far fa-dot-circle nav-icon"></i>
+            <p>Level 3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+            <i class="far fa-dot-circle nav-icon"></i>
+            <p>Level 3</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Level 2</p>
+      </a>
+    </li>
+  </ul>
+</li>#}
+
+<li class="nav-item has-treeview menu-open">
+  <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link active">
+    <i class="nav-icon far fa-plus-square"></i>
+    <p>
+      Extras
+      <i class="fas fa-angle-left right"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/login.html" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Login</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/register.html" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Register</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/forgot-password.html" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Forgot Password</p>
+      </a>
+    </li>
+  </ul>
+</li>

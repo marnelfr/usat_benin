@@ -3,77 +3,82 @@
 {% block title %}Liste des Importateurs{% endblock %}
 
 {% block page_title %}Importateur{% endblock %}
+{% block page_title2 %}Importateur{% endblock %}
 {% block page_subtitle %}Liste{% endblock %}
 
 {% block page_content %}
-  <div class="row pb1em">
+  <div class="row pb-3">
     <div class="col-12 col-sm-12 col-md-12">
       <a class="btn btn-default" href="{{ path('importer_new') }}"><i class="fas fa-plus-circle"></i> Nouveau Importateur</a>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="nav-tabs-custom">
-        <!-- Tabs within a box -->
-        <ul class="nav nav-tabs pull-right ui-sortable-handle nav-title">
-          <li class="pull-left header"><i class="fas fa-list"></i> Liste des Importateurs</li>
-        </ul>
-        <div class="tab-content">
-          <div class="row">
-            <div class="col-12 col-sm-12 col-md-12">
-              <table class="table">
-                <thead>
-                <tr>
-                  <th>&ensp;Nom</th>
-                  <th class="text-center">N° Téléphone</th>
-                  <th class="text-center">E-mail</th>
-                  <th class="text-right">Actions&ensp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for importer in importers %}
-                  <tr>
-                    <td>{{ importer.name }} {{ importer.lastName }}</td>
-                    <td class="text-center">
-                      {% if importer.phone %}
-                        {{ importer.phone }}
-                      {% else %}
-                        -
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      {% if importer.email %}
-                        {{ importer.email }}
-                      {% else %}
-                        -
-                      {% endif %}
-                    </td>
-                    <td class="text-right">
-                      <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('importer_show', {'id': importer.id}) }}"><i class="fas fa-eye"></i></a>
-                      <a class="btn btn-primary" title="Editer les informations" href="{{ path('importer_edit', {'id': importer.id}) }}"><i class="fas fa-edit"></i></a>
-                      {{ include('importer/_delete_form.html.twig') }}
-                    </td>
-                  </tr>
-                {% else %}
-                  <tr>
-                    <td colspan="9">no records found</td>
-                  </tr>
-                {% endfor %}
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>&ensp;Nom</th>
-                  <th class="text-center">N° Téléphone</th>
-                  <th class="text-center">E-mail</th>
-                  <th class="text-right">Actions&ensp;</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-list"></i> Liste des Importateurs</h3>
+      {#<div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fas fa-minus"></i></button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+              <i class="fas fa-times"></i></button>
+      </div>#}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>&ensp;Nom</th>
+              <th class="text-center">N° Téléphone</th>
+              <th class="text-center">E-mail</th>
+              <th class="text-right">Actions&ensp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for importer in importers %}
+              <tr>
+                <td>{{ importer.name }} {{ importer.lastName }}</td>
+                <td class="text-center">
+                  {% if importer.phone %}
+                    {{ importer.phone }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                  {% if importer.email %}
+                    {{ importer.email }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td class="text-right">
+                  <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('importer_show', {'id': importer.id}) }}"><i class="fas fa-eye"></i></a>
+                  <a class="btn btn-primary" title="Editer les informations" href="{{ path('importer_edit', {'id': importer.id}) }}"><i class="fas fa-edit"></i></a>
+                  {{ include('importer/_delete_form.html.twig') }}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="3">Aucun importeur trouver</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>&ensp;Nom</th>
+              <th class="text-center">N° Téléphone</th>
+              <th class="text-center">E-mail</th>
+              <th class="text-right">Actions&ensp;</th>
+            </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     </div>
+    {#<div class="card-footer">
+        Footer
+    </div>#}
   </div>
 {% endblock %}

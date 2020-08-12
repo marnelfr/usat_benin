@@ -1,13 +1,45 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}Edit Vehicle{% endblock %}
+{% block title %}Modification de Véhicule{% endblock %}
 
-{% block body %}
-    <h1>Edit Vehicle</h1>
+{% block page_title %}Véhicule{% endblock %}
+{% block page_title2 %}Véhicule{% endblock %}
+{% block page_subtitle %}Modification{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('vehicle_new') }}
+{% endblock %}
 
-    {{ include('vehicle/_form.html.twig', {'button_label': 'Update'}) }}
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('vehicle_index') }}"><i class="fas fa-reply"></i> Mes Véhicules</a>
+        </div>
+    </div>
 
-    <a href="{{ path('vehicle_index') }}">back to list</a>
-
-    {{ include('vehicle/_delete_form.html.twig') }}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-edit"></i> Modification de Véhicule</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                  {{ include('vehicle/_form.html.twig', {'button_label': 'Modifier'}) }}
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('vehicle_new') }}
 {% endblock %}

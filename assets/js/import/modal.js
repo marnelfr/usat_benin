@@ -1,8 +1,8 @@
 export default class Modal {
 
   constructor() {
-    // this.modal = $('<div class="modal modal-info fade" id="nedllement"></div>')
-    // this.modal.html('<div class="modal-dialog"></div>');
+    this.modal = $('<div class="modal modal-info fade"></div>')
+    this.modal.html('<div class="modal-dialog"></div>');
   }
 
   setContent(view, callable) {
@@ -11,8 +11,9 @@ export default class Modal {
     console.log(this.modal.html())
   }
 
-  show() {
+  show(callable) {
     this.modal.modal('show')
+    this.modal.on('shown.bs.modal', callable)
   }
 
   hide() {
