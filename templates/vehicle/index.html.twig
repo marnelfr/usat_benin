@@ -7,10 +7,15 @@
 {% block page_subtitle %}Liste{% endblock %}
 
 {% block page_content %}
-  <div class="row pb-3">
+  {#<div class="row pb-3">
     <div class="col-12 col-sm-12 col-md-12">
       <a class="btn btn-default" href="{{ path('vehicle_new') }}"><i class="fas fa-plus-circle"></i> Nouveau
         Véhicule</a>
+    </div>
+  </div>#}
+  <div class="row pb-3">
+    <div class="col-12 col-sm-12 col-md-12">
+      <a class="btn btn-default" href="{{ path('transfer_new') }}"><i class="fas fa-plus-circle"></i> Nouvelle Demande</a>
     </div>
   </div>
 
@@ -33,7 +38,7 @@
               <th>&ensp;Marque</th>
               <th class="text-center">Châssis</th>
               <th class="text-center">Arrivé le</th>
-              <th class="text-right">Actions&ensp;</th>
+              <th class="text-right">Action&ensp;</th>
             </tr>
             </thead>
             <tbody>
@@ -45,9 +50,9 @@
                 <td class="text-right">
                   <a class="btn btn-primary" href="{{ path('vehicle_show', {'id': vehicle.id}) }}"><i
                             class="fas fa-eye"></i></a>
-                  <a class="btn btn-primary" href="{{ path('vehicle_edit', {'id': vehicle.id}) }}"><i
-                            class="fas fa-edit"></i></a>
-                  {{ include('vehicle/_delete_form.html.twig') }}
+                  {#<a class="btn btn-primary" href="{{ path('vehicle_edit', {'id': vehicle.id}) }}"><i
+                            class="fas fa-edit"></i></a>#}
+                  {#{{ include('vehicle/_delete_form.html.twig') }}#}
                 </td>
               </tr>
             {% else %}
@@ -61,7 +66,7 @@
               <th>&ensp;Marque</th>
               <th class="text-center">Châssis</th>
               <th class="text-center">Arrivé le</th>
-              <th class="text-right">Actions&ensp;</th>
+              <th class="text-right">Action&ensp;</th>
             </tr>
             </tfoot>
           </table>

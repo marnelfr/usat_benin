@@ -6,6 +6,7 @@ use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,11 +22,35 @@ class VehicleController extends AbstractController
     public function index(VehicleRepository $vehicleRepository): Response
     {
         return $this->render('vehicle/index.html.twig', [
-            'vehicles' => $vehicleRepository->findBy([], ['createdAt' => 'DESC']),
+            'vehicles' => $vehicleRepository->findBy(['deleted' => 0], ['createdAt' => 'DESC']),
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/{id}", name="vehicle_show", methods={"GET"})
+     */
+    public function show(Vehicle $vehicle): Response
+    {
+        return $this->render('vehicle/show.html.twig', [
+            'vehicle' => $vehicle,
         ]);
     }
 
     /**
+     * @Route("/{id}/img", options = { "expose" = true }, name="vehicle_img", methods={"GET"})
+     */
+    public function img(Request $request, Vehicle $vehicle) {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('vehicle/show_img.html.twig', [
+                'url' => '/uploads/bol/' . $vehicle->getBolFileName()
+            ]);
+        }
+        return new Response('access denied');
+    }
+
+    /*
      * @Route("/new", name="vehicle_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -48,19 +73,7 @@ class VehicleController extends AbstractController
         ]);
     }
 
-
-
-    /**
-     * @Route("/{id}", name="vehicle_show", methods={"GET"})
-     */
-    public function show(Vehicle $vehicle): Response
-    {
-        return $this->render('vehicle/show.html.twig', [
-            'vehicle' => $vehicle,
-        ]);
-    }
-
-    /**
+    /*
      * @Route("/{id}/edit", name="vehicle_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Vehicle $vehicle): Response
@@ -80,17 +93,22 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    /**
+    /*
      * @Route("/{id}", name="vehicle_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Vehicle $vehicle): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($vehicle);
-            $entityManager->flush();
+            try{
+                $entityManager = $this->getDoctrine()->getManager();
+//                $entityManager->remove($vehicle);
+                $vehicle->setDeleted(1);
+                $entityManager->flush();
+                $this->addFlash('success', 'Véhicule supprimer avec succès');
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Impossible de supprimer le véhicule pour le moment');
+            }
         }
-
         return $this->redirectToRoute('vehicle_index');
     }
 }

@@ -10,7 +10,7 @@ $(function () {
   Routing.setRoutingData(routes);
 
   let saver = new Button('#vehicle-new-saver')
-  saver.loadOnClick()
+  saver.loadOnClick(true)
 
   let btnImporter = new Button('#vehicle-new-importer')
 
@@ -22,11 +22,8 @@ $(function () {
 
       modal.show(function () {
         let modalBtnSaver = new Button('#modal-importer-saver')
-        modalBtnSaver.click(function (e) {
-          e.preventDefault()
-          modalBtnSaver.loading()
-
-          let $form = $('#modal_form_importer_new')
+        modalBtnSaver.click(function () {
+          let $form = modalBtnSaver.getForm()
           var formData = new FormData($form[0])
           $.ajax({
             url: $form.attr('action'),
@@ -39,7 +36,7 @@ $(function () {
                 u.notif(data.message, data.typeMessage)
                 if (data.typeMessage === 'success') {
                   // TODO: Recuperer le select
-                  let select = $('')
+                  let select = $('#vehicle_importer')
                   select.prepend(`<option value="${data.id}">${data.fullname}</option>`)
 
                   //Ici, j'essaie d'afficher en même temps l'importer
@@ -47,7 +44,7 @@ $(function () {
                   modal.hide()
                 }
               } else {
-                u.notif('Erreur fatale. Veuillez contacter le service informatique', 'danger')
+                u.notif('Echec de chargement.', 'danger')
               }
             },
             error: function () {

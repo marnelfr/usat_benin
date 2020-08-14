@@ -48,6 +48,12 @@ class File
      */
     private $user;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->deleted = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

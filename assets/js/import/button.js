@@ -7,19 +7,42 @@ export default class Button {
   }
 
   click(callable) {
-    this.loading()
-    this.btn.click(callable)
+    let $this = this
+    this.btn.click(function (e) {
+      e.preventDefault()
+      $this.loading()
+      callable()
+    })
   }
 
-  loadOnClick() {
-    let btn = this.btn
-    btn.click(function () {
-      btn.loading()
+  text() {
+    return this.btn.text()
+  }
+
+  data($lib) {
+    return this.btn.attr('data-'+$lib)
+  }
+
+  id() {
+    return this.btn.attr('id')
+  }
+
+  getForm() {
+    return this.btn.closest('form')
+  }
+
+  loadOnClick(submit_form) {
+    let $this = this
+    $this.btn.on('click', function () {
+      $this.loading()
+      if (submit_form) {
+        $this.btn.closest('form').submit()
+      }
     })
   }
 
   loading() {
-    this.i.attr('class', 'spinner-grow spinner-grow-sm')
+    this.i.attr('class', 'spinner-border spinner-border-sm')
     this.btn.attr('disabled', true)
   }
 

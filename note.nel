@@ -1,5 +1,5 @@
 npm config set strict-ssl false -g
-
++12029339129
 
 Tables
 	user
@@ -61,6 +61,8 @@ Tables
 			cameAt: date d'arriver au port
 			consignee: le consignataire du navire
 			importerID: l'importateur
+			deleted
+			createdAt
 
 	importer
 		Va garder la liste des importateurs.
@@ -320,7 +322,7 @@ BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
 
 
 https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
-
+https://symfony.com/doc/current/controller/upload_file.html
 
 
 SECURITY

@@ -16,11 +16,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/importer")
- *
- * @IsGranted("ROLE_MANAGER")
- * @IsGranted("ROLE_ADMIN")
- * @IsGranted("ROLE_STAFF")
- * @IsGranted("ROLE_CONTROL")
  */
 class ImporterController extends AbstractController
 {

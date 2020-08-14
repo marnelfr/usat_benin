@@ -83,14 +83,14 @@
 
   {#Vehicule#}
   <li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
+    <a href="{{ path('vehicle_index') }}" class="nav-link">
       <i class="nav-icon fas fa-tachometer-alt"></i>
       <p>
         Mes véhicules
-        <i class="right fas fa-angle-left"></i>
+        {#<i class="right fas fa-angle-left"></i>#}
       </p>
     </a>
-    <ul class="nav nav-treeview">
+    {#<ul class="nav nav-treeview">
       <li class="nav-item">
         <a href="{{ path('vehicle_new') }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
@@ -103,7 +103,7 @@
           <p>Liste des véhicules</p>
         </a>
       </li>
-    </ul>
+    </ul>#}
   </li>
 {% endif %}
 

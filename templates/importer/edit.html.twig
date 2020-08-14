@@ -5,6 +5,10 @@
 {% block page_title %}Importateur{% endblock %}
 {% block page_title2 %}Importateur{% endblock %}
 {% block page_subtitle %}Modification{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('importer') }}
+{% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
@@ -34,4 +38,8 @@
           Footer
       </div>#}
     </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('importer') }}
 {% endblock %}

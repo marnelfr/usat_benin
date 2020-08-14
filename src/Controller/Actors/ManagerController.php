@@ -2,6 +2,9 @@
 
 namespace App\Controller\Actors;
 
+use App\Entity\Importer;
+use App\Entity\Transfer;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +23,17 @@ class ManagerController extends AbstractController
      *
      * @Route("/actors/manager", name="actors_manager_dashboard")
      */
-    public function index()
+    public function index(EntityManagerInterface $em)
     {
-//        return $this->render('base-admin.html.twig', [
-//            'controller_name' => 'ManagerController',
-//        ]);
-        return $this->render('actors/manager/index.html.twig', [
-            'controller_name' => 'ManagerController',
-        ]);
+        $transfertRepo = $em->getRepository(Transfer::class);
+
+        $finalized = count($transfertRepo->findBy(['status' => 'finalized']));
+        $inprogress = count($transfertRepo->findBy(['status' => 'inprogress']));
+        $rejected = count($transfertRepo->findBy(['status' => 'rejected']));
+        $importer = count($em->getRepository(Importer::class)->findBy(['manager' => $this->getUser(), 'deleted'=> 0]));
+
+        return $this->render('actors/manager/index.html.twig', compact(
+            'finalized', 'inprogress', 'rejected', 'importer'
+        ));
     }
 }

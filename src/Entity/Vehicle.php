@@ -81,12 +81,23 @@ class Vehicle
     private $transfer;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $bolFileName;
+
     public function __construct()
     {
+        $this->deleted = 0;
         $this->createdAt = new \DateTime();
     }
 
@@ -223,6 +234,35 @@ class Vehicle
         if ($transfer->getVehicle() !== $newVehicle) {
             $transfer->setVehicle($newVehicle);
         }
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getBrand()->getName() . ' - ' . $this->getChassis();
+    }
+
+    public function getBolFileName(): ?string
+    {
+        return $this->bolFileName;
+    }
+
+    public function setBolFileName(string $bolFileName): self
+    {
+        $this->bolFileName = $bolFileName;
 
         return $this;
     }

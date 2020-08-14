@@ -8,7 +8,6 @@ export default class Modal {
   setContent(view, callable) {
     this.modal.find('.modal-dialog').html(view)
     $(document).find('body').append(this.modal)
-    console.log(this.modal.html())
   }
 
   show(callable) {

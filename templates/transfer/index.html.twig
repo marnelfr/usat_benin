@@ -4,7 +4,7 @@
 
 {% block page_title %}Transfert{% endblock %}
 {% block page_title2 %}Transfert{% endblock %}
-{% block page_subtitle %}Demandes en Cours{% endblock %}
+{% block page_subtitle %}Demandes {{ title }}{% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
@@ -32,24 +32,28 @@
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
                             <th class="text-center">Status</th>
-                            <th>Actions&ensp;</th>
+                            <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for transfer in transfers %}
                             <tr>
                                 <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
-                                <td>{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
-                                <td>{{ transfer.status }}</td>
-                                <td>
-                                    <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('transfer_show', {'id': importer.id}) }}"><i class="fas fa-eye"></i></a>
-                                    <a class="btn btn-primary" title="Modifier la demande" href="{{ path('transfer_edit', {'id': importer.id}) }}"><i class="fas fa-edit"></i></a>
-                                    {{ include('transfer/_delete_form.html.twig') }}
+                                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
+                                <td class="text-center">{{ transfer.state }}</td>
+                                <td class="text-right">
+                                    <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('transfer_show', {'id': transfer.id}) }}"><i class="fas fa-eye"></i></a>
+                                  {% if transfer.status != 'inprogress' %}
+                                      <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                                  {% else %}
+                                      <a class="btn btn-primary" title="Modifier la demande" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i></a>
+                                  {% endif %}
+                                  {{ include('transfer/_delete_form.html.twig') }}
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="5">Aucune demande en cours</td>
+                                <td class="text-center text-bold" colspan="5">{{ noData }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -58,7 +62,7 @@
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
                             <th class="text-center">Status</th>
-                            <th>Actions&ensp;</th>
+                            <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>
                     </table>

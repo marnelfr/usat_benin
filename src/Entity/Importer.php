@@ -38,7 +38,6 @@ class Importer
     private $phone;
 
     /**
-     * @Assert\NotBlank(message="entity.user.email.notblank")
      * @Assert\Email(message="entity.user.email.type")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -89,7 +88,7 @@ class Importer
 
     public function setName(string $name): self
     {
-        $this->name = ucfirst($name);
+        $this->name = ucwords(strtolower($name));
 
         return $this;
     }
