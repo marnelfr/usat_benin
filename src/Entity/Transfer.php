@@ -58,6 +58,9 @@ class Transfer
 
     public function __construct()
     {
+        $this->status = 'inprogress';
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
         $this->demandeFiles = new ArrayCollection();
         $this->processings = new ArrayCollection();
     }
@@ -70,6 +73,25 @@ class Transfer
     public function getStatus(): ?string
     {
         return $this->status;
+    }
+
+    public function getState(): ?string
+    {
+        $etat = '';
+        switch ($this->status) {
+            case 'inprogress':
+                $etat = 'En attente';
+                break;
+            case 'canceled':
+                $etat = 'Annulé';
+                break;
+            case 'finalized':
+                $etat = 'Approuvé';
+                break;
+            default:
+                $etat = 'Rejeté';
+        }
+        return $etat;
     }
 
     public function setStatus(string $status): self

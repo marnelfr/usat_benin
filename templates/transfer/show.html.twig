@@ -5,6 +5,10 @@
 {% block page_title %}Transfert{% endblock %}
 {% block page_title2 %}Transfert{% endblock %}
 {% block page_subtitle %}Demande de Transfert{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('transfer') }}
+{% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
@@ -29,10 +33,7 @@
                     <table class="table">
                         <tbody>
                         <tr>
-                            <th colspan="2">Véhicule</th>
-                        </tr>
-                        <tr>
-                            <th>Chässis</th>
+                            <th>Châssis</th>
                             <td>{{ transfer.vehicle.chassis }}</td>
                         </tr>
                         <tr>
@@ -67,8 +68,8 @@
 
 
                         <tr>
-                            <th>Status</th>
-                            <td>{{ transfer.status }}</td>
+                            <th>Statut</th>
+                            <td>{{ transfer.state }}</td>
                         </tr>
 
                         <tr>
@@ -78,17 +79,20 @@
                             </td>
                         </tr>
                         <tr>
-                            <th><i class="fas fa-picture-o"></i> Connaissement</th>
-                            <td class="test-center">
-                                <button class="btn"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                            <td colspan="2" class="text-center">
+                                <button data-id="{{ transfer.vehicle.id }}" id="transfer-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                  {{ include('transfer/_delete_form.html.twig', {label: 'Supprimer'}) }}
-                    <a class="btn btn-primary float-right" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Editer</a>
+                      {{ include('transfer/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
+                      {% if transfer.status != 'inprogress' %}
+                          <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
+                      {% else %}
+                          <a class="btn btn-primary float-right" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
+                      {% endif %}
                 </div>
             </div>
         </div>
@@ -96,4 +100,8 @@
           Footer
       </div>#}
     </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('transfer') }}
 {% endblock %}

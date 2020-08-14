@@ -211,7 +211,7 @@ class User implements UserInterface, \Serializable
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = ucwords(strtolower($name));
 
         return $this;
     }
@@ -438,5 +438,10 @@ class User implements UserInterface, \Serializable
             // see section on salt below
             // $this->salt
             ) = unserialize($serialized);
+    }
+
+    public function __toString()
+    {
+        return $this->name . ' ' . $this->lastName;
     }
 }

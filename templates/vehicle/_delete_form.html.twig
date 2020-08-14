@@ -1,5 +1,14 @@
-<form method="post" style="display: inline" action="{{ path('vehicle_delete', {'id': vehicle.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer ce véhicule ?');">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicle.id) }}">
-    <button class="btn btn-danger"><i class="fas fa-trash"></i> {{ label|default('') }}</button>
-</form>
+{% if
+  (vehicle.transfer is null and vehicle.removal is null) or
+  (
+    (vehicle.transfer is not null and vehicle.transfer.deleted) or
+    (vehicle.removal is not null and vehicle.removal.deleted)
+  ) %}
+    <form method="post" style="display: inline" action="{{ path('vehicle_delete', {'id': vehicle.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer ce véhicule ?');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicle.id) }}">
+        <button class="btn btn-danger"><i class="fas fa-trash"></i> {{ label|default('') }}</button>
+    </form>
+{% else %}
+    <button disabled class="btn btn-danger"><i class="fas fa-trash"></i> {{ label|default('') }}</button>
+{% endif %}

@@ -3,9 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Transfer;
+use App\Entity\Vehicle;
 use App\Form\TransferType;
+use App\Form\VehicleType;
 use App\Repository\TransferRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +37,8 @@ class TransferController extends AbstractController
     public function index(): Response
     {
         return $this->render('transfer/index.html.twig', [
+            'title' => 'en Cours',
+            'noData' => 'Aucune demande en cours de traitement',
             'transfers' => $this->repo->findBy(['status' => 'inprogress'], ['id' => 'DESC']),
         ]);
     }
@@ -42,6 +51,8 @@ class TransferController extends AbstractController
     public function index_finalized(): Response
     {
         return $this->render('transfer/index.html.twig', [
+            'title' => 'Approuvées',
+            'noData' => 'Aucune demande appouvée pour le moment',
             'transfers' => $this->repo->findBy(['status' => 'finalized'], ['id' => 'DESC']),
         ]);
     }
@@ -54,6 +65,8 @@ class TransferController extends AbstractController
     public function index_rejected(): Response
     {
         return $this->render('transfer/index.html.twig', [
+            'title' => 'Rejetées',
+            'noData' => 'Aucune demande rejetée',
             'transfers' => $this->repo->findBy(['status' => 'rejected'], ['id' => 'DESC']),
         ]);
     }
@@ -61,18 +74,39 @@ class TransferController extends AbstractController
     /**
      * @Route("/new", name="transfer_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $uploader): Response
     {
+//        $transfer = new Transfer();
+//        $form = $this->createForm(TransferType::class, $transfer);
         $transfer = new Transfer();
-        $form = $this->createForm(TransferType::class, $transfer);
+        $vehicle = new Vehicle();
+        $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($transfer);
-            $entityManager->flush();
+            /** @var UploadedFile $bol */
+            $bol = $form->get('bol')->getData();
 
-            return $this->redirectToRoute('transfer_index');
+            if ($bol) {
+                try{
+                    $vehicle->setBolFileName(
+                        $uploader->upload($bol)
+                    );
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($vehicle);
+
+                    $transfer->setVehicle($vehicle);
+                    $transfer->setManager($this->getUser());
+                    $entityManager->persist($transfer);
+
+                    $entityManager->flush();
+
+                    return $this->redirectToRoute('transfer_index');
+                }catch (\Exception $e) {
+                    dump($e->getMessage()); die();
+                }
+            }
+            $form->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
         }
 
         return $this->render('transfer/new.html.twig', [
@@ -94,13 +128,34 @@ class TransferController extends AbstractController
     /**
      * @Route("/{id}/edit", name="transfer_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Transfer $transfer): Response
+    public function edit(Request $request, Transfer $transfer, FileUploader $uploader): Response
     {
-        $form = $this->createForm(TransferType::class, $transfer);
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var Vehicle $vehicle */
+        $vehicle = $transfer->getVehicle();
+        $form = $this->createForm(VehicleType::class, $vehicle);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            /** @var UploadedFile $bol */
+            $bol = $form->get('bol')->getData();
+
+            if ($bol) {
+                try{
+                    $vehicle->setBolFileName(
+                        $uploader->upload($bol, 'bol', true, $vehicle->getBolFileName())
+                    );
+                }catch (\Exception $e) {
+                    dump($e->getMessage()); die();
+                }
+            }
+
+            $transfer->setVehicle($vehicle);
+            $em->persist($transfer);
+
+            $em->flush();
 
             return $this->redirectToRoute('transfer_index');
         }

@@ -1,5 +1,9 @@
-<form method="post" style="display: inline" action="{{ path('transfer_delete', {'id': transfer.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler la demande de transfert ?');">
+{% if transfer.status != 'inprogress' %}
+  <button disabled title="Seulement les demandes en attentes peuvent être annulées" class="btn btn-danger"><i class="fas fa-times-circle"></i> {{ label|default('') }}</button>
+{% else %}
+  <form method="post" style="display: inline" action="{{ path('transfer_delete', {'id': transfer.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler la demande de transfert ?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ transfer.id) }}">
-    <button class="btn btn-danger"><i class="fas fa-trash"></i> {{ label|default('') }}</button>
-</form>
+    <button class="btn btn-danger"><i class="fas fa-times-circle"></i> {{ label|default('') }}</button>
+  </form>
+{% endif %}
