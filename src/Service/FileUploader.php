@@ -33,7 +33,7 @@ class FileUploader
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
-        $safeFilename = 'bol_' . date('Ymd') . '_' . uniqid();
+        $safeFilename = $for . '_' . date('Ymd') . '_' . uniqid();
         $newFilename = $safeFilename . '.' . $file->guessExtension();
 
         // Move the file to the directory where brochures are stored
@@ -56,7 +56,7 @@ class FileUploader
             $this->em->persist($saveFile);
             $this->em->flush();
 
-            return $saveFile->getLink();
+            return $saveFile;
         } catch (FileException $e) {
             dump($e->getMessage()); die();
             // ... handle exception if something happens during file upload
@@ -66,6 +66,17 @@ class FileUploader
     public function getTargetDirectory($for)
     {
         // TODO: $for sera utiliser pour savoir quoi retouner quand on aura plusieurs repertoir
-        return $this->targetDirectory;
+        $dir = '';
+        switch ($for) {
+            case 'bol':
+                $dir = $this->targetDirectory[0];
+                break;
+            case 'cin':
+                $dir = $this->targetDirectory[1];
+                break;
+            default:
+                $dir = '';
+        }
+        return $dir;
     }
 }

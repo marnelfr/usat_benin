@@ -60,14 +60,26 @@ class Remover
      */
     private $agent;
 
+
     /**
-     * @ORM\OneToOne(targetEntity=File::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $cin;
+    private $cinFileName;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function __construct()
     {
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
         $this->removals = new ArrayCollection();
     }
 
@@ -116,18 +128,6 @@ class Remover
     public function setAgent(?Agent $agent): self
     {
         $this->agent = $agent;
-
-        return $this;
-    }
-
-    public function getCin(): ?File
-    {
-        return $this->cin;
-    }
-
-    public function setCin(File $cin): self
-    {
-        $this->cin = $cin;
 
         return $this;
     }
@@ -188,6 +188,46 @@ class Remover
     public function setAddress(?string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getFullname() {
+        return $this->name . ' ' . $this->lastName;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCinFileName(): ?string
+    {
+        return $this->cinFileName;
+    }
+
+    public function setCinFileName(string $cinFileName): self
+    {
+        $this->cinFileName = $cinFileName;
 
         return $this;
     }

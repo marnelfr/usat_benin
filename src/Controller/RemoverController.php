@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Remover;
 use App\Form\RemoverType;
 use App\Repository\RemoverRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,7 @@ class RemoverController extends AbstractController
     /**
      * @Route("/new", name="remover_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -41,11 +42,25 @@ class RemoverController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($remover);
-            $entityManager->flush();
+            /** @var UploadedFile $cin */
+            $cin = $form->get('cinName')->getData();
 
-            return $this->redirectToRoute('remover_index');
+            if ($cin) {
+                $file = $uploader->upload($cin, 'cin');
+                $remover->setCinFileName(
+                    $file->getLink()
+                );
+                $remover->setAgent($this->getUser());
+
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $entityManager->persist($remover);
+
+                $entityManager->flush();
+
+                return $this->redirectToRoute('remover_index');
+            }
+            $form->get('cinName')->addError(new FormError('Veuillez téléverser la Carte Nationale d\'Identité de l\'enleveur'));
         }
 
         return $this->render('remover/new.html.twig', [
@@ -67,9 +82,22 @@ class RemoverController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/img", options = { "expose" = true }, name="remover_img", methods={"GET"})
+     */
+    public function img(Request $request, Remover $remover) {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('vehicle/show_img.html.twig', [
+                'url' => '/uploads/cin/' . $remover->getCinFileName(),
+                'alt' => 'Carte nationale d\'identité'
+            ]);
+        }
+        return new Response('access denied');
+    }
+
+    /**
      * @Route("/{id}/edit", name="remover_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Remover $remover): Response
+    public function edit(Request $request, Remover $remover, FileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -77,6 +105,18 @@ class RemoverController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $cin */
+            $cin = $form->get('cinName')->getData();
+
+            if ($cin) {
+                try{
+                    $remover->setCinFileName(
+                        $uploader->upload($cin, 'cin', true, $remover->getCinFileName())->getLink()
+                    );
+                }catch (\Exception $e) {
+                    dump($e->getMessage()); die();
+                }
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('remover_index');

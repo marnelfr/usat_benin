@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DemandeFile;
 use App\Entity\Transfer;
 use App\Entity\Vehicle;
 use App\Form\TransferType;
@@ -113,9 +114,11 @@ class TransferController extends AbstractController
 
             if ($bol) {
                 try{
+                    $file = $uploader->upload($bol);
                     $vehicle->setBolFileName(
-                        $uploader->upload($bol)
+                        $file->getLink()
                     );
+
                     $vehicle->setUser($this->getUser());
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($vehicle);
@@ -124,7 +127,16 @@ class TransferController extends AbstractController
                     $transfer->setManager($this->getUser());
                     $entityManager->persist($transfer);
 
+                    $fileDemande = new DemandeFile();
+                    $fileDemande->setTransfer($transfer)
+                        ->setFile($file)
+                        ->setUsedFor('Transfer')
+                    ;
+                    $entityManager->persist($fileDemande);
+
                     $entityManager->flush();
+
+                    $this->addFlash('Demande envoyée avec succès');
 
                     return $this->redirectToRoute('transfer_index');
                 }catch (\Exception $e) {
@@ -174,7 +186,7 @@ class TransferController extends AbstractController
             if ($bol) {
                 try{
                     $vehicle->setBolFileName(
-                        $uploader->upload($bol, 'bol', true, $vehicle->getBolFileName())
+                        $uploader->upload($bol, 'bol', true, $vehicle->getBolFileName())->getLink()
                     );
                 }catch (\Exception $e) {
                     dump($e->getMessage()); die();

@@ -48,6 +48,12 @@ class DemandeFile
      */
     private $createdAt;
 
+    public function __construct()
+    {
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
