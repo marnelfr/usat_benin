@@ -24,16 +24,20 @@ class ImporterController extends AbstractController
      */
     public function index(ImporterRepository $importerRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('importer/index.html.twig', [
-            'importers' => $importerRepository->findBy(['deleted' => 0], ['id' => 'DESC']),
+            'importers' => $importerRepository->findBy(['deleted' => 0, 'manager' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
 
     /**
      * @Route("/new", name="importer_new", options={"expose"=true}, methods={"GET","POST"})
      */
-    public function new(Request $request, SluggerInterface $slugger, ProfilRepository $profilRepo): Response
+    public function new(Request $request, SluggerInterface $slugger, ProfilRepository $profilRepo, ImporterRepository $importerRepo): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $importer = new Importer();
         $form = $this->createForm(ImporterType::class, $importer);
 
@@ -44,7 +48,23 @@ class ImporterController extends AbstractController
             $importer->setManager($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($importer);
+            $old = $importerRepo->findOneBy(['name' => $importer->getName()]);
+            if (!$old) {
+                $entityManager->persist($importer);
+                $entityManager->flush();
+            } else {
+                if (!$old->getEmail()) {
+                    $old->setEmail($importer->getEmail());
+                }
+                if (!$old->getAddress()) {
+                    $old->setAddress($importer->getAddress());
+                }
+                if (!$old->getPhone()) {
+                    $old->setPhone($importer->getPhone());
+                }
+                $importer = $old;
+            }
+
             $entityManager->flush();
 
             $message = 'Importeur enregister avec succès';
@@ -54,7 +74,7 @@ class ImporterController extends AbstractController
                     'typeMessage' => 'success',
                     'message' => $message,
                     'id' => $importer->getId(),
-                    'fullname' => $importer->getFullname()
+                    'name' => $importer->getName()
                 ]);
             }
             $this->addFlash('success', $message);
@@ -68,7 +88,10 @@ class ImporterController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             $view = $this->renderView('importer/modal_add.html.twig', $data);
-            return new JsonResponse($view);
+            return new JsonResponse([
+                'typeMessage' => 'view',
+                'view' => $view
+            ]);
         }
 
         return $this->render('importer/new.html.twig', $data);
@@ -79,6 +102,8 @@ class ImporterController extends AbstractController
      */
     public function show(Importer $importer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('importer/show.html.twig', [
             'importer' => $importer,
         ]);
@@ -89,6 +114,8 @@ class ImporterController extends AbstractController
      */
     public function edit(Request $request, Importer $importer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(ImporterType::class, $importer);
         $form->handleRequest($request);
 
@@ -109,6 +136,8 @@ class ImporterController extends AbstractController
      */
     public function delete(Request $request, Importer $importer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$importer->getId(), $request->request->get('_token'))) {
             try{
                 $entityManager = $this->getDoctrine()->getManager();

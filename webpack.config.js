@@ -28,9 +28,9 @@ Encore
     .addEntry('home', './assets/js/guest/home.js')
     .addEntry('menu', './assets/js/menu/menu.js')
     .addEntry('register', './assets/js/guest/register.js')
-    .addEntry('importer', './assets/js/importer/script.js')
-    .addEntry('vehicle', './assets/js/vehicle/script.js')
-    .addEntry('transfer', './assets/js/transfer/script.js')
+    .addEntry('importer', './assets/js/importer/importer.js')
+    .addEntry('vehicle', './assets/js/vehicle/vehicle.js')
+    .addEntry('transfer', './assets/js/transfer/transfer.js')
   //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

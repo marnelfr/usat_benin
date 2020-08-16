@@ -15,10 +15,7 @@ class ImporterType extends AbstractType
 
         $builder
             ->add('name', null, [
-                'label' => 'Prénom'
-            ])
-            ->add('lastName', null, [
-                'label' => 'Nom'
+                'label' => 'Raison sociale'
             ])
             ->add('phone', null, [
                 'label' => 'N° Téléphone'

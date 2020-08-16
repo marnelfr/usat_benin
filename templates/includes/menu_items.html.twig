@@ -20,38 +20,33 @@
     <ul class="nav nav-treeview">
       <li class="nav-item">
         <a href="{{ path('transfer_new') }}" id="{{ 'transfer_new'|md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
+          <i class="fas fa-plus-circle nav-icon"></i>
           <p>Nouvelle demande</p>
         </a>
       </li>
-      <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>
-            Liste des transferts
-            <i class="right fas fa-angle-left"></i>
-          </p>
+      <li class="nav-item">
+        <a href="{{ path('transfer_index') }}" id="{{ 'transfer_index'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes en attente</p>
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="{{ path('transfer_index') }}" id="{{ 'transfer_index'|md5 }}" class="nav-link">
-              <i class="far fa-dot-circle nav-icon"></i>
-              <p>En cours</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ path('transfer_index_rejected') }}" id="{{ 'transfer_index_rejected'|md5 }}" class="nav-link">
-              <i class="far fa-dot-circle nav-icon"></i>
-              <p>Rejetés</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ path('transfer_index_finalized') }}" id="{{ 'transfer_index_finalized'|md5 }}" class="nav-link">
-              <i class="far fa-dot-circle nav-icon"></i>
-              <p>Finalisés</p>
-            </a>
-          </li>
-        </ul>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('transfer_index_inprogress') }}" id="{{ 'transfer_index_inprogress'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes en cours</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('transfer_index_rejected') }}" id="{{ 'transfer_index_rejected'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes rejetés</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('transfer_index_finalized') }}" id="{{ 'transfer_index_finalized'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demande finalisés</p>
+        </a>
       </li>
     </ul>
   </li>
@@ -80,16 +75,6 @@
       </li>
     </ul>
   </li>
-
-  {#Vehicule#}
-  <li class="nav-item">
-    <a href="{{ path('vehicle_index') }}" id="{{ 'vehicle_index'|md5 }}" class="nav-link">
-      <i class="nav-icon fas fa-tachometer-alt"></i>
-      <p>
-        Mes véhicules
-        {#<i class="right fas fa-angle-left"></i>#}
-      </p>
-    </a>
     {#<ul class="nav nav-treeview">
       <li class="nav-item">
         <a href="{{ path('vehicle_new') }}" id="{{ |md5 }}" class="nav-link">
@@ -176,6 +161,16 @@
   </li>
 
 {% endif %}
+
+  {#Vehicule#}
+<li class="nav-item">
+  <a href="{{ path('vehicle_index') }}" id="{{ 'vehicle_index'|md5 }}" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+      Mes véhicules
+      {#<i class="right fas fa-angle-left"></i>#}
+    </p>
+  </a>
 
 {% if app.user.profil.slug == 'admin' %}
 

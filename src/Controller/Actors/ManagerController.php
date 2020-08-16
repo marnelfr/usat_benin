@@ -25,15 +25,17 @@ class ManagerController extends AbstractController
      */
     public function index(EntityManagerInterface $em)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $transfertRepo = $em->getRepository(Transfer::class);
 
-        $finalized = count($transfertRepo->findBy(['status' => 'finalized']));
-        $inprogress = count($transfertRepo->findBy(['status' => 'inprogress']));
-        $rejected = count($transfertRepo->findBy(['status' => 'rejected']));
+        $finalized = count($transfertRepo->findBy(['status' => 'finalized', 'manager' => $this->getUser()]));
+        $waiting = count($transfertRepo->findBy(['status' => 'waiting', 'manager' => $this->getUser()]));
+        $rejected = count($transfertRepo->findBy(['status' => 'rejected', 'manager' => $this->getUser()]));
         $importer = count($em->getRepository(Importer::class)->findBy(['manager' => $this->getUser(), 'deleted'=> 0]));
 
         return $this->render('actors/manager/index.html.twig', compact(
-            'finalized', 'inprogress', 'rejected', 'importer'
+            'finalized', 'waiting', 'rejected', 'importer'
         ));
     }
 }

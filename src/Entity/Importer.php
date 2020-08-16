@@ -22,15 +22,9 @@ class Importer
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Veuillez renseigner le prénom")
+     * @Assert\NotBlank(message="Veuillez renseigner la raison sociale")
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Veuillez renseigner le nom")
-     */
-    private $lastName;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
@@ -89,18 +83,6 @@ class Importer
     public function setName(string $name): self
     {
         $this->name = ucwords(strtolower($name));
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = mb_strtoupper($lastName);
 
         return $this;
     }
@@ -210,11 +192,11 @@ class Importer
 
     public function getFullname()
     {
-        return $this->name . ' ' . $this->lastName;
+        return $this->name;
     }
 
     public function __toString()
     {
-        return $this->name . ' ' . $this->lastName;
+        return $this->name;
     }
 }

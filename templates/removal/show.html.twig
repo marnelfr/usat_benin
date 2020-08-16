@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Removal{% endblock %}
+
+{% block body %}
+    <h1>Removal</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ removal.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ removal.status }}</td>
+            </tr>
+            <tr>
+                <th>BfuNum</th>
+                <td>{{ removal.bfuNum }}</td>
+            </tr>
+            <tr>
+                <th>EntryNum</th>
+                <td>{{ removal.entryNum }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('removal_index') }}">back to list</a>
+
+    <a href="{{ path('removal_edit', {'id': removal.id}) }}">edit</a>
+
+    {{ include('removal/_delete_form.html.twig') }}
+{% endblock %}

@@ -11,8 +11,12 @@ export default class Modal {
   }
 
   show(callable) {
-    this.modal.modal('show')
-    this.modal.on('shown.bs.modal', callable)
+    let $this = this
+    $this.modal.modal('show')
+    $this.modal.on('shown.bs.modal', callable)
+    $this.modal.on('hidden.bs.modal', function () {
+      $this.modal.remove()
+    })
   }
 
   hide() {

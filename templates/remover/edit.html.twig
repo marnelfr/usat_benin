@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Remover{% endblock %}
+
+{% block body %}
+    <h1>Edit Remover</h1>
+
+    {{ include('remover/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('remover_index') }}">back to list</a>
+
+    {{ include('remover/_delete_form.html.twig') }}
+{% endblock %}

@@ -4,12 +4,21 @@ namespace App\Entity;
 
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+/*  *** @Table(name="vehicle",
+ *    uniqueConstraints={
+ *        @UniqueConstraint(name="brand_chassis_unique",
+ *            columns={"chassis", "brand.name"})
+ *    }
+ * )*/
+
 
 /**
  * @ORM\Entity(repositoryClass=VehicleRepository::class)
- * @UniqueEntity(fields="chassis", message="Un véhicule existe déjà avec ce numero châssis")
+ * @UniqueEntity(fields={"chassis", "brand"}, message="Un véhicule de même marque existe déjà avec ce numero châssis")
  */
 class Vehicle
 {
@@ -21,8 +30,9 @@ class Vehicle
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\NotBlank(message="Vous devez renseigner un numéro châssis")
+     * @Assert\Length(17)
      */
     private $chassis;
 
@@ -94,6 +104,12 @@ class Vehicle
      * @ORM\Column(type="string", length=255)
      */
     private $bolFileName;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vehicles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -263,6 +279,18 @@ class Vehicle
     public function setBolFileName(string $bolFileName): self
     {
         $this->bolFileName = $bolFileName;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

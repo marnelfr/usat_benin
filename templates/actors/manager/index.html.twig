@@ -16,8 +16,8 @@
         type_bloc: 'bg-green'
       } %}
       {% include 'includes/dashboard_bloc.html.twig' with {
-        total_item: inprogress,
-        name_bloc: inprogress > 1 ? 'Transferts en cours' : 'Transfert en cours',
+        total_item: waiting,
+        name_bloc: waiting > 1 ? 'Transferts en attente' : 'Transfert en attente',
         icon_bloc: 'fas fa-tachometer-alt',
         link_more_info: path('transfer_index'),
         type_bloc: 'bg-yellow'

@@ -19,10 +19,10 @@ $(function () {
   let btnImporter = new Button('#vehicle-new-importer')
 
   btnImporter.click(function () {
-    $.get(Routing.generate('importer_new')).then(function (view) {
+    $.get(Routing.generate('importer_new')).then(function (data) {
       btnImporter.reset()
       let modal = new Modal()
-      modal.setContent(view)
+      modal.setContent(data.view)
 
       modal.show(function () {
         let modalBtnSaver = new Button('#modal-importer-saver')
@@ -37,15 +37,18 @@ $(function () {
             contentType: false,
             success: function (data) {
               if (!!data.typeMessage) {
-                u.notif(data.message, data.typeMessage)
                 if (data.typeMessage === 'success') {
-                  // TODO: Recuperer le select
-                  let select = $('#transfer_vehicle_importer')
-                  select.prepend(`<option value="${data.id}">${data.fullname}</option>`)
+                  u.notif(data.message, data.typeMessage)
+                  if (data.typeMessage === 'success') {
+                    let select = $('#vehicle_importer')
+                    select.prepend(`<option value="${data.id}">${data.name}</option>`)
 
-                  //Ici, j'essaie d'afficher en même temps l'importer
-                  select.val(data.id)
-                  modal.hide()
+                    //Ici, j'essaie d'afficher en même temps l'importer
+                    select.val(data.id)
+                    modal.hide()
+                  }
+                } else {
+                  modal.setContent(data.view)
                 }
               } else {
                 u.notif('Echec de chargement.', 'danger')

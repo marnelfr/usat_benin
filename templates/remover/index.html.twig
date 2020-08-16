@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remover index{% endblock %}
+
+{% block body %}
+    <h1>Remover index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for remover in removers %}
+            <tr>
+                <td>{{ remover.id }}</td>
+                <td>{{ remover.name }}</td>
+                <td>{{ remover.lastName }}</td>
+                <td>{{ remover.phone }}</td>
+                <td>{{ remover.email }}</td>
+                <td>{{ remover.address }}</td>
+                <td>
+                    <a href="{{ path('remover_show', {'id': remover.id}) }}">show</a>
+                    <a href="{{ path('remover_edit', {'id': remover.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('remover_new') }}">Create new</a>
+{% endblock %}

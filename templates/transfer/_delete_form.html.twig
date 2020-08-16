@@ -1,4 +1,4 @@
-{% if transfer.status != 'inprogress' %}
+{% if transfer.status != 'waiting' %}
   <button disabled title="Seulement les demandes en attentes peuvent être annulées" class="btn btn-danger"><i class="fas fa-times-circle"></i> {{ label|default('') }}</button>
 {% else %}
   <form method="post" style="display: inline" action="{{ path('transfer_delete', {'id': transfer.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler la demande de transfert ?');">
