@@ -15,15 +15,67 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RemovalController extends AbstractController
 {
+    private $repo;
+
+    public function __construct(RemovalRepository $removalRepository)
+    {
+        $this->repo = $removalRepository;
+    }
+
+
     /**
      * @Route("/", name="removal_index", methods={"GET"})
      */
-    public function index(RemovalRepository $removalRepository): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render('removal/index.html.twig', [
-            'removals' => $removalRepository->findAll(),
+            'title' => 'En attente',
+            'noData' => 'Aucune demande en attente',
+            'transfers' => $this->repo->findBy(['status' => 'waiting', 'agent' => $this->getUser()], ['id' => 'DESC']),
+        ]);
+//        return $this->render('removal/index.html.twig', [
+//            'removals' => $removalRepository->findAll(),
+//        ]);
+    }
+    /**
+     * @Route("/inprogress", name="removal_index_inprogress", methods={"GET"})
+     */
+    public function index_inprogress(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('removal/index.html.twig', [
+            'title' => 'en Cours',
+            'noData' => 'Aucune demande en cours de traitement',
+            'transfers' => $this->repo->findBy(['status' => 'inprogress', 'agent' => $this->getUser()], ['id' => 'DESC']),
+        ]);
+    }
+    /**
+     * @Route("/rejected", name="removal_index_rejected", methods={"GET"})
+     */
+    public function index_rejected(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('removal/index.html.twig', [
+            'title' => 'Rejetées',
+            'noData' => 'Aucune demande rejetée',
+            'transfers' => $this->repo->findBy(['status' => 'rejected', 'agent' => $this->getUser()], ['id' => 'DESC']),
+        ]);
+    }
+    /**
+     * @Route("/finalized", name="removal_index_finalized", methods={"GET"})
+     */
+    public function index_finalized(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('removal/index.html.twig', [
+            'title' => 'Approuvées',
+            'noData' => 'Aucune demande appouvée pour le moment',
+            'transfers' => $this->repo->findBy(['status' => 'finalized', 'agent' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
 

@@ -4,7 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.bol_dir: '%kernel.project_dir%/public/uploads/bol/'
+    app.bol_dir: [
+        '%kernel.project_dir%/public/uploads/bol/',
+        '%kernel.project_dir%/public/uploads/cin/'
+    ]
 
 services:
     # default configuration for services in *this* file

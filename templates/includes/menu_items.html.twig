@@ -104,33 +104,34 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
+        <a href="{{ path('removal_new') }}" id="{{ 'removal_new'|md5 }}" class="nav-link">
+          <i class="fas fa-plus-circle nav-icon"></i>
           <p>Nouvelle demande</p>
         </a>
       </li>
-      <li class="nav-item has-treeview">
-        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>
-            Liste des enlèvements
-            <i class="right fas fa-angle-left"></i>
-          </p>
+      <li class="nav-item">
+        <a href="{{ path('removal_index') }}" id="{{ 'removal_index'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes en attente</p>
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
-              <i class="far fa-dot-circle nav-icon"></i>
-              <p>En cours</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link">
-              <i class="far fa-dot-circle nav-icon"></i>
-              <p>Finalisés</p>
-            </a>
-          </li>
-        </ul>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('removal_index_inprogress') }}" id="{{ 'removal_index_inprogress'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes en cours</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('removal_index_rejected') }}" id="{{ 'removal_index_rejected'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demandes rejetés</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('removal_index_finalized') }}" id="{{ 'removal_index_finalized'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Demande finalisés</p>
+        </a>
       </li>
     </ul>
   </li>
@@ -146,13 +147,13 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/flot.html" class="nav-link">
+        <a href="{{ path('remover_new') }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Nouveau enleveur</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/charts/inline.html" class="nav-link">
+        <a href="{{ path('remover_index') }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Liste des enleveurs</p>
         </a>
