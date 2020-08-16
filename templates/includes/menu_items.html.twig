@@ -1,5 +1,5 @@
 <li class="nav-item">
-  <a href="{{ path(dashboard_path) }}" class="nav-link">
+  <a href="{{ path(dashboard_path) }}" id="{{ dashboard_path|md5 }}" class="nav-link">
     <i class="nav-icon fas fa-tachometer-alt"></i>
     <p>
       Tableau de bord
@@ -19,7 +19,7 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{ path('transfer_new') }}" class="nav-link">
+        <a href="{{ path('transfer_new') }}" id="{{ 'transfer_new'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Nouvelle demande</p>
         </a>
@@ -34,19 +34,19 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="{{ path('transfer_index') }}" class="nav-link">
+            <a href="{{ path('transfer_index') }}" id="{{ 'transfer_index'|md5 }}" class="nav-link">
               <i class="far fa-dot-circle nav-icon"></i>
               <p>En cours</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ path('transfer_index_rejected') }}" class="nav-link">
+            <a href="{{ path('transfer_index_rejected') }}" id="{{ 'transfer_index_rejected'|md5 }}" class="nav-link">
               <i class="far fa-dot-circle nav-icon"></i>
               <p>Rejetés</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ path('transfer_index_finalized') }}" class="nav-link">
+            <a href="{{ path('transfer_index_finalized') }}" id="{{ 'transfer_index_finalized'|md5 }}" class="nav-link">
               <i class="far fa-dot-circle nav-icon"></i>
               <p>Finalisés</p>
             </a>
@@ -67,13 +67,13 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{ path('importer_new') }}" class="nav-link">
+        <a href="{{ path('importer_new') }}" id="{{ 'importer_new'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Nouveau importateur</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{{ path('importer_index') }}" class="nav-link">
+        <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Liste des importateurs</p>
         </a>
@@ -82,8 +82,8 @@
   </li>
 
   {#Vehicule#}
-  <li class="nav-item has-treeview">
-    <a href="{{ path('vehicle_index') }}" class="nav-link">
+  <li class="nav-item">
+    <a href="{{ path('vehicle_index') }}" id="{{ 'vehicle_index'|md5 }}" class="nav-link">
       <i class="nav-icon fas fa-tachometer-alt"></i>
       <p>
         Mes véhicules
@@ -92,13 +92,13 @@
     </a>
     {#<ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{ path('vehicle_new') }}" class="nav-link">
+        <a href="{{ path('vehicle_new') }}" id="{{ |md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Nouveau véhicule</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{{ path('vehicle_index') }}" class="nav-link">
+        <a href="{{ path('vehicle_index') }}" id="{{ |md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Liste des véhicules</p>
         </a>
@@ -268,6 +268,7 @@
   </ul>
 </li>#}
 
+{#
 <li class="nav-item has-treeview menu-open">
   <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="nav-link active">
     <i class="nav-icon far fa-plus-square"></i>
@@ -278,7 +279,7 @@
   </a>
   <ul class="nav nav-treeview">
     <li class="nav-item">
-      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/login.html" class="nav-link">
+      <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/login.html" class="nav-link active">
         <i class="far fa-circle nav-icon"></i>
         <p>Login</p>
       </a>
@@ -296,4 +297,4 @@
       </a>
     </li>
   </ul>
-</li>
+</li>#}

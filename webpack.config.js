@@ -26,6 +26,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('admin', './assets/js/admin.js')
     .addEntry('home', './assets/js/guest/home.js')
+    .addEntry('menu', './assets/js/menu/menu.js')
     .addEntry('register', './assets/js/guest/register.js')
     .addEntry('importer', './assets/js/importer/script.js')
     .addEntry('vehicle', './assets/js/vehicle/script.js')
