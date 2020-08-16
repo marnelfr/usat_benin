@@ -58,7 +58,7 @@ class Transfer
 
     public function __construct()
     {
-        $this->status = 'inprogress';
+        $this->status = 'waiting';
         $this->deleted = 0;
         $this->createdAt = new \DateTime();
         $this->demandeFiles = new ArrayCollection();
@@ -79,8 +79,11 @@ class Transfer
     {
         $etat = '';
         switch ($this->status) {
-            case 'inprogress':
+            case 'waiting':
                 $etat = 'En attente';
+                break;
+            case 'inprogress':
+                $etat = 'En cours';
                 break;
             case 'canceled':
                 $etat = 'Annulé';

@@ -21,8 +21,10 @@ class VehicleController extends AbstractController
      */
     public function index(VehicleRepository $vehicleRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('vehicle/index.html.twig', [
-            'vehicles' => $vehicleRepository->findBy(['deleted' => 0], ['createdAt' => 'DESC']),
+            'vehicles' => $vehicleRepository->findBy(['user' => $this->getUser(), 'deleted' => 0], ['createdAt' => 'DESC']),
         ]);
     }
 
@@ -33,6 +35,8 @@ class VehicleController extends AbstractController
      */
     public function show(Vehicle $vehicle): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
         ]);
@@ -55,6 +59,8 @@ class VehicleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
@@ -78,6 +84,8 @@ class VehicleController extends AbstractController
      */
     public function edit(Request $request, Vehicle $vehicle): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
@@ -98,6 +106,8 @@ class VehicleController extends AbstractController
      */
     public function delete(Request $request, Vehicle $vehicle): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
             try{
                 $entityManager = $this->getDoctrine()->getManager();

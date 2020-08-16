@@ -23,26 +23,44 @@ use Symfony\Component\Routing\Annotation\Route;
 class TransferController extends AbstractController
 {
     private $repo;
-    
+
     public function __construct(TransferRepository $transferRepository)
     {
         $this->repo = $transferRepository;
     }
 
     /**
-     * La liste des demande de transfert en attente
+     * La liste des demande de transfert approuver, finaliser
      *
-     * @Route("/inprogress", name="transfer_index", methods={"GET"})
+     * @Route("/waiting", name="transfer_index", methods={"GET"})
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('transfer/index.html.twig', [
+            'title' => 'En attente',
+            'noData' => 'Aucune demande en attente',
+            'transfers' => $this->repo->findBy(['status' => 'waiting', 'manager' => $this->getUser()], ['id' => 'DESC']),
+        ]);
+    }
+
+    /**
+     * La liste des demande de transfert en attente
+     *
+     * @Route("/inprogress", name="transfer_index_inprogress", methods={"GET"})
+     */
+    public function index_waiting(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('transfer/index.html.twig', [
             'title' => 'en Cours',
             'noData' => 'Aucune demande en cours de traitement',
-            'transfers' => $this->repo->findBy(['status' => 'inprogress'], ['id' => 'DESC']),
+            'transfers' => $this->repo->findBy(['status' => 'inprogress', 'manager' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
-    
+
     /**
      * La liste des demande de transfert approuver, finaliser
      *
@@ -50,13 +68,15 @@ class TransferController extends AbstractController
      */
     public function index_finalized(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('transfer/index.html.twig', [
             'title' => 'Approuvées',
             'noData' => 'Aucune demande appouvée pour le moment',
-            'transfers' => $this->repo->findBy(['status' => 'finalized'], ['id' => 'DESC']),
+            'transfers' => $this->repo->findBy(['status' => 'finalized', 'manager' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
-    
+
     /**
      * La liste des demande de transfert rejeter
      *
@@ -64,10 +84,12 @@ class TransferController extends AbstractController
      */
     public function index_rejected(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('transfer/index.html.twig', [
             'title' => 'Rejetées',
             'noData' => 'Aucune demande rejetée',
-            'transfers' => $this->repo->findBy(['status' => 'rejected'], ['id' => 'DESC']),
+            'transfers' => $this->repo->findBy(['status' => 'rejected', 'manager' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
 
@@ -76,6 +98,8 @@ class TransferController extends AbstractController
      */
     public function new(Request $request, FileUploader $uploader): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 //        $transfer = new Transfer();
 //        $form = $this->createForm(TransferType::class, $transfer);
         $transfer = new Transfer();
@@ -92,6 +116,7 @@ class TransferController extends AbstractController
                     $vehicle->setBolFileName(
                         $uploader->upload($bol)
                     );
+                    $vehicle->setUser($this->getUser());
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($vehicle);
 
@@ -106,7 +131,7 @@ class TransferController extends AbstractController
                     dump($e->getMessage()); die();
                 }
             }
-            $form->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
+            $form->get('bol')->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
         }
 
         return $this->render('transfer/new.html.twig', [
@@ -120,6 +145,8 @@ class TransferController extends AbstractController
      */
     public function show(Transfer $transfer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('transfer/show.html.twig', [
             'transfer' => $transfer,
         ]);
@@ -130,6 +157,8 @@ class TransferController extends AbstractController
      */
     public function edit(Request $request, Transfer $transfer, FileUploader $uploader): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $em = $this->getDoctrine()->getManager();
 
         /** @var Vehicle $vehicle */
@@ -171,6 +200,8 @@ class TransferController extends AbstractController
      */
     public function delete(Request $request, Transfer $transfer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$transfer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($transfer);

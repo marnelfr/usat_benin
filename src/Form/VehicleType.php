@@ -41,7 +41,9 @@ class VehicleType extends AbstractType
                 'placeholder' => 'Selectionnez un importateur',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('i')
-                        ->orderBy('i.id', 'DESC');
+                        ->where('i.deleted=0')
+                        ->orderBy('i.id', 'DESC')
+                    ;
                 },
                 'attr' => [
                     'class' => 'form-control'

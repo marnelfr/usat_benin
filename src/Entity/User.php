@@ -117,6 +117,11 @@ class User implements UserInterface, \Serializable
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Vehicle::class, mappedBy="user")
+     */
+    private $vehicles;
+
 
 
 
@@ -128,6 +133,7 @@ class User implements UserInterface, \Serializable
         $this->createdAt = new \DateTime();
         $this->processings = new ArrayCollection();
         $this->fleets = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
     }
 
 
@@ -443,5 +449,36 @@ class User implements UserInterface, \Serializable
     public function __toString()
     {
         return $this->name . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return Collection|Vehicle[]
+     */
+    public function getVehicles(): Collection
+    {
+        return $this->vehicles;
+    }
+
+    public function addVehicle(Vehicle $vehicle): self
+    {
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles[] = $vehicle;
+            $vehicle->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicle(Vehicle $vehicle): self
+    {
+        if ($this->vehicles->contains($vehicle)) {
+            $this->vehicles->removeElement($vehicle);
+            // set the owning side to null (unless already changed)
+            if ($vehicle->getUser() === $this) {
+                $vehicle->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

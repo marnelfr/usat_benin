@@ -6,6 +6,7 @@ import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources
 import Modal from '../import/modal'
 import u from '../import/utility'
 
+/*
 $(function () {
   Routing.setRoutingData(routes);
 
@@ -59,4 +60,4 @@ $(function () {
     })
   })
 
-})
+})*/

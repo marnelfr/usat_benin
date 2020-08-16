@@ -4,7 +4,7 @@
 
 {% block page_title %}Importateur {% endblock %}
 {% block page_title2 %}Importateur {% endblock %}
-{% block page_subtitle %}{{ importer.name }} {{ importer.lastName }}{% endblock %}
+{% block page_subtitle %}{{ importer.name }}{% endblock %}
 
 {% block page_content %}
   <div class="row pb-3">
@@ -29,12 +29,8 @@
           <table class="table">
             <tbody>
             <tr>
-              <th>Prénom</th>
+              <th>Raison sociale</th>
               <td>{{ importer.name }}</td>
-            </tr>
-            <tr>
-              <th>Nom</th>
-              <td>{{ importer.lastName }}</td>
             </tr>
             <tr>
               <th>N° Téléphone</th>

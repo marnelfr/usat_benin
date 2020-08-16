@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Removal index{% endblock %}
+
+{% block body %}
+    <h1>Removal index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>BfuNum</th>
+                <th>EntryNum</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for removal in removals %}
+            <tr>
+                <td>{{ removal.id }}</td>
+                <td>{{ removal.status }}</td>
+                <td>{{ removal.bfuNum }}</td>
+                <td>{{ removal.entryNum }}</td>
+                <td>
+                    <a href="{{ path('removal_show', {'id': removal.id}) }}">show</a>
+                    <a href="{{ path('removal_edit', {'id': removal.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('removal_new') }}">Create new</a>
+{% endblock %}

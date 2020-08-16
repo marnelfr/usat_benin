@@ -43,7 +43,7 @@
                                 <td class="text-center">{{ transfer.state }}</td>
                                 <td class="text-right">
                                     <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('transfer_show', {'id': transfer.id}) }}"><i class="fas fa-eye"></i></a>
-                                  {% if transfer.status != 'inprogress' %}
+                                  {% if transfer.status != 'waiting' %}
                                       <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                                   {% else %}
                                       <a class="btn btn-primary" title="Modifier la demande" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i></a>

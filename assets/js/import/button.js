@@ -8,7 +8,7 @@ export default class Button {
 
   click(callable) {
     let $this = this
-    this.btn.click(function (e) {
+    this.btn.off('click').click(function (e) {
       e.preventDefault()
       $this.loading()
       callable()
