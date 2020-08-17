@@ -68,8 +68,20 @@ class Removal
      */
     private $processings;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
+        $this->deleted = 0;
+        $this->createdAt = new \DateTime();
         $this->demandeFiles = new ArrayCollection();
         $this->processings = new ArrayCollection();
     }
@@ -82,6 +94,27 @@ class Removal
     public function getStatus(): ?string
     {
         return $this->status;
+    }
+
+    public function getState(): ?string
+    {
+        switch ($this->status) {
+            case 'waiting':
+                $etat = 'En attente';
+                break;
+            case 'inprogress':
+                $etat = 'En cours';
+                break;
+            case 'canceled':
+                $etat = 'Annulée';
+                break;
+            case 'finalized':
+                $etat = 'Approuvée';
+                break;
+            default:
+                $etat = 'Rejetée';
+        }
+        return $etat;
     }
 
     public function setStatus(string $status): self
@@ -221,6 +254,30 @@ class Removal
                 $processing->setRemoval(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

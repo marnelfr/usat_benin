@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class VehicleController extends AbstractController
 {
+
+    /**
+     * @var FileUploader
+     */
+    private $uploader;
+
+    public function __construct(FileUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
+
     /**
      * @Route("/", name="vehicle_index", methods={"GET"})
      */
@@ -55,11 +68,58 @@ class VehicleController extends AbstractController
         return new Response('access denied');
     }
 
-    /*
+    /**
+     * Est utiliser pour la création des vehicules au niveau des demandes d'enlevement
+     *
      * @Route("/new", name="vehicle_new", methods={"GET","POST"})
+     * @param Request           $request
+     * @param RemovalController $removalController
+     * @param array             $data => Les données reçues lorsque la methode new est directement appelé depuis RemovalController
+     *
+     * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, RemovalController $removalController, array $data = []): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $vehicle = new Vehicle();
+        if ($data) {
+            $vehicle->setChassis($data['chassis'])
+                ->setBrand($data['brand']);
+        }
+        $form = $this->createForm(VehicleType::class, $vehicle);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $bol */
+            $bol = $form->get('bol')->getData();
+
+            if ($bol) {
+//                try {
+                    $file = $this->uploader->upload($bol);
+                    $vehicle->setBolFileName(
+                        $file->getLink()
+                    );
+
+                    $vehicle->setUser($this->getUser());
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($vehicle);
+                    $entityManager->flush();
+                    return $removalController->newSaver($request, $vehicle);
+//                }catch (\Exception $e) {
+//                    dd($e->getMessage());
+//                }
+            }
+
+//            return $this->redirectToRoute('vehicle_index');
+        }
+
+        return $this->render('vehicle/new.html.twig', [
+            'vehicle' => $vehicle,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function newBack() {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         dump($request->request->all(), $request->query->all()); die();
         $vehicle = new Vehicle();

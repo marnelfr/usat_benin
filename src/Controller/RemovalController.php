@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Removal;
-use App\Entity\Ship;
 use App\Entity\Vehicle;
-use App\Form\CheckVehicleType;
 use App\Form\RemovalType;
 use App\Repository\RemovalRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class RemovalController extends AbstractController
 {
     private $repo;
+    private $vehicleRepo;
+    /**
+     * @var VehicleController
+     */
+    private $vehicleController;
 
-    public function __construct(RemovalRepository $removalRepository)
+    public function __construct(RemovalRepository $removalRepository, VehicleRepository $vehicleRepository, VehicleController $controller)
     {
         $this->repo = $removalRepository;
+        $this->vehicleRepo = $vehicleRepository;
+        $this->vehicleController = $controller;
     }
 
 
@@ -36,7 +42,7 @@ class RemovalController extends AbstractController
         return $this->render('removal/index.html.twig', [
             'title' => 'En attente',
             'noData' => 'Aucune demande en attente',
-            'transfers' => $this->repo->findBy(['status' => 'waiting', 'agent' => $this->getUser()], ['id' => 'DESC']),
+            'removals' => $this->repo->findBy(['status' => 'waiting', 'agent' => $this->getUser()], ['id' => 'DESC']),
         ]);
 //        return $this->render('removal/index.html.twig', [
 //            'removals' => $removalRepository->findAll(),
@@ -52,7 +58,7 @@ class RemovalController extends AbstractController
         return $this->render('removal/index.html.twig', [
             'title' => 'en Cours',
             'noData' => 'Aucune demande en cours de traitement',
-            'transfers' => $this->repo->findBy(['status' => 'inprogress', 'agent' => $this->getUser()], ['id' => 'DESC']),
+            'removals' => $this->repo->findBy(['status' => 'inprogress', 'agent' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
     /**
@@ -65,7 +71,7 @@ class RemovalController extends AbstractController
         return $this->render('removal/index.html.twig', [
             'title' => 'Rejetées',
             'noData' => 'Aucune demande rejetée',
-            'transfers' => $this->repo->findBy(['status' => 'rejected', 'agent' => $this->getUser()], ['id' => 'DESC']),
+            'removals' => $this->repo->findBy(['status' => 'rejected', 'agent' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
     /**
@@ -78,7 +84,7 @@ class RemovalController extends AbstractController
         return $this->render('removal/index.html.twig', [
             'title' => 'Approuvées',
             'noData' => 'Aucune demande appouvée pour le moment',
-            'transfers' => $this->repo->findBy(['status' => 'finalized', 'agent' => $this->getUser()], ['id' => 'DESC']),
+            'removals' => $this->repo->findBy(['status' => 'finalized', 'agent' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
 
@@ -86,57 +92,30 @@ class RemovalController extends AbstractController
      * Pour l'affichage du formulaire d'enregistrement d'un enlevement
      *
      * @Route("/new", name="removal_new", methods={"GET","POST"})
+     * @param Request $request
+     *
+     * @return Response
      */
     public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        //On remplie l'object pour eviter des erreurs qui ne nous interressent pas
-        $vehicle = new Vehicle();
-        $vehicle->setConsignee('NelDev')
-            ->setUser($this->getUser())
-            ->setBolFileName('nel')
-            ->setCameAt(new \DateTime('yesterday'))
-            ->setPutInUseAt(new \DateTime('yesterday'))
-            ->setShip($this->getDoctrine()->getRepository(Ship::class)->find(1))
-        ;
-        $form = $this->createForm(CheckVehicleType::class, $vehicle);
+        $form = $this->vehicleRepo->checkVehicleForm($this->createFormBuilder());
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            //Si il y a d'erreur, ce qui nous interresse
-            if ($form->count() > 0) {
-                $old = $this->getDoctrine()->getRepository(Vehicle::class)->findOneBy([
-                    'chassis' => $vehicle->getChassis(),
-                    'brand' => $vehicle->getBrand()
-                ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $vehicle = $this->vehicleRepo->findOneBy($data);
 
-                //Si ça sous-entend que le vehicule existait...
-                // TODO: Trouver le moyen d'envoyer le truc labas
-                if ($old) {
-                    return $this->redirectToRoute('removal_new_saver', [
-                        'chassis' => $vehicle->getChassis(),
-                        'brand' => $vehicle->getBrand()->getId()
-                    ]);
-                }
-
-                goto FIN;
+            if ($vehicle) {
+                return $this->newSaver($request, $vehicle);
             }
 
-            //Si il y a pas d'erreur, alors il s'agit d'un nouveau vehicule. On redirige alors vers la création du vehicule.
-            //Après la création du vehicule, l'utilisateur pourra alors être rediriger vers le formulaire d'enregsitrement de l'enlevement
-            $ve = new Vehicle();
-            $ve->setBrand($vehicle->getBrand())
-                ->setChassis($vehicle->getChassis())
-            ;
-            return $this->redirectToRoute('vehicle_new', [
-                'vehicle' => $ve
-            ]);
+            return $this->vehicleController->new($request, $this, $data);
         }
 
-        FIN:
         return $this->render('removal/check_vehicle.html.twig', [
-            'removal' => $vehicle,
             'form' => $form->createView(),
         ]);
     }
@@ -144,27 +123,41 @@ class RemovalController extends AbstractController
     /**
      * Pour l'enregistrement effectif de l'enlevement
      *
-     * @Route("/new/save", name="removal_new_saver", methods={"POST", "GET"})
+     * @Route("/new/{id}/save", name="removal_new_saver", methods={"POST", "GET"})
+     * @param Request $request
+     * @param Vehicle $vehicle
+     *
+     * @return Response
      */
-    public function newSaver(Request $request): Response
+    public function newSaver(Request $request, Vehicle $vehicle): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        dump($request->request->all(), $request->query->all()); die();
 
         $removal = new Removal();
+        $removal->setVehicle($vehicle);
         $form = $this->createForm(RemovalType::class, $removal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($removal);
-            $entityManager->flush();
+
+            if ($this->repo->findOneBy(['vehicle' => $vehicle])) {
+                $this->addFlash('warning', 'Une demande d\'enlevement a déjà été fait pour ce véhicule');
+            }else{
+                $removal->setStatus('waiting')
+                    ->setAgent($this->getUser());
+
+                $entityManager->persist($removal);
+                $entityManager->flush();
+                $this->addFlash('success', 'Demande d\'enlevement envoyée avec succès');
+            }
 
             return $this->redirectToRoute('removal_index');
         }
 
         return $this->render('removal/new.html.twig', [
             'removal' => $removal,
+            'vehicle' => $vehicle,
             'form' => $form->createView(),
         ]);
     }

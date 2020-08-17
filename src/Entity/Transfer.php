@@ -77,7 +77,6 @@ class Transfer
 
     public function getState(): ?string
     {
-        $etat = '';
         switch ($this->status) {
             case 'waiting':
                 $etat = 'En attente';
@@ -86,13 +85,13 @@ class Transfer
                 $etat = 'En cours';
                 break;
             case 'canceled':
-                $etat = 'Annulé';
+                $etat = 'Annulée';
                 break;
             case 'finalized':
-                $etat = 'Approuvé';
+                $etat = 'Approuvée';
                 break;
             default:
-                $etat = 'Rejeté';
+                $etat = 'Rejetée';
         }
         return $etat;
     }

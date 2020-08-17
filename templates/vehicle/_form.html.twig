@@ -1,7 +1,7 @@
-{{ form_start(form) }}
+{{ form_start(form, {action: path('vehicle_new'), method: 'POST'}) }}
 
-    {{ form_row(form.chassis) }}
     {{ form_row(form.brand) }}
+    {{ form_row(form.chassis) }}
     {{ form_row(form.ship) }}
     {{ form_row(form.consignee) }}
 
@@ -20,10 +20,11 @@
 
     {{ form_row(form.putInUseAt) }}
     {{ form_row(form.cameAt) }}
+    {{ form_row(form.bol) }}
 
     <div class="row text-right">
       <div class="col-md-12">
-        <button id="vehicle-new-saver" class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>
+        <button id="vehicle-new-saver" class="btn btn-success">{{ button_label|default('Suivant') }} <i class="fas fa-angle-double-right"></i></button>
       </div>
     </div>
 {{ form_end(form) }}
