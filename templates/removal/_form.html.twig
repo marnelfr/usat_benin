@@ -1,5 +1,5 @@
-{{ form_start(form) }}
-    {{ form_row(form.vehicle) }}
+{{ form_start(form, {action: path('removal_new_saver', {id: vehicle.id}), method: 'POST'}) }}
+    {{ form_row(form.vehicule, {value: vehicle.brand.name ~ ' - ' ~ vehicle.chassis}) }}
     {{ form_row(form.bfuNum) }}
     {{ form_row(form.entryNum) }}
 

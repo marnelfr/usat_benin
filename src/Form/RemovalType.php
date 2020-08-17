@@ -14,8 +14,15 @@ class RemovalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('vehicle', null, [
+            /*->add('vehicle', null, [
                 'label' => 'Véhicule',
+                'attr' => [
+                    'disabled' => true
+                ]
+            ])*/
+            ->add('vehicule', null, [
+                'label' => 'Véhicule',
+                'mapped' => false,
                 'attr' => [
                     'disabled' => true
                 ]
