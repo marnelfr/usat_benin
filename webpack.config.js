@@ -32,6 +32,7 @@ Encore
     .addEntry('remover', './assets/js/remover/remover.js')
     .addEntry('vehicle', './assets/js/vehicle/vehicle.js')
     .addEntry('transfer', './assets/js/transfer/transfer.js')
+    .addEntry('removal', './assets/js/removal/removal.js')
   //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

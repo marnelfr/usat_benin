@@ -50,31 +50,6 @@
       </li>
     </ul>
   </li>
-
-  {#Importateur#}
-  <li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
-      <i class="nav-icon fas fa-tachometer-alt"></i>
-      <p>
-        Mes importateurs
-        <i class="right fas fa-angle-left"></i>
-      </p>
-    </a>
-    <ul class="nav nav-treeview">
-      <li class="nav-item">
-        <a href="{{ path('importer_new') }}" id="{{ 'importer_new'|md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Nouveau importateur</p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Liste des importateurs</p>
-        </a>
-      </li>
-    </ul>
-  </li>
     {#<ul class="nav nav-treeview">
       <li class="nav-item">
         <a href="{{ path('vehicle_new') }}" id="{{ |md5 }}" class="nav-link">
@@ -162,6 +137,31 @@
   </li>
 
 {% endif %}
+
+  {#Importateur#}
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="nav-icon fas fa-tachometer-alt"></i>
+    <p>
+      Mes importateurs
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{{ path('importer_new') }}" id="{{ 'importer_new'|md5 }}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Nouveau importateur</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Liste des importateurs</p>
+      </a>
+    </li>
+  </ul>
+</li>
 
   {#Vehicule#}
 <li class="nav-item">

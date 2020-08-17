@@ -1,39 +1,76 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}Removal index{% endblock %}
+{% block title %}Demandes {{ title }}{% endblock %}
 
-{% block body %}
-    <h1>Removal index</h1>
+{% block page_title %}Enlevement{% endblock %}
+{% block page_title2 %}Enlevement{% endblock %}
+{% block page_subtitle %}Demandes {{ title }}{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>BfuNum</th>
-                <th>EntryNum</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for removal in removals %}
-            <tr>
-                <td>{{ removal.id }}</td>
-                <td>{{ removal.status }}</td>
-                <td>{{ removal.bfuNum }}</td>
-                <td>{{ removal.entryNum }}</td>
-                <td>
-                    <a href="{{ path('removal_show', {'id': removal.id}) }}">show</a>
-                    <a href="{{ path('removal_edit', {'id': removal.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('removal_new') }}"><i class="fas fa-plus-circle"></i> Nouvelle Demande</a>
+        </div>
+    </div>
 
-    <a href="{{ path('removal_new') }}">Create new</a>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list"></i> Liste de Demandes</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>&ensp;Véhicule</th>
+                            <th class="text-center">Date de demande</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-right">Actions&ensp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for removal in removals %}
+                            <tr>
+                                <td>{{ removal.vehicle.brand.name ~ ' - ' ~ removal.vehicle.chassis }}</td>
+                                <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}</td>
+                                <td class="text-center">{{ removal.state }}</td>
+                                <td class="text-right">
+                                    <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('removal_show', {'id': removal.id}) }}"><i class="fas fa-eye"></i></a>
+                                  {% if removal.status != 'waiting' %}
+                                      <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                                  {% else %}
+                                      <a class="btn btn-primary" title="Modifier la demande" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i></a>
+                                  {% endif %}
+                                  {{ include('removal/_delete_form.html.twig') }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-center text-bold" colspan="5">{{ noData }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <thead>
+                        <tr>
+                            <th>&ensp;Véhicule</th>
+                            <th class="text-center">Date de demande</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-right">Actions&ensp;</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
 {% endblock %}
