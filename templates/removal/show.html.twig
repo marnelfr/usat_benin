@@ -1,34 +1,114 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}Removal{% endblock %}
+{% block title %}Demande{% endblock %}
 
-{% block body %}
-    <h1>Removal</h1>
+{% block page_title %}Enlevement{% endblock %}
+{% block page_title2 %}Enlevement{% endblock %}
+{% block page_subtitle %}Demande d'Enlevement{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('removal') }}
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ removal.id }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ removal.status }}</td>
-            </tr>
-            <tr>
-                <th>BfuNum</th>
-                <td>{{ removal.bfuNum }}</td>
-            </tr>
-            <tr>
-                <th>EntryNum</th>
-                <td>{{ removal.entryNum }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('removal_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
+        </div>
+    </div>
 
-    <a href="{{ path('removal_index') }}">back to list</a>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-eye"></i> Demande d'Enlevement</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Châssis</th>
+                            <td>{{ removal.vehicle.chassis }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marque</th>
+                            <td>{{ removal.vehicle.brand.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Navire</th>
+                            <td>{{ removal.vehicle.ship.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Importateur</th>
+                            <td>{{ removal.vehicle.remover.fullname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mise en circulation</th>
+                            <td>{{ removal.vehicle.putInUseAt ? removal.vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'arrivée</th>
+                            <td>{{ removal.vehicle.cameAt ? removal.vehicle.cameAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Consignataire</th>
+                            <td>{{ removal.vehicle.consignee }}</td>
+                        </tr>
+                        {#<tr>
+                            <th>Date d'enregistrement</th>
+                            <td>{{ transfer.vehicle.createdAt ? transfer.vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.vehicle.createdAt|date('H:i:s') : '' }}</td>
+                        </tr>#}
 
-    <a href="{{ path('removal_edit', {'id': removal.id}) }}">edit</a>
+                        <tr>
+                            <th>N° BFU</th>
+                            <td>{{ removal.bfuNum }}</td>
+                        </tr>
+                        <tr>
+                            <th>N° Enregistrement</th>
+                            <td>{{ removal.entryNum }}</td>
+                        </tr>
 
-    {{ include('removal/_delete_form.html.twig') }}
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ removal.state }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Date de demande</th>
+                            <td>
+                              {{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <button data-id="{{ removal.vehicle.id }}" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                  {{ include('removal/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
+                  {% if removal.status != 'waiting' %}
+                      <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
+                  {% else %}
+                      <a class="btn btn-primary float-right" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('removal') }}
 {% endblock %}

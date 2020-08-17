@@ -1,4 +1,65 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.vehicle) }}
+    {{ form_row(form.bfuNum) }}
+    {{ form_row(form.entryNum) }}
+
+    <div class="input-group">
+      {{ form_label(form.remover) }}
+    </div>
+    <div class="input-group pb1em">
+      {{ form_widget(form.remover) }}
+      <span class="input-group-btn">
+        <button type="button" id="vehicle-new-remover" data-toggle="modal" data-target="#modal-vehicle-new-remover" class="btn btn-primary">
+          <i class="fas fa-plus-circle"></i> Nouveau
+        </button>
+      </span>
+    </div>
+
+    {{ form_row(form.payBank) }}
+    <div class="row text-right">
+        <div class="col-md-12">
+            <button id="removal-new-saver" class="btn btn-success float-right"><i class="fas fa-paper-plane"></i> {{ button_label|default('Envoyer la demande') }}</button>
+          {#<button id="vehicle-new-saver" class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>#}
+        </div>
+    </div>
 {{ form_end(form) }}
+
+
+
+
+{#
+{{ form_start(form) }}
+    {{ form_row(form.vehicle.chassis) }}
+    {{ form_row(form.vehicle.brand) }}
+    {{ form_row(form.vehicle.ship) }}
+    {{ form_row(form.vehicle.consignee) }}
+
+    #}
+{#{{ form_row(form.importer) }}#}{#
+
+<div class="input-group">
+  {{ form_label(form.importer) }}
+</div>
+<div class="input-group pb1em">
+  {{ form_widget(form.importer) }}
+    <span class="input-group-btn">
+            <button type="button" id="vehicle-new-importer" data-toggle="modal" data-target="#modal-vehicle-new-importer" class="btn btn-primary">
+              <i class="fas fa-plus-circle"></i> Nouveau
+            </button>
+          </span>
+</div>
+
+{{ form_row(form.putInUseAt) }}
+    {{ form_row(form.cameAt) }}
+    {{ form_row(form.bol) }}
+
+<div class="row text-right">
+    <div class="col-md-12">
+        <button id="transfer-new-saver" class="btn btn-success float-right"><i class="fas fa-paper-plane"></i> {{ button_label|default('Envoyer la demande') }}</button>
+      #}
+{#<button id="vehicle-new-saver" class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>#}{#
+
+    </div>
+</div>
+{{ form_end(form) }}
+#}

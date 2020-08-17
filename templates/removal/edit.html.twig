@@ -1,13 +1,46 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-admin.html.twig' %}
 
-{% block title %}Edit Removal{% endblock %}
+{% block title %}Modification de Demande{% endblock %}
 
-{% block body %}
-    <h1>Edit Removal</h1>
+{% block page_title %}Enlevement{% endblock %}
+{% block page_title2 %}Enlevement{% endblock %}
+{% block page_subtitle %}Modification{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('removal') }}
+{% endblock %}
 
-    {{ include('removal/_form.html.twig', {'button_label': 'Update'}) }}
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('removal_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Cours</a>
+        </div>
+    </div>
 
-    <a href="{{ path('removal_index') }}">back to list</a>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-edit"></i> Modification de Demande</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+                  {{ include('removal/_form.html.twig', {'button_label': 'Renvoyer la demande'}) }}
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
+{% endblock %}
 
-    {{ include('removal/_delete_form.html.twig') }}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('removal') }}
 {% endblock %}
