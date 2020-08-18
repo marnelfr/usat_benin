@@ -76,11 +76,17 @@ class Remover
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Vehicle::class, mappedBy="remover")
+     */
+    private $vehicles;
+
     public function __construct()
     {
         $this->deleted = 0;
         $this->createdAt = new \DateTime();
         $this->removals = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,5 +241,36 @@ class Remover
     public function __toString()
     {
         return $this->getFullname();
+    }
+
+    /**
+     * @return Collection|Vehicle[]
+     */
+    public function getVehicles(): Collection
+    {
+        return $this->vehicles;
+    }
+
+    public function addVehicle(Vehicle $vehicle): self
+    {
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles[] = $vehicle;
+            $vehicle->setRemover($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicle(Vehicle $vehicle): self
+    {
+        if ($this->vehicles->contains($vehicle)) {
+            $this->vehicles->removeElement($vehicle);
+            // set the owning side to null (unless already changed)
+            if ($vehicle->getRemover() === $this) {
+                $vehicle->setRemover(null);
+            }
+        }
+
+        return $this;
     }
 }

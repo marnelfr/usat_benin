@@ -33,6 +33,9 @@
                     <table class="table">
                         <tbody>
                         <tr>
+                            <th colspan="2">Véhicule</th>
+                        </tr>
+                        <tr>
                             <th>Châssis</th>
                             <td>{{ removal.vehicle.chassis }}</td>
                         </tr>
@@ -46,7 +49,7 @@
                         </tr>
                         <tr>
                             <th>Importateur</th>
-                            <td>{{ removal.vehicle.remover.fullname }}</td>
+                            <td>{{ removal.vehicle.importer.fullname }}</td>
                         </tr>
                         <tr>
                             <th>Mise en circulation</th>
@@ -60,34 +63,50 @@
                             <th>Consignataire</th>
                             <td>{{ removal.vehicle.consignee }}</td>
                         </tr>
-                        {#<tr>
-                            <th>Date d'enregistrement</th>
-                            <td>{{ transfer.vehicle.createdAt ? transfer.vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.vehicle.createdAt|date('H:i:s') : '' }}</td>
-                        </tr>#}
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <button data-id="{{ removal.vehicle.id }}" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <th colspan="2">Informations supplémentaires</th>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ removal.state }}</td>
+                        </tr>
                         <tr>
                             <th>N° BFU</th>
                             <td>{{ removal.bfuNum }}</td>
                         </tr>
                         <tr>
-                            <th>N° Enregistrement</th>
+                            <td colspan="2" class="text-center">
+                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher le BFU réglé</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>N° Déclaration de Douane</th>
                             <td>{{ removal.entryNum }}</td>
                         </tr>
-
                         <tr>
-                            <th>Statut</th>
-                            <td>{{ removal.state }}</td>
+                            <td colspan="2" class="text-center">
+                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher la Déclation de Douane</button>
+                            </td>
                         </tr>
-
+                        <tr>
+                            <th>Banque de payement</th>
+                            <td>{{ removal.payBank.name }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher le reçu de banque</button>
+                            </td>
+                        </tr>
                         <tr>
                             <th>Date de demande</th>
                             <td>
                               {{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-center">
-                                <button data-id="{{ removal.vehicle.id }}" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
                             </td>
                         </tr>
                         </tbody>

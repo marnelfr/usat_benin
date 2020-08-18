@@ -1,7 +1,9 @@
 {{ form_start(form, {action: path('removal_new_saver', {id: vehicle.id}), method: 'POST'}) }}
     {{ form_row(form.vehicule, {value: vehicle.brand.name ~ ' - ' ~ vehicle.chassis}) }}
     {{ form_row(form.bfuNum) }}
+    {{ form_row(form.bfu) }}
     {{ form_row(form.entryNum) }}
+    {{ form_row(form.entry) }}
 
     <div class="input-group">
       {{ form_label(form.remover) }}
@@ -16,6 +18,7 @@
     </div>
 
     {{ form_row(form.payBank) }}
+    {{ form_row(form.receipt) }}
     <div class="row text-right">
         <div class="col-md-12">
             <button id="removal-new-saver" class="btn btn-success float-right"><i class="fas fa-paper-plane"></i> {{ button_label|default('Envoyer la demande') }}</button>

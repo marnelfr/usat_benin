@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\DemandeFile;
 use App\Entity\Removal;
 use App\Entity\Vehicle;
 use App\Form\RemovalType;
 use App\Repository\RemovalRepository;
 use App\Repository\VehicleRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +28,17 @@ class RemovalController extends AbstractController
      * @var VehicleController
      */
     private $vehicleController;
+    /**
+     * @var FileUploader
+     */
+    private $uploader;
 
-    public function __construct(RemovalRepository $removalRepository, VehicleRepository $vehicleRepository, VehicleController $controller)
+    public function __construct(RemovalRepository $removalRepository, VehicleRepository $vehicleRepository, VehicleController $controller, FileUploader $uploader)
     {
         $this->repo = $removalRepository;
         $this->vehicleRepo = $vehicleRepository;
         $this->vehicleController = $controller;
+        $this->uploader = $uploader;
     }
 
 
@@ -176,10 +185,35 @@ class RemovalController extends AbstractController
             if ($this->repo->findOneBy(['vehicle' => $vehicle])) {
                 $this->addFlash('warning', 'Une demande d\'enlevement a déjà été fait pour ce véhicule');
             }else{
+                /** @var UploadedFile $bfu */
+                $bfu = $form->get('bfu')->getData();
+                /** @var UploadedFile $entry */
+                $entry = $form->get('entry')->getData();
+                /** @var UploadedFile $receipt */
+                $receipt = $form->get('receipt')->getData();
+
+                if (!$bfu || !$entry || !$receipt) {
+                    $form->get('bfu')->addError(new FormError('Veuillez téléverser la copie scanné du BFU réglé'));
+                    $form->get('receipt')->addError(new FormError('Veuillez téléverser la copie scanné du reçu de banque'));
+                    $form->get('entry')->addError(new FormError('Veuillez téléverser la copie scanné de la déclaration de Douane'));
+                    goto FIN;
+                }
+
                 $removal->setStatus('waiting')
                     ->setAgent($this->getUser());
-
                 $entityManager->persist($removal);
+
+                $demandes = [];
+                foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
+                    $file = $this->uploader->upload($uploadedFile);
+                    $demandeFile = new DemandeFile();
+                    $demandeFile->setUsedFor($key);
+                    $demandeFile->setFile($file);
+                    $demandeFile->setRemoval($removal);
+                    $demandes[] = $demandeFile;
+                    $entityManager->persist(end($demandes));
+                }
+
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Demande d\'enlevement envoyée avec succès');
@@ -187,6 +221,7 @@ class RemovalController extends AbstractController
             return $this->redirectToRoute('removal_index');
         }
 
+        FIN:
         //Au cas une erreur est trouvé par rapport au formulaire
         return $this->render('removal/new.html.twig', [
             'removal' => $removal,

@@ -7,6 +7,7 @@ use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,6 +112,7 @@ class VehicleController extends AbstractController
                     dd($e->getMessage());
                 }
             }
+            $form->get('bol')->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
 //            return $this->redirectToRoute('vehicle_index');
         }
 

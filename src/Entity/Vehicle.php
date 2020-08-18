@@ -111,6 +111,11 @@ class Vehicle
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Remover::class, inversedBy="vehicles")
+     */
+    private $remover;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -291,6 +296,18 @@ class Vehicle
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRemover(): ?Remover
+    {
+        return $this->remover;
+    }
+
+    public function setRemover(?Remover $remover): self
+    {
+        $this->remover = $remover;
 
         return $this;
     }

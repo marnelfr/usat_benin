@@ -45,21 +45,6 @@ class VehicleType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-/*            ->add('importateur', ChoiceType::class, [
-                'mapped' => false,
-                'required' => true,
-                'choice_loader' => new CallbackChoiceLoader(function() {
-                    $users = $this->userRepo->findBy([
-                        'profil' => $this->profilRepo->findOneBy(['slug' => 'importer'])
-                    ]);
-                    $tab = [];
-                    foreach ($users as $user) {
-                        $tab[$user->getFullname()] = $user->getId();
-                    }
-                    return $tab;
-                }),
-                'label' => 'Importateur'
-            ])*/
             ->add('putInUseAt', DateType::class, [
                 'label' => 'Mise en circulation le',
                 'widget' => 'single_text',
