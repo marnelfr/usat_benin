@@ -3,9 +3,12 @@ import u from '../import/utility'
 import Modal from '../import/modal'
 
 $(function () {
+  //Pour l'étape 3 du forumaire de demande
   let removalSaver = new Button('#removal-new-saver')
   removalSaver.loadOnClick(true)
 
+  //Etape 1 du formulaire de demande
+  //Pour la vérification de l'existance d'un vehicule a parti de son numéro chassis et sa marque
   let btnVehicleChecker = new Button('#removal-vehicle-checker')
   btnVehicleChecker.click(function () {
     let $form = btnVehicleChecker.getForm()
@@ -17,10 +20,16 @@ $(function () {
       processData: false,
       contentType: false,
       success: function (data) {
+        //Si typeMessage n'est pas défini, alors c'est pas moi-même, j'ai fait le retour
         if (!!data.typeMessage) {
+          //C'est qu'il y a une erreur par rapport à la validation du formulaire
           if (data.typeMessage === 'form') {
+            //On affiche donc le nouveau formulaire reçu
             $form.closest('div').html(data.form)
-          } else if (data.typeMessage === 'vehicle_found') {
+
+          } else
+          //Un vehicule a été trouvé, on affiche donc ses informations dans un modal
+          if (data.typeMessage === 'vehicle_found') {
             const modal = new Modal()
             modal.setContent(data.show_view)
             modal.show(function () {

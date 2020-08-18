@@ -69,7 +69,7 @@ class VehicleController extends AbstractController
     }
 
     /**
-     * Est utiliser pour la création des vehicules au niveau des demandes d'enlevement
+     * Est utilisé pour la création des vehicules au niveau de l'étape 2 du formulaire de demande d'enlevement
      *
      * @Route("/new", name="vehicle_new", methods={"GET","POST"})
      * @param Request           $request
@@ -82,6 +82,7 @@ class VehicleController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $vehicle = new Vehicle();
+        //Lorsque la page est rappeler suite à une erreur sur le formulaire, $data n'est pas fourni
         if ($data) {
             $vehicle->setChassis($data['chassis'])
                 ->setBrand($data['brand']);
@@ -93,8 +94,9 @@ class VehicleController extends AbstractController
             /** @var UploadedFile $bol */
             $bol = $form->get('bol')->getData();
 
+            //On enregistre un vehicule que si le connaissement est fourni
             if ($bol) {
-//                try {
+                try {
                     $file = $this->uploader->upload($bol);
                     $vehicle->setBolFileName(
                         $file->getLink()
@@ -104,15 +106,18 @@ class VehicleController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($vehicle);
                     $entityManager->flush();
-                    return $removalController->newSaver($request, $vehicle);
-//                }catch (\Exception $e) {
-//                    dd($e->getMessage());
-//                }
-            }
 
+                    //Une fois le véhicule enregistré, on passe à l'étape 3 du formulaire d'enlèvement
+                    return $removalController->newSaver($request, $vehicle);
+                }catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
+            }
 //            return $this->redirectToRoute('vehicle_index');
         }
 
+        //Pour les demandes par ajax, fait lorsque l'utilisateur passe de l'étape 1 à l'étape 2 en renseignant des informations
+        //de véhicule inexistant
         if ($isXmlHttpRequest) {
             return $this->render('vehicle/new_content.html.twig', [
                 'vehicle' => $vehicle,
@@ -120,12 +125,14 @@ class VehicleController extends AbstractController
             ]);
         }
 
+        //Pour les autres demandes qui subviennent lorqu'il y a une erreur de validation sur le formulaire
         return $this->render('vehicle/new.html.twig', [
             'vehicle' => $vehicle,
             'form' => $form->createView(),
         ]);
     }
 
+    //Back up de la version d'enregistrement par defaut des vehicules
     public function newBack() {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         dump($request->request->all(), $request->query->all()); die();
