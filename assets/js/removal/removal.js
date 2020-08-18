@@ -3,9 +3,6 @@ import u from '../import/utility'
 import Modal from '../import/modal'
 
 $(function () {
-  //Pour l'étape 3 du forumaire de demande
-  let removalSaver = new Button('#removal-new-saver')
-  removalSaver.loadOnClick(true)
 
   //Etape 1 du formulaire de demande
   //Pour la vérification de l'existance d'un vehicule a parti de son numéro chassis et sa marque
@@ -58,4 +55,15 @@ $(function () {
       btnVehicleChecker.reset()
     });
   })
+
+
+  //Pour l'étape 3 du forumaire de demande
+  let modalAddRemover = new Button('#vehicle-new-remover')
+  modalAddRemover.click(function () {
+    // TODO: afficher le modale contenant le foumulaire d'ajout de remover
+  })
+
+  //Submit du formulaire de demande
+  let removalSaver = new Button('#removal-new-saver')
+  removalSaver.loadOnClick(true)
 })
