@@ -1,8 +1,12 @@
 import Button from '../import/button'
 import u from '../import/utility'
 import Modal from '../import/modal'
+const routes = require('../../../public/js/fos_js_routes.json');
+import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+//https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
 
 $(function () {
+  Routing.setRoutingData(routes);
 
   //Etape 1 du formulaire de demande
   //Pour la vérification de l'existance d'un vehicule a parti de son numéro chassis et sa marque
@@ -41,6 +45,11 @@ $(function () {
             $('.content').html(data.view_new_vehicle)
             let vehicleSaver = new Button('#vehicle-new-saver')
             vehicleSaver.loadOnClick(true)
+
+            let modalAddRemover = new Button('#vehicle-new-importer')
+            modalAddRemover.click(function () {
+              u.entityModalAdd(modalAddRemover, 'importer_new', 'modal-importer-saver', 'vehicle_importer')
+            })
           } else {
             u.notif('Echec de chargement...', 'warning')
           }
@@ -60,10 +69,12 @@ $(function () {
   //Pour l'étape 3 du forumaire de demande
   let modalAddRemover = new Button('#vehicle-new-remover')
   modalAddRemover.click(function () {
-    // TODO: afficher le modale contenant le foumulaire d'ajout de remover
+    u.entityModalAdd(modalAddRemover, 'remover_new', 'modal-remover-saver', 'removal_remover')
   })
+
 
   //Submit du formulaire de demande
   let removalSaver = new Button('#removal-new-saver')
   removalSaver.loadOnClick(true)
 })
+

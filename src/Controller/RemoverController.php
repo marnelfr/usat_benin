@@ -7,6 +7,8 @@ use App\Form\RemoverType;
 use App\Repository\RemoverRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +33,7 @@ class RemoverController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="remover_new", methods={"GET","POST"})
+     * @Route("/new", name="remover_new", options={"expose"=true}, methods={"GET","POST"})
      */
     public function new(Request $request, FileUploader $uploader): Response
     {
@@ -58,15 +60,36 @@ class RemoverController extends AbstractController
 
                 $entityManager->flush();
 
+                $message = 'Enleveur enregistré avec succès';
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'typeMessage' => 'success',
+                        'message' => $message,
+                        'id' => $remover->getId(),
+                        'name' => $remover->getFullname()
+                    ]);
+                }
+                $this->addFlash('success', $message);
+
                 return $this->redirectToRoute('remover_index');
             }
             $form->get('cinName')->addError(new FormError('Veuillez téléverser la Carte Nationale d\'Identité de l\'enleveur'));
         }
-
-        return $this->render('remover/new.html.twig', [
+        $data = [
             'remover' => $remover,
-            'form' => $form->createView(),
-        ]);
+            'form'    => $form->createView(),
+        ];
+
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('remover/modal_add.html.twig', $data);
+            return new JsonResponse([
+                'typeMessage' => 'view',
+                'view' => $view
+            ]);
+        }
+
+        return $this->render('remover/new.html.twig', $data);
     }
 
     /**

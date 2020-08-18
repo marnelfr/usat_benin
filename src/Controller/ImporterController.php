@@ -45,7 +45,7 @@ class ImporterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $importer->setManager($this->getUser());
+            $importer->setUser($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $old = $importerRepo->findOneBy(['name' => $importer->getName()]);
@@ -67,7 +67,7 @@ class ImporterController extends AbstractController
 
             $entityManager->flush();
 
-            $message = 'Importeur enregister avec succès';
+            $message = 'Importeur enregistré avec succès';
 
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse([

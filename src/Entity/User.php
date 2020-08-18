@@ -122,6 +122,11 @@ class User implements UserInterface, \Serializable
      */
     private $vehicles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Importer::class, mappedBy="user")
+     */
+    private $importers;
+
 
 
 
@@ -134,6 +139,7 @@ class User implements UserInterface, \Serializable
         $this->processings = new ArrayCollection();
         $this->fleets = new ArrayCollection();
         $this->vehicles = new ArrayCollection();
+        $this->importers = new ArrayCollection();
     }
 
 
@@ -476,6 +482,37 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($vehicle->getUser() === $this) {
                 $vehicle->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Importer[]
+     */
+    public function getImporters(): Collection
+    {
+        return $this->importers;
+    }
+
+    public function addImporter(Importer $importer): self
+    {
+        if (!$this->importers->contains($importer)) {
+            $this->importers[] = $importer;
+            $importer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImporter(Importer $importer): self
+    {
+        if ($this->importers->contains($importer)) {
+            $this->importers->removeElement($importer);
+            // set the owning side to null (unless already changed)
+            if ($importer->getUser() === $this) {
+                $importer->setUser(null);
             }
         }
 

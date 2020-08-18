@@ -48,12 +48,6 @@ class Importer
     private $vehicles;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Manager::class, inversedBy="importers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $manager;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $deleted;
@@ -62,6 +56,12 @@ class Importer
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="importers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -178,18 +178,6 @@ class Importer
         return $this;
     }
 
-    public function getManager(): ?Manager
-    {
-        return $this->manager;
-    }
-
-    public function setManager(?Manager $manager): self
-    {
-        $this->manager = $manager;
-
-        return $this;
-    }
-
     public function getFullname()
     {
         return $this->name;
@@ -198,5 +186,17 @@ class Importer
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
