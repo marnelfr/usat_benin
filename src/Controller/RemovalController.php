@@ -8,6 +8,7 @@ use App\Form\RemovalType;
 use App\Repository\RemovalRepository;
 use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,10 +110,29 @@ class RemovalController extends AbstractController
             $vehicle = $this->vehicleRepo->findOneBy($data);
 
             if ($vehicle) {
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'show_view' => $this->renderView('vehicle/show_modal.html.twig', [
+                            'vehicle' => $vehicle,
+                            'removal_new_saver_link' => $this->generateUrl('removal_new_saver', ['id' => $vehicle->getId()])
+                        ]),
+                        'typeMessage' => 'vehicle_found'
+                    ]);
+                }
+
                 return $this->newSaver($request, $vehicle);
             }
 
-            return $this->vehicleController->new($request, $this, $data);
+            return $this->vehicleController->new($request, $this, $data, true);
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'typeMessage' => 'form',
+                'form' => $this->renderView('removal/check_vehicle_form.html.twig', [
+                    'form' => $form->createView()
+                ])
+            ]);
         }
 
         return $this->render('removal/check_vehicle.html.twig', [

@@ -5,10 +5,14 @@ namespace App\Entity;
 use App\Repository\RemovalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RemovalRepository::class)
+ * @UniqueEntity(fields={"bfuNum", "payBank"}, message="Un payement a déjà été enregistré avec ce numéro")
+ * @UniqueEntity(fields={"entryNum"}, message="Une déclaration en Douane a déjà été fait avec ce numéro")
  */
 class Removal
 {
@@ -30,7 +34,7 @@ class Removal
     private $bfuNum;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $entryNum;
 

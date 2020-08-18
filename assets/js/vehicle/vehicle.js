@@ -61,3 +61,8 @@ $(function () {
   })
 
 })*/
+
+$(function () {
+  let saver = new Button('#vehicle-new-saver')
+  saver.loadOnClick(true)
+})

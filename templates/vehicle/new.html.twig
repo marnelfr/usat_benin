@@ -11,44 +11,7 @@
 {% endblock %}
 
 {% block page_content %}
-  <div class="row pb-3">
-    <div class="col-12 col-sm-12 col-md-12">
-      <a class="btn btn-default" href="{{ path('vehicle_index') }}"><i class="fas fa-reply"></i> Mes Véhicules</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title"><i class="fas fa-plus-circle"></i> Ajout de Véhicules</h3>
-      {#<div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fas fa-minus"></i></button>
-          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fas fa-times"></i></button>
-      </div>#}
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-          <table class="table table-bordered">
-            <tr>
-              <td class="text-center">ETAPE 1</td>
-              <td class="text-center bg-gradient-green">ETAPE 2</td>
-              <td class="text-center">ETAPE 3</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-          {{ include('vehicle/_form.html.twig') }}
-        </div>
-      </div>
-    </div>
-    {#<div class="card-footer">
-        Footer
-    </div>#}
-  </div>
+  {% include 'vehicle/new_content.html.twig' %}
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}

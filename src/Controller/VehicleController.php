@@ -78,7 +78,7 @@ class VehicleController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, RemovalController $removalController, array $data = []): Response
+    public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $vehicle = new Vehicle();
@@ -111,6 +111,13 @@ class VehicleController extends AbstractController
             }
 
 //            return $this->redirectToRoute('vehicle_index');
+        }
+
+        if ($isXmlHttpRequest) {
+            return $this->render('vehicle/new_content.html.twig', [
+                'vehicle' => $vehicle,
+                'form' => $form->createView(),
+            ]);
         }
 
         return $this->render('vehicle/new.html.twig', [

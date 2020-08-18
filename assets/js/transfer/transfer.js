@@ -28,7 +28,7 @@ $(function () {
         let modalBtnSaver = new Button('#modal-importer-saver')
         modalBtnSaver.click(function () {
           let $form = modalBtnSaver.getForm()
-          var formData = new FormData($form[0])
+          let formData = new FormData($form[0])
           $.ajax({
             url: $form.attr('action'),
             type: 'POST',
@@ -39,14 +39,12 @@ $(function () {
               if (!!data.typeMessage) {
                 if (data.typeMessage === 'success') {
                   u.notif(data.message, data.typeMessage)
-                  if (data.typeMessage === 'success') {
-                    let select = $('#vehicle_importer')
-                    select.prepend(`<option value="${data.id}">${data.name}</option>`)
+                  let select = $('#vehicle_importer')
+                  select.prepend(`<option value="${data.id}">${data.name}</option>`)
 
-                    //Ici, j'essaie d'afficher en même temps l'importer
-                    select.val(data.id)
-                    modal.hide()
-                  }
+                  //Ici, j'essaie d'afficher en même temps l'importer
+                  select.val(data.id)
+                  modal.hide()
                 } else {
                   modal.setContent(data.view)
                 }
