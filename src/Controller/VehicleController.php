@@ -75,10 +75,8 @@ class VehicleController extends AbstractController
      * @param Request           $request
      * @param RemovalController $removalController
      * @param array             $data => Les données reçues lorsque la methode new est directement appelé depuis RemovalController
-     *
-     * @return Response
      */
-    public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false): Response
+    public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $vehicle = new Vehicle();
@@ -119,7 +117,7 @@ class VehicleController extends AbstractController
         //Pour les demandes par ajax, fait lorsque l'utilisateur passe de l'étape 1 à l'étape 2 en renseignant des informations
         //de véhicule inexistant
         if ($isXmlHttpRequest) {
-            return $this->render('vehicle/new_content.html.twig', [
+            return $this->renderView('vehicle/new_content.html.twig', [
                 'vehicle' => $vehicle,
                 'form' => $form->createView(),
             ]);

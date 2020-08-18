@@ -128,7 +128,10 @@ class RemovalController extends AbstractController
                 return $this->newSaver($request, $vehicle);
             }
             //Si aucun vehicule n'est trouvé, on renvoie vers l'étape 2 du formulaire pour l'enregsitrement du véhicule.
-            return $this->vehicleController->new($request, $this, $data, true);
+            return new JsonResponse([
+                'typeMessage' => 'next',
+                'view_new_vehicle' => $this->vehicleController->new($request, $this, $data, true)
+            ]);
         }
 
         //Même pour l'affichage du formalaire, on prévoit le cas où une demande sera fait par ajax (a cause d'un besoin hein))))))))

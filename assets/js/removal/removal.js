@@ -33,20 +33,26 @@ $(function () {
             const modal = new Modal()
             modal.setContent(data.show_view)
             modal.show(function () {
+              //Si l'utilisateur accepte utiliser le vehicule retrouve a base de ses informations,
+              // on l'envoie à l'étape 2 du formulaire de demande
               const btn = new Button('#removal-use-vehicle')
               btn.loadOnClick()
             })
+          } else
+            //Si aucun vehicule n'est trouvé, on renvoie la vue de l'etape 2 du formulaire
+          if(data.typeMessage === 'next') {
+            $('.content').html(data.view_new_vehicle)
+            let vehicleSaver = new Button('#vehicle-new-saver')
+            vehicleSaver.loadOnClick(true)
           } else {
-            u.notif('Echec de chargement', 'danger')
+            u.notif('Echec de chargement...', 'warning')
           }
         } else {
-          $('.content').html(data)
-          let vehicleSaver = new Button('#vehicle-new-saver')
-          vehicleSaver.loadOnClick(true)
+            u.notif('Echec de chargement... Veuillez vérifier votre connexion internet et réessayer.', 'danger')
         }
       },
       error: function () {
-        u.notif("Echec de chargement. Veuillez réessayer", 'warning');
+        u.notif("Echec de chargement. Veuillez vérifier votre connexion internet et réessayer", 'danger');
       }
     }).always(function () {
       btnVehicleChecker.reset()
