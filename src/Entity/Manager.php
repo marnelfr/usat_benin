@@ -35,11 +35,6 @@ class Manager extends User
     private $fleet;
 
     /**
-     * @ORM\OneToMany(targetEntity=Importer::class, mappedBy="manager")
-     */
-    private $importers;
-
-    /**
      * @ORM\OneToMany(targetEntity=Transfer::class, mappedBy="manager")
      */
     private $transfers;
@@ -47,7 +42,6 @@ class Manager extends User
     public function __construct()
     {
         parent::__construct();
-        $this->importers = new ArrayCollection();
         $this->transfers = new ArrayCollection();
     }
 
@@ -95,37 +89,6 @@ class Manager extends User
     public function setFleet(?Fleet $fleet): self
     {
         $this->fleet = $fleet;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Importer[]
-     */
-    public function getImporters(): Collection
-    {
-        return $this->importers;
-    }
-
-    public function addImporter(Importer $importer): self
-    {
-        if (!$this->importers->contains($importer)) {
-            $this->importers[] = $importer;
-            $importer->setManager($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImporter(Importer $importer): self
-    {
-        if ($this->importers->contains($importer)) {
-            $this->importers->removeElement($importer);
-            // set the owning side to null (unless already changed)
-            if ($importer->getManager() === $this) {
-                $importer->setManager(null);
-            }
-        }
 
         return $this;
     }

@@ -1,3 +1,6 @@
+import Modal from './modal'
+import Button from './button'
+
 export default class Utility {
 
   static notif(message, type) {
@@ -15,4 +18,87 @@ export default class Utility {
     }, 10000)
   }
 
+
+  /**
+   * Fonction utilisable pour les ajouts d'entité via modal
+   *
+   * Cette fonction-ci se charge principalement de charger le formulaire d'ajout dans le modal et
+   * Afficher le modal. Une fois le modal affiché, il appel modalFormRuner() pour la suite
+   *
+   * @param btnModalAdd         C'est le btn présent sur le formulaire parent, sur lequel on click pour charger le modal
+   * @param form_path           Le chemin de l'action d'ajout de l'entité. Est sensé aussi renvoyé le formulaire
+   * @param idModalBtnSaver     L'id du btn d'enregistrement présent sur le modal.
+   * @param idSelectList        L'id du select contenant la liste de l'entité dont on veut faire un nouveau enregistrement
+   */
+  static entityModalAdd (btnModalAdd, form_path, idModalBtnSaver, idSelectList) {
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        $.get(Routing.generate(form_path)).then(function (data) {
+          btnModalAdd.reset()
+          let modal = new Modal()
+          modal.setContent(data.view)
+
+          modal.show(function () {
+            let modalBtnSaver = new Button('#'+idModalBtnSaver)
+            modalBtnSaver.click(function () {
+              Utility.modalFormRuner(modal, modalBtnSaver, idModalBtnSaver, idSelectList)
+            })
+          })
+        })
+      })
+    })
+  }
+
+  /**
+   * Principalement utiliser pour la soumission du formulaire d'ajout d'entité
+   *
+   * Le fait est que si le formulaire n'est pas valide après soumission,
+   * Le formulaire est renvoyé et il faut remettre les points sur les i pour sa soumission
+   * Donc la fonction se rappel au fait.
+   * D'où le besoin de le mettre à part: pour qu'elle puisse se rappeler
+   *
+   * @param modal
+   * @param modalBtnSaver
+   * @param idModalBtnSaver
+   * @param idSelectList
+   */
+  static modalFormRuner (modal, modalBtnSaver, idModalBtnSaver, idSelectList) {
+    let $form = modalBtnSaver.getForm()
+    let formData = new FormData($form[0])
+    $.ajax({
+      url: $form.attr('action'),
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        if (!!data.typeMessage) {
+          if (data.typeMessage === 'success') {
+            Utility.notif(data.message, data.typeMessage)
+            let select = $('#'+idSelectList)
+            select.prepend(`<option value="${data.id}">${data.name}</option>`)
+
+            //Ici, j'affiche en même temps l'enleveur
+            select.val(data.id)
+            modal.hide()
+          } else {
+            //Les informations entrées dans le formulaire se sont pas valides
+            modal.setContent(data.view)
+            let modalBtnSaver2 = new Button('#'+idModalBtnSaver)
+            modalBtnSaver2.click(function () {
+              Utility.modalFormRuner(modal, modalBtnSaver2, idModalBtnSaver, idSelectList)
+            })
+          }
+        } else {
+          Utility.notif('Echec de chargement.', 'danger')
+        }
+      },
+      error: function () {
+        Utility.notif("Echec de chargement. Veuillez réessayer", 'warning');
+      }
+    }).always(function () {
+      modalBtnSaver.reset()
+    });
+  }
 }
