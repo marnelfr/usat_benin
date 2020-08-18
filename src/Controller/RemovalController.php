@@ -90,7 +90,7 @@ class RemovalController extends AbstractController
     }
 
     /**
-     * Pour l'affichage du formulaire d'enregistrement d'un enlevement
+     * Pour l'affichage de l'étape 1 du formulaire d'enregistrement d'un enlevement
      *
      * @Route("/new", name="removal_new", methods={"GET","POST"})
      * @param Request $request
@@ -101,16 +101,21 @@ class RemovalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        //On génère le formulaire pour la vérification de l'existance des véhicules avec des constraintes et tout
         $form = $this->vehicleRepo->checkVehicleForm($this->createFormBuilder());
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $data = $form->getData();//On recupère les données du formulaire
+
+            //On vérifie l'existence propable d'un vehicule a base de ses informations
             $vehicle = $this->vehicleRepo->findOneBy($data);
 
-            if ($vehicle) {
-                if ($request->isXmlHttpRequest()) {
+            if ($vehicle) { //Si un véhicule a été trouvé a base de ses informations,
+                if ($request->isXmlHttpRequest()) { //Si c'est par ajax on fait la demande
+                    //On renvoie de quoi afficher le modal contenant les informations du vehicule avec
+                    // un lien vers l'étape 3 du formulaire
                     return new JsonResponse([
                         'show_view' => $this->renderView('vehicle/show_modal.html.twig', [
                             'vehicle' => $vehicle,
@@ -119,13 +124,14 @@ class RemovalController extends AbstractController
                         'typeMessage' => 'vehicle_found'
                     ]);
                 }
-
+                //Si c'est pas une requette ajax, on renvoie directement vers l'étape 3 du formulaire
                 return $this->newSaver($request, $vehicle);
             }
-
+            //Si aucun vehicule n'est trouvé, on renvoie vers l'étape 2 du formulaire pour l'enregsitrement du véhicule.
             return $this->vehicleController->new($request, $this, $data, true);
         }
 
+        //Même pour l'affichage du formalaire, on prévoit le cas où une demande sera fait par ajax (a cause d'un besoin hein))))))))
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'typeMessage' => 'form',
@@ -135,6 +141,7 @@ class RemovalController extends AbstractController
             ]);
         }
 
+        //Pour les demnades non ajax
         return $this->render('removal/check_vehicle.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -142,6 +149,7 @@ class RemovalController extends AbstractController
 
     /**
      * Pour l'enregistrement effectif de l'enlevement
+     * Affiche l'etape 3 du forumaire puis traite sa soumission
      *
      * @Route("/new/{id}/save", name="removal_new_saver", methods={"POST", "GET"})
      * @param Request $request
@@ -161,6 +169,7 @@ class RemovalController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
+            //On verifie si une demande d'enlevement avait déjà été fait par rapport au vehicule
             if ($this->repo->findOneBy(['vehicle' => $vehicle])) {
                 $this->addFlash('warning', 'Une demande d\'enlevement a déjà été fait pour ce véhicule');
             }else{
@@ -169,12 +178,13 @@ class RemovalController extends AbstractController
 
                 $entityManager->persist($removal);
                 $entityManager->flush();
+
                 $this->addFlash('success', 'Demande d\'enlevement envoyée avec succès');
             }
-
             return $this->redirectToRoute('removal_index');
         }
 
+        //Au cas une erreur est trouvé par rapport au formulaire
         return $this->render('removal/new.html.twig', [
             'removal' => $removal,
             'vehicle' => $vehicle,
