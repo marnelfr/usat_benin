@@ -1,0 +1,36 @@
+<table class="table">
+    <tbody>
+    <tr>
+        <th>Châssis</th>
+        <td>{{ vehicle.chassis }}</td>
+    </tr>
+    <tr>
+        <th>Marque</th>
+        <td>{{ vehicle.brand.name }}</td>
+    </tr>
+    <tr>
+        <th>Navire</th>
+        <td>{{ vehicle.ship.name }}</td>
+    </tr>
+    <tr>
+        <th>Importateur</th>
+        <td>{{ vehicle.importer.fullname }}</td>
+    </tr>
+    <tr>
+        <th>Mise en circulation</th>
+        <td>{{ vehicle.putInUseAt ? vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Date d'arrivée</th>
+        <td>{{ vehicle.cameAt ? vehicle.cameAt|date('d-m-Y') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Consignataire</th>
+        <td>{{ vehicle.consignee }}</td>
+    </tr>
+    <tr>
+        <th>Date d'enregistrement</th>
+        <td>{{ vehicle.createdAt ? vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ vehicle.createdAt|date('H:i:s') : '' }}</td>
+    </tr>
+    </tbody>
+</table>

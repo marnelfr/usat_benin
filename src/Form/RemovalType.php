@@ -39,10 +39,12 @@ class RemovalType extends AbstractType
             ])
 //            ->add('agent')
             ->add('remover', null, [
-                'label' => 'Enleveur'
+                'label' => 'Enleveur',
+                'placeholder' => 'Sélectionnez un enleveur'
             ])
             ->add('payBank', null, [
-                'label' => 'Banque de payement'
+                'label' => 'Banque de payement',
+                'placeholder' => 'Sélectionnez une banque'
             ])
         ;
     }

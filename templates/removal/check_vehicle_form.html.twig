@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+  {{ form_row(form.brand) }}
+  {{ form_row(form.chassis) }}
+  <div class="row text-right">
+    <div class="col-md-12">
+      <button id="removal-vehicle-checker" class="btn btn-success">{{ button_label|default('Suivant') }} <i class="fas fa-angle-double-right"></i></button>
+    </div>
+  </div>
+{{ form_end(form) }}
