@@ -70,11 +70,17 @@ class StaffController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($request->isXmlHttpRequest() && $transfer->getStatus() === 'inprogress') {
-            return new JsonResponse([
-                'typeMessage' => 'warning',
-                'message' => 'Déjà en cours de traitement en cours par ' . $transfer->getProcessing()->getUser()->getFullname()
-            ]);
+        if ($request->isXmlHttpRequest()) {
+            if ($transfer->getStatus() === 'inprogress') {
+                return new JsonResponse([
+                    'typeMessage' => 'warning',
+                    'message' => 'Déjà en cours de traitement en cours par ' . $transfer->getProcessing()->getUser()->getFullname()
+                ]);
+            } else {
+                return new JsonResponse([
+                    'typeMessage' => 'success'
+                ]);
+            }
         }
 
         $transfer->setStatus('inprogress');

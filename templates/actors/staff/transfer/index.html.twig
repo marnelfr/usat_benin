@@ -5,6 +5,10 @@
 {% block page_title %}Transfert{% endblock %}
 {% block page_title2 %}Transfert{% endblock %}
 {% block page_subtitle %}Demandes {{ title }}{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('transfer_treatment') }}
+{% endblock %}
 
 {% block page_content %}
   <div class="row pb-3">
@@ -42,7 +46,7 @@
                 <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
                 <td class="text-center">{{ transfer.state }}</td>
                 <td class="text-right">
-                  <a class="btn btn-primary" title="Commencer le traitement de la demande" href="{{ path('staff_transfer_treatment', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Traité</a>
+                  <button class="btn btn-primary transfer-start-treatment" data-href="{{ path('staff_transfer_treatment', {'id': transfer.id}) }}" title="Commencer le traitement de la demande"><i class="fas fa-edit"></i> Traité</button>
                 </td>
               </tr>
             {% else %}
@@ -67,4 +71,8 @@
         Footer
     </div>#}
   </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('transfer_treatment') }}
 {% endblock %}
