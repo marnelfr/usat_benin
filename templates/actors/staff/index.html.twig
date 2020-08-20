@@ -1,24 +1,92 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Tabelau de bord{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
 
 {% block page_title %}Tableau de bord{% endblock %}
 {% block page_title2 %}Tableau de bord{% endblock %}
 {% block page_subtitle %}Espace Utilisateur{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block page_content %}
+    <div class="row">
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: waitingTransfer,
+        name_bloc: waitingTransfer > 1 ? 'Transferts en attente' : 'Transfert en attente',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-yellow'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: waitingRemoval,
+        name_bloc: waitingRemoval > 1 ? 'Enlèvements en attente' : 'Enlèvement en attente',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-info'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: finalizedTransfer,
+        name_bloc: finalizedTransfer > 1 ? 'Transferts finalisés' : 'Transfert finalisé',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-green'
+      } %}
+      {% include 'includes/dashboard_bloc.html.twig' with {
+        total_item: finalizedRemoval,
+        name_bloc: finalizedRemoval > 1 ? 'Enlèvements finalisés' : 'Enlèvement finalisé',
+        icon_bloc: 'fas fa-tachometer-alt',
+        link_more_info: '#',
+        type_bloc: 'bg-blue'
+      } %}
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-list"></i> Les 20 derniers enlèvements traités</h3>
+                  {#<div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                          <i class="fas fa-minus"></i></button>
+                      <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                          <i class="fas fa-times"></i></button>
+                  </div>#}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Demandeur</th>
+                                    <th>Date de soumission</th>
+                                    <th>Date de traitement</th>
+                                    <th>Avis</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Demandeur</th>
+                                    <th>Date de soumission</th>
+                                    <th>Date de traitement</th>
+                                    <th>Avis</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+              {#<div class="card-footer">
+                  Footer
+              </div>#}
+            </div>
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/Web/usat_benin/src/Controller/Actors/StaffController.php'|file_link(0) }}">src/Controller/Actors/StaffController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/Web/usat_benin/templates/actors/staff/index.html.twig'|file_link(0) }}">templates/actors/staff/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}

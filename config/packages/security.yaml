@@ -17,6 +17,7 @@ security:
         ROLE_CONTROL:     ROLE_USER
         ROLE_ADMIN:       ROLE_USER
         ROLE_STAFF:       ROLE_CONTROL
+        ROLE_STAFF_ADMIN: ROLE_STAFF
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:

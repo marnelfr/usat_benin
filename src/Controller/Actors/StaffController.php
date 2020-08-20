@@ -2,6 +2,9 @@
 
 namespace App\Controller\Actors;
 
+use App\Entity\Removal;
+use App\Entity\Transfer;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +23,13 @@ class StaffController extends AbstractController
      *
      * @Route("/actors/staff", name="actors_staff_dashboard")
      */
-    public function index()
+    public function index(EntityManagerInterface $em)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        $waitingTransfer = $em->getRepository(Transfer::class)->findBy([]);
+        $waitingRemoval = $em->getRepository(Removal::class)->findBy([]);
+        $finalizedTransfer = $em->getRepository(Transfer::class)->findBy([]);
+        $finalizedRemoval = $em->getRepository(Removal::class)->findBy([]);
         return $this->render('actors/staff/index.html.twig', [
             'controller_name' => 'StaffController',
         ]);
