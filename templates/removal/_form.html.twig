@@ -1,4 +1,12 @@
-{{ form_start(form, {action: path('removal_new_saver', {id: vehicle.id}), method: 'POST'}) }}
+{% if edit is defined %}
+  {% set id=removal.id %}
+  {% set action_path='removal_edit_saver' %}
+{% else %}
+  {% set id=vehicle.id %}
+  {% set action_path='removal_new_saver' %}
+{% endif %}
+
+{{ form_start(form, {action: path(action_path, {id: id}), method: 'POST'}) }}
     {{ form_row(form.vehicule, {value: vehicle.brand.name ~ ' - ' ~ vehicle.chassis}) }}
     {{ form_row(form.bfuNum) }}
     {{ form_row(form.bfu) }}

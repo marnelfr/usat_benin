@@ -160,6 +160,35 @@ class RemovalController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/{use}/img", options = { "expose" = true }, name="removal_img", methods={"GET"})
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function img(Request $request, Removal $removal) {
+        if ($request->isXmlHttpRequest()) {
+            $use = $request->get('use');
+            if ($use !== 'bol') {
+                $link = $file = $removal->getDemandeFile($request->get('use'));
+                if ($file) {
+                    $link = $file->getLink();
+                }
+            } else {
+                $link = $removal->getVehicle()->getBolFileName();
+            }
+            $view = $this->renderView('vehicle/show_img.html.twig', [
+                'url' => $link ? '/uploads/' . $link : '#',
+                'alt' => 'Document scanné',
+            ]);
+            return new JsonResponse([
+                'view' => $view,
+                'error' => $link === null
+            ]);
+        }
+        return new Response('access denied');
+    }
+
+    /**
      * Pour l'enregistrement effectif de l'enlevement
      * Affiche l'etape 3 du forumaire puis traite sa soumission
      *
@@ -205,11 +234,11 @@ class RemovalController extends AbstractController
 
                 $demandes = [];
                 foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
-                    $file = $this->uploader->upload($uploadedFile);
-                    $demandeFile = new DemandeFile();
-                    $demandeFile->setUsedFor($key);
-                    $demandeFile->setFile($file);
-                    $demandeFile->setRemoval($removal);
+                    $demandeFile = $entityManager->getRepository(DemandeFile::class)->add(
+                        $this->uploader->upload($uploadedFile, $key),
+                        $key,
+                        $removal
+                    );
                     $demandes[] = $demandeFile;
                     $entityManager->persist(end($demandes));
                 }
@@ -244,8 +273,20 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="removal_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Removal $removal
+     *
+     * @return string|Response
      */
-    public function edit(Request $request, Removal $removal): Response
+    public function edit(Request $request, Removal $removal) {
+        return $this->vehicleController->new($request, $this, ['id' => $removal->getVehicle()->getId()], false, true);
+    }
+
+    /**
+     * @Route("/edit/{id}/saver", name="removal_edit_saver", methods={"GET","POST"}, requirements={"id":"\d+"})
+     * @throws \Exception
+     */
+    public function editSaver(Request $request, Removal $removal): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -253,13 +294,41 @@ class RemovalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $objectManager = $this->getDoctrine()->getManager();
+
+            /** @var UploadedFile $bfu */
+            $bfu = $form->get('bfu')->getData();
+            /** @var UploadedFile $entry */
+            $entry = $form->get('entry')->getData();
+            /** @var UploadedFile $receipt */
+            $receipt = $form->get('receipt')->getData();
+
+            $demandes = [];
+            foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
+                if ($uploadedFile) {
+                    $file = $removal->getDemandeFile($key);
+                    $demandeFile = $objectManager->getRepository(DemandeFile::class)->edit(
+                        $file ?
+                            $this->uploader->upload($uploadedFile, $key, true, $file->getLink())
+                            : $this->uploader->upload($uploadedFile, $key)
+                        ,
+                        $key,
+                        $removal
+                    );
+                    $demandes[] = $demandeFile;
+                    $objectManager->persist(end($demandes));
+                }
+            }
+
+            $objectManager->flush();
 
             return $this->redirectToRoute('removal_index');
         }
 
         return $this->render('removal/edit.html.twig', [
             'removal' => $removal,
+            'edit' => true,
+            'vehicle' => $removal->getVehicle(),
             'form' => $form->createView(),
         ]);
     }

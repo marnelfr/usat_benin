@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center">
-                                <button data-id="{{ removal.vehicle.id }}" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                                <button data-id="{{ removal.id }}" data-use="bol" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
                             </td>
                         </tr>
 
@@ -78,29 +78,22 @@
                         </tr>
                         <tr>
                             <th>N° BFU</th>
-                            <td>{{ removal.bfuNum }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher le BFU réglé</button>
+                            <td>
+                              {{ removal.bfuNum }}
+                                <button data-id="{{ removal.id }}" data-use="bfu" id="removal-show-bfu" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
                             </td>
                         </tr>
                         <tr>
                             <th>N° Déclaration de Douane</th>
-                            <td>{{ removal.entryNum }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher la Déclation de Douane</button>
+                            <td>
+                              {{ removal.entryNum }}
+                                <button data-id="{{ removal.id }}" data-use="entry" id="removal-show-entry" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
                             </td>
                         </tr>
                         <tr>
                             <th>Banque de payement</th>
-                            <td>{{ removal.payBank.name }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-center">
-                                <button class="btn btn-default"><i class="fa fa-eye"></i> Afficher le reçu de banque</button>
+                            <td>{{ removal.payBank.name }}
+                                <button data-id="{{ removal.id }}" data-use="receipt" id="removal-show-receipt" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
                             </td>
                         </tr>
                         <tr>

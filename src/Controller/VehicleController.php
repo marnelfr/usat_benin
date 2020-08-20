@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DemandeFile;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
@@ -61,9 +62,13 @@ class VehicleController extends AbstractController
      */
     public function img(Request $request, Vehicle $vehicle) {
         if ($request->isXmlHttpRequest()) {
-            return $this->render('vehicle/show_img.html.twig', [
+            $view = $this->renderView('vehicle/show_img.html.twig', [
                 'url' => '/uploads/bol/' . $vehicle->getBolFileName(),
                 'alt' => 'Connaissement de véhicule'
+            ]);
+            return new JsonResponse([
+                'view' => $view,
+                'error' => $vehicle->getBolFileName() === ''
             ]);
         }
         return new Response('access denied');
@@ -72,20 +77,42 @@ class VehicleController extends AbstractController
     /**
      * Est utilisé pour la création des vehicules au niveau de l'étape 2 du formulaire de demande d'enlevement
      *
-     * @Route("/new", name="vehicle_new", methods={"GET","POST"})
+     * @Route("/new", name="vehicle_new", methods={"POST"})
      * @param Request           $request
      * @param RemovalController $removalController
      * @param array             $data => Les données reçues lorsque la methode new est directement appelé depuis RemovalController
+     * @param bool              $isXmlHttpRequest
+     * @param bool              $edit
+     *
+     * @return string|Response
      */
-    public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false)
+    public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false, bool $edit = false)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $vehicle = new Vehicle();
-        //Lorsque la page est rappeler suite à une erreur sur le formulaire, $data n'est pas fourni
-        if ($data) {
-            $vehicle->setChassis($data['chassis'])
-                ->setBrand($data['brand']);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        //S'il s'agit d'un edit de removal, cette methode est appelé depuis removal_edit
+        // avec la variable $edit à true et l'id du véhicule concerné dans $data
+        if ($edit) {
+            $vehicle = $entityManager->getRepository(Vehicle::class)->find($data['id']); //On recupère donc le véhicule concerné
         }
+        //Grâce à $edit qui est renvoyé à la vue, on ajout au formulaire, l'input de nom $edit lorsque $edit est définit
+        //Donc dans ce cas, get(edit) est different de null puisque le champs de name edit existe. Cependant j'arrive pas a recupérer ça valeur
+        elseif ($request->get('edit') !== null) {
+            //Ayant besoin de l'id de vehicule, il est sauvegardé donc dans le champs id que j'ai rajouté au formulaire.
+            $vehicle = $entityManager->getRepository(Vehicle::class)->find($request->get('vehicle')['id']);
+            $edit = true; //On remet $edit à true pour qu'on sache qu'on est dans le cas d'une modification
+        }
+        //Si ni $edit ni le champs de name 'edit' ne sont définit, alors on est dans le cas d'un ajout de vehicule
+        else{
+            $vehicle = new Vehicle();
+            //Lorsque la page est rappeler suite à une erreur sur le formulaire, $data n'est pas fourni
+            if ($data) {
+                $vehicle->setChassis($data['chassis'])
+                    ->setBrand($data['brand']);
+            }
+        }
+//        dd($vehicle);
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
@@ -93,18 +120,31 @@ class VehicleController extends AbstractController
             /** @var UploadedFile $bol */
             $bol = $form->get('bol')->getData();
 
-            //On enregistre un vehicule que si le connaissement est fourni
-            if ($bol) {
+            //On enregistre un vehicule que si le connaissement est fourni ou s'il s'agit d'une modification
+            if ($bol || $edit) {
                 try {
-                    $file = $this->uploader->upload($bol);
-                    $vehicle->setBolFileName(
-                        $file->getLink()
-                    );
+                    if ($bol) {
+                        $file = $this->uploader->upload($bol, 'bol', $edit, $vehicle->getBolFileName());
+
+                        $entityManager->getRepository(DemandeFile::class)->add(
+                            $file,
+                            'bol',
+                            $vehicle,
+                            'vehicle'
+                        );
+
+                        $vehicle->setBolFileName(
+                            $file->getLink()
+                        );
+                    }
 
                     $vehicle->setUser($this->getUser());
-                    $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($vehicle);
                     $entityManager->flush();
+
+                    if ($edit) {
+                        return $removalController->editSaver($request, $vehicle->getRemoval());
+                    }
 
                     //Une fois le véhicule enregistré, on passe à l'étape 3 du formulaire d'enlèvement
                     return $removalController->newSaver($request, $vehicle);
@@ -128,6 +168,9 @@ class VehicleController extends AbstractController
         //Pour les autres demandes qui subviennent lorqu'il y a une erreur de validation sur le formulaire
         return $this->render('vehicle/new.html.twig', [
             'vehicle' => $vehicle,
+            //$edit est envoyé à la vue pour mettre le titre adapté et mettre en
+            // place l'inp de name 'edit' permettant de savoir qu'on est dans le cas d'une modification
+            'edit' => $edit,
             'form' => $form->createView(),
         ]);
     }

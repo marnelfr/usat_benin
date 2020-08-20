@@ -16,8 +16,12 @@ $(function () {
     $('#vehicle_bol').removeAttr('required')
   }
 
-  let btnImporter = new Button('#vehicle-new-importer')
 
+  let modalAddRemover = new Button('#vehicle-new-importer')
+  modalAddRemover.click(function () {
+    u.entityModalAdd(modalAddRemover, 'importer_new', 'modal-importer-saver', 'vehicle_importer')
+  })
+  /*let btnImporter = new Button('#vehicle-new-importer')
   btnImporter.click(function () {
     $.get(Routing.generate('importer_new')).then(function (data) {
       btnImporter.reset()
@@ -62,20 +66,9 @@ $(function () {
         })
       })
     })
-  })
+  })*/
 
-})
+  //Affichage
+  u.showPicture('transfer-show-bol', 'vehicle_img')
 
-//Affichage
-$(function () {
-  Routing.setRoutingData(routes);
-  let btn = new Button('#transfer-show-bol')
-  btn.click(function () {
-    $.get(Routing.generate('vehicle_img', {id: btn.data('id')})).then(function (view) {
-      btn.reset()
-      let modal = new Modal()
-      modal.setContent(view)
-      modal.show()
-    })
-  })
 })

@@ -101,4 +101,29 @@ export default class Utility {
       modalBtnSaver.reset()
     });
   }
+
+
+  static showPicture(btnID, imgPath) {
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        let btn = new Button('#'+btnID)
+        btn.click(function () {
+          $.get(Routing.generate(imgPath, {id: btn.data('id'), use: btn.data('use')})).then(function (data) {
+            if (data.error) {
+              alert('Aucune image trouvée')
+            }else{
+              let modal = new Modal()
+              modal.setContent(data.view)
+              modal.show()
+            }
+          }).always(function () {
+            btn.reset()
+          })
+        })
+      })
+    })
+  }
+
+
 }

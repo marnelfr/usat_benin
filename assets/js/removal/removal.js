@@ -76,5 +76,11 @@ $(function () {
   //Submit du formulaire de demande
   let removalSaver = new Button('#removal-new-saver')
   removalSaver.loadOnClick(true)
+
+  //Affichage
+  u.showPicture('removal-show-bol', 'removal_img')
+  u.showPicture('removal-show-bfu', 'removal_img')
+  u.showPicture('removal-show-entry', 'removal_img')
+  u.showPicture('removal-show-receipt', 'removal_img')
 })
 

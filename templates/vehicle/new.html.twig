@@ -4,7 +4,7 @@
 
 {% block page_title %}Véhicule{% endblock %}
 {% block page_title2 %}Véhicule{% endblock %}
-{% block page_subtitle %}Nouveau Véhicule{% endblock %}
+{% block page_subtitle %}{% if edit is defined and edit == true %}Modification{% else %}Nouveau Véhicule{% endif %}{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
   {{ encore_entry_link_tags('vehicle') }}

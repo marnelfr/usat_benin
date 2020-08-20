@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
@@ -116,10 +118,16 @@ class Vehicle
      */
     private $remover;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeFile::class, mappedBy="vehicle")
+     */
+    private $demandeFiles;
+
     public function __construct()
     {
         $this->deleted = 0;
         $this->createdAt = new \DateTime();
+        $this->demandeFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -308,6 +316,37 @@ class Vehicle
     public function setRemover(?Remover $remover): self
     {
         $this->remover = $remover;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DemandeFile[]
+     */
+    public function getDemandeFiles(): Collection
+    {
+        return $this->demandeFiles;
+    }
+
+    public function addDemandeFile(DemandeFile $demandeFile): self
+    {
+        if (!$this->demandeFiles->contains($demandeFile)) {
+            $this->demandeFiles[] = $demandeFile;
+            $demandeFile->setVehicle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandeFile(DemandeFile $demandeFile): self
+    {
+        if ($this->demandeFiles->contains($demandeFile)) {
+            $this->demandeFiles->removeElement($demandeFile);
+            // set the owning side to null (unless already changed)
+            if ($demandeFile->getVehicle() === $this) {
+                $demandeFile->setVehicle(null);
+            }
+        }
 
         return $this;
     }
