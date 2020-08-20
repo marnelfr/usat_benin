@@ -29,9 +29,9 @@ class ManagerController extends AbstractController
 
         $transfertRepo = $em->getRepository(Transfer::class);
 
-        $finalized = count($transfertRepo->findBy(['status' => 'finalized', 'manager' => $this->getUser()]));
-        $waiting = count($transfertRepo->findBy(['status' => 'waiting', 'manager' => $this->getUser()]));
-        $rejected = count($transfertRepo->findBy(['status' => 'rejected', 'manager' => $this->getUser()]));
+        $finalized = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'finalized', 'manager' => $this->getUser()]));
+        $waiting = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'waiting', 'manager' => $this->getUser()]));
+        $rejected = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'rejected', 'manager' => $this->getUser()]));
         $importer = count($em->getRepository(Importer::class)->findBy(['user' => $this->getUser(), 'deleted'=> 0]));
 
         return $this->render('actors/manager/index.html.twig', compact(

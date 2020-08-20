@@ -63,7 +63,7 @@ class VehicleController extends AbstractController
     public function img(Request $request, Vehicle $vehicle) {
         if ($request->isXmlHttpRequest()) {
             $view = $this->renderView('vehicle/show_img.html.twig', [
-                'url' => '/uploads/bol/' . $vehicle->getBolFileName(),
+                'url' => '/uploads/' . $vehicle->getBolFileName(),
                 'alt' => 'Connaissement de véhicule'
             ]);
             return new JsonResponse([

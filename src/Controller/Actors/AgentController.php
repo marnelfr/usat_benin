@@ -2,6 +2,10 @@
 
 namespace App\Controller\Actors;
 
+use App\Entity\Removal;
+use App\Entity\Remover;
+use App\Entity\Vehicle;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,9 +24,21 @@ class AgentController extends AbstractController
      *
      * @Route("/actors/agent", name="actors_agent_dashboard")
      */
-    public function index()
+    public function index(EntityManagerInterface $em)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $removalRepo = $em->getRepository(Removal::class);
+
+        $finalized = count($removalRepo->findBy(['deleted' => 0,'status' => 'finalized', 'agent' => $this->getUser()]));
+        $waiting = count($removalRepo->findBy(['deleted' => 0,'status' => 'waiting', 'agent' => $this->getUser()]));
+        $vehicle = count($em->getRepository(Vehicle::class)->findBy(['deleted' => 0, 'user' => $this->getUser()]));
+        $remover = count($em->getRepository(Remover::class)->findBy(['agent' => $this->getUser(), 'deleted'=> 0]));
+
+        return $this->render('actors/agent/index.html.twig', compact(
+            'finalized', 'waiting', 'vehicle', 'remover'
+        ));
+
 
         return $this->render('actors/agent/index.html.twig', [
             'controller_name' => 'AgentController',
