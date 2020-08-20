@@ -208,6 +208,21 @@ class Removal
         return $this->demandeFiles;
     }
 
+    /**
+     * @param string $use
+     *
+     * @return File
+     */
+    public function getDemandeFile(string $use): ?File
+    {
+        foreach ($this->demandeFiles as $demandeFile) {
+            if ($demandeFile->getUsedFor() === $use) {
+                return $demandeFile->getFile();
+            }
+        }
+        return null;
+    }
+
     public function addDemandeFile(DemandeFile $demandeFile): self
     {
         if (!$this->demandeFiles->contains($demandeFile)) {

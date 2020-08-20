@@ -20,7 +20,13 @@
 
     {{ form_row(form.putInUseAt) }}
     {{ form_row(form.cameAt) }}
-    {{ form_row(form.bol) }}
+    {{ form_row(form.bol, {require: false}) }}
+
+    {{ form_row(form.id, {value: vehicle.id}) }}
+
+    {% if edit is defined and edit == true %}
+      <input type="hidden" name="edit">
+    {% endif %}
 
     <div class="row text-right">
       <div class="col-md-12">

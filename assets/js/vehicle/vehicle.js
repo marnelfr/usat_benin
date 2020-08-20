@@ -1,10 +1,10 @@
 import Button from '../import/button'
 // import Routing from 'rou'
-const routes = require('../../../public/js/fos_js_routes.json');
-import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+//const routes = require('../../../public/js/fos_js_routes.json');
+//import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 //https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
-import Modal from '../import/modal'
-import u from '../import/utility'
+//import Modal from '../import/modal'
+//import u from '../import/utility'
 
 /*
 $(function () {
@@ -63,6 +63,11 @@ $(function () {
 })*/
 
 $(function () {
-  let saver = new Button('#vehicle-new-saver')
+  const saver = new Button('#vehicle-new-saver')
   saver.loadOnClick(true)
+
+  const title = $('.card-title')
+  if (title.text().trim() === 'Modification de véhicule') {
+    $('#vehicle_bol').removeAttr('required')
+  }
 })

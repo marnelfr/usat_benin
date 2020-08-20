@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DemandeFile;
+use App\Entity\File;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,42 @@ class DemandeFileRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DemandeFile::class);
+    }
+
+    public function add(File $file, string $useFor, $entity, string $entity_name = 'removal') {
+        $demandeFile = new DemandeFile();
+        $demandeFile->setUsedFor($useFor);
+        $demandeFile->setFile($file);
+        if ($entity_name === 'removal') {
+            $demandeFile->setRemoval($entity);
+        } elseif ($entity_name === 'vehicle'){
+            $demandeFile->setVehicle($entity);
+        } else{
+            $demandeFile->setTransfer($entity);
+        }
+        $this->_em->persist($demandeFile);
+        return $demandeFile;
+    }
+
+    public function edit(File $file, string $useFor, $entity, string $entity_name = 'removal') {
+        $demandeFile = $this->findOneBy([
+            $entity_name => $entity,
+            'usedFor' => $useFor
+        ]);
+        if (!$demandeFile) {
+            return $this->add($file, $useFor, $entity, $entity_name);
+        }
+        $demandeFile->setUsedFor($useFor);
+        $demandeFile->setFile($file);
+        if ($entity_name === 'removal') {
+            $demandeFile->setRemoval($entity);
+        } elseif ($entity_name === 'vehicle'){
+            $demandeFile->setVehicle($entity);
+        } else {
+            $demandeFile->setTransfer($entity);
+        }
+        $this->_em->persist($demandeFile);
+        return $demandeFile;
     }
 
     // /**

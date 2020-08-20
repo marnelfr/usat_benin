@@ -6,7 +6,7 @@
 
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title"><i class="fas fa-plus-circle"></i> Ajout de Véhicules</h3>
+      <h3 class="card-title"><i class="fas fa-plus-circle"></i> {% if edit is defined and edit == true %}Modification de véhicule{% else %}Ajout de Véhicule{% endif %}</h3>
       {#<div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
               <i class="fas fa-minus"></i></button>
@@ -15,17 +15,19 @@
       </div>#}
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-          <table class="table table-bordered">
-            <tr>
-              <td class="text-center">ETAPE 1</td>
-              <td class="text-center bg-gradient-green">ETAPE 2</td>
-              <td class="text-center">ETAPE 3</td>
-            </tr>
-          </table>
+      {% if edit is not defined %}
+        <div class="row">
+          <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+            <table class="table table-bordered">
+              <tr>
+                <td class="text-center">ETAPE 1</td>
+                <td class="text-center bg-gradient-green">ETAPE 2</td>
+                <td class="text-center">ETAPE 3</td>
+              </tr>
+            </table>
+          </div>
         </div>
-      </div>
+      {% endif %}
       <div class="row">
         <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
           {{ include('vehicle/_form.html.twig') }}

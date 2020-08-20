@@ -48,6 +48,11 @@ class DemandeFile
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="demandeFiles")
+     */
+    private $vehicle;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -127,6 +132,18 @@ class DemandeFile
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getVehicle(): ?Vehicle
+    {
+        return $this->vehicle;
+    }
+
+    public function setVehicle(?Vehicle $vehicle): self
+    {
+        $this->vehicle = $vehicle;
 
         return $this;
     }

@@ -127,12 +127,11 @@ class TransferController extends AbstractController
                     $transfer->setManager($this->getUser());
                     $entityManager->persist($transfer);
 
-                    $fileDemande = new DemandeFile();
-                    $fileDemande->setTransfer($transfer)
-                        ->setFile($file)
-                        ->setUsedFor('Transfer')
-                    ;
-                    $entityManager->persist($fileDemande);
+                    $entityManager->getRepository(DemandeFile::class)->add(
+                        $file,
+                        'bol',
+                        $vehicle, 'vehicle'
+                    );
 
                     $entityManager->flush();
 

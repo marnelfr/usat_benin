@@ -40,16 +40,16 @@ class FileUploader
         try {
             if ($edit) {
                 $fileSys = new Filesystem();
-                if ($fileSys->exists($this->getTargetDirectory($for) . $oldFileName)) {
-                    $fileSys->remove($this->getTargetDirectory($for) . $oldFileName);
+                if ($fileSys->exists($this->targetDirectory . $oldFileName)) {
+                    $fileSys->remove($this->targetDirectory . $oldFileName);
                 }
             }
 
-            $file->move($this->getTargetDirectory($for) . date('Ymm') . '/', $newFilename);
+            $file->move($this->targetDirectory . date('Ymm') . '/' . $for . '/', $newFilename);
 
             $saveFile = new File();
             $saveFile->setClientName($originalFilename)
-                ->setLink(date('Ymm') . '/' . $newFilename)
+                ->setLink(date('Ymm') . '/' . $for . '/' . $newFilename)
                 ->setSize(0) // TODO: Comment recuperer la taille d'un fichier uploader par l'utilisateur ?
                 ->setUser($this->security->getUser())
             ;
@@ -63,20 +63,8 @@ class FileUploader
         }
     }
 
-    public function getTargetDirectory($for)
+    public function getTargetDirectory()
     {
-        // TODO: $for sera utiliser pour savoir quoi retouner quand on aura plusieurs repertoir
-        $dir = '';
-        switch ($for) {
-            case 'bol':
-                $dir = $this->targetDirectory[0];
-                break;
-            case 'cin':
-                $dir = $this->targetDirectory[1];
-                break;
-            default:
-                $dir = '';
-        }
-        return $dir;
+        return $this->targetDirectory;
     }
 }
