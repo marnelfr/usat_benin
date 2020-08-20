@@ -1,0 +1,55 @@
+<table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Châssis</th>
+                            <td>{{ transfer.vehicle.chassis }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marque</th>
+                            <td>{{ transfer.vehicle.brand.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Navire</th>
+                            <td>{{ transfer.vehicle.ship.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Importateur</th>
+                            <td>{{ transfer.vehicle.importer.fullname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mise en circulation</th>
+                            <td>{{ transfer.vehicle.putInUseAt ? transfer.vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'arrivée</th>
+                            <td>{{ transfer.vehicle.cameAt ? transfer.vehicle.cameAt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Consignataire</th>
+                            <td>{{ transfer.vehicle.consignee }}</td>
+                        </tr>
+                        {#<tr>
+                            <th>Date d'enregistrement</th>
+                            <td>{{ transfer.vehicle.createdAt ? transfer.vehicle.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.vehicle.createdAt|date('H:i:s') : '' }}</td>
+                        </tr>#}
+
+
+
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ transfer.state }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Date de demande</th>
+                            <td>
+                              {{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <button data-id="{{ transfer.vehicle.id }}" id="transfer-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>

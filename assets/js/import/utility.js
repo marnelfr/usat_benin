@@ -29,22 +29,28 @@ export default class Utility {
    * @param form_path           Le chemin de l'action d'ajout de l'entité. Est sensé aussi renvoyé le formulaire
    * @param idModalBtnSaver     L'id du btn d'enregistrement présent sur le modal.
    * @param idSelectList        L'id du select contenant la liste de l'entité dont on veut faire un nouveau enregistrement
+   * @param path_data
+   * @param ajax_treatment
    */
-  static entityModalAdd (btnModalAdd, form_path, idModalBtnSaver, idSelectList) {
+  static entityModalAdd (btnModalAdd, form_path, idModalBtnSaver, idSelectList, path_data = {}, ajax_treatment = true) {
     import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
       import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
         Routing.setRoutingData(routes);
-        $.get(Routing.generate(form_path)).then(function (data) {
-          btnModalAdd.reset()
-          let modal = new Modal()
-          modal.setContent(data.view)
+        $.get(Routing.generate(form_path, path_data)).then(function (data) {
+          if (data.typeMessage) {
+            btnModalAdd.reset()
+            let modal = new Modal()
+            modal.setContent(data.view)
 
-          modal.show(function () {
-            let modalBtnSaver = new Button('#'+idModalBtnSaver)
-            modalBtnSaver.click(function () {
-              Utility.modalFormRuner(modal, modalBtnSaver, idModalBtnSaver, idSelectList)
+            modal.show(function () {
+              let modalBtnSaver = new Button('#'+idModalBtnSaver)
+              modalBtnSaver.click(function () {
+                Utility.modalFormRuner(modal, modalBtnSaver, idModalBtnSaver, idSelectList, ajax_treatment)
+              })
             })
-          })
+          }else{
+            u.notif('danger', 'Erreur de chargement..')
+          }
         })
       })
     })
@@ -63,8 +69,12 @@ export default class Utility {
    * @param idModalBtnSaver
    * @param idSelectList
    */
-  static modalFormRuner (modal, modalBtnSaver, idModalBtnSaver, idSelectList) {
+  static modalFormRuner (modal, modalBtnSaver, idModalBtnSaver, idSelectList, ajax_treatment) {
     let $form = modalBtnSaver.getForm()
+    if (!ajax_treatment) {
+      $form.submit()
+      return;
+    }
     let formData = new FormData($form[0])
     $.ajax({
       url: $form.attr('action'),
@@ -77,11 +87,13 @@ export default class Utility {
           if (data.typeMessage === 'success') {
             Utility.notif(data.message, data.typeMessage)
             let select = $('#'+idSelectList)
-            select.prepend(`<option value="${data.id}">${data.name}</option>`)
+            if (select.length > 0) {
+              select.prepend(`<option value="${data.id}">${data.name}</option>`)
 
-            //Ici, j'affiche en même temps l'enleveur
-            select.val(data.id)
-            modal.hide()
+              //Ici, j'affiche en même temps l'enleveur
+              select.val(data.id)
+              modal.hide()
+            }
           } else {
             //Les informations entrées dans le formulaire se sont pas valides
             modal.setContent(data.view)

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Processing;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Processing|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,41 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProcessingRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Processing::class);
+        $this->security = $security;
+    }
+
+    /**
+     * @param        $entity
+     * @param string $entity_name
+     * @param null   $verdict
+     * @param string $reason
+     *
+     * @return Processing
+     */
+    public function add($entity, $entity_name = 'transfer', $verdict = null, $reason = ''): Processing
+    {
+        $p = new Processing();
+        $p->setUser($this->security->getUser());
+        if ($entity_name === 'transfer') {
+            $p->setTransfer($entity);
+        }
+        if ($entity_name === 'removal') {
+            $p->setRemoval($entity);
+        }
+        if ($verdict !== null) {
+            $p->setVerdict($verdict)
+                ->setReason($reason);
+        }
+        $this->_em->persist($p);
+        return $p;
     }
 
     // /**

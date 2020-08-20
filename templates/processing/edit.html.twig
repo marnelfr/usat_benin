@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Processing{% endblock %}
+
+{% block body %}
+    <h1>Edit Processing</h1>
+
+    {{ include('processing/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('processing_index') }}">back to list</a>
+
+    {{ include('processing/_delete_form.html.twig') }}
+{% endblock %}

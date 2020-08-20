@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Processing{% endblock %}
+
+{% block body %}
+    <h1>Processing</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ processing.id }}</td>
+            </tr>
+            <tr>
+                <th>Verdict</th>
+                <td>{{ processing.verdict ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Reason</th>
+                <td>{{ processing.reason }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('processing_index') }}">back to list</a>
+
+    <a href="{{ path('processing_edit', {'id': processing.id}) }}">edit</a>
+
+    {{ include('processing/_delete_form.html.twig') }}
+{% endblock %}

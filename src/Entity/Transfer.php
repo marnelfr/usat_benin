@@ -177,6 +177,14 @@ class Transfer
         return $this->processings;
     }
 
+    /**
+     * @return Processing
+     */
+    public function getProcessing(): Processing
+    {
+        return $this->processings->last();
+    }
+
     public function addProcessing(Processing $processing): self
     {
         if (!$this->processings->contains($processing)) {

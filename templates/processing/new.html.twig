@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Processing{% endblock %}
+
+{% block body %}
+    <h1>Create new Processing</h1>
+
+    {{ include('processing/_form.html.twig') }}
+
+    <a href="{{ path('processing_index') }}">back to list</a>
+{% endblock %}
