@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
      * @Route("/check/user/profil", name="security_check_user_profil")
      */
     public function check_user_profil() {
-//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //todo : Comment rediriger en utilisant ceci ??
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 //        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
 //            return $this->redirectToRoute('home_page');
 //        }
@@ -61,6 +61,11 @@ class SecurityController extends AbstractController
             $this->addFlash('emailNotVerified', true);
             return $this->redirectToRoute('home_page');
         }
+
+        // TODO: Mettre en place un eventSubscriber pour mieux gérer ceci
+        $user->setLastConnection(new \DateTime());
+        $this->getDoctrine()->getManager()->flush();
+
         if ($this->isGranted('ROLE_AGENT')) {
             return $this->redirectToRoute('actors_agent_dashboard');
         }
@@ -69,16 +74,16 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('actors_manager_dashboard');
         }
 
+        if ($this->isGranted('ROLE_STAFF')) {
+            return $this->redirectToRoute('actors_staff_dashboard');
+        }
+
         if ($this->isGranted('ROLE_CONTROL')) {
             return $this->redirectToRoute('actors_control_dashboard');
         }
 
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('actors_admin_dashboard');
-        }
-
-        if ($this->isGranted('ROLE_STAFF')) {
-            return $this->redirectToRoute('actors_staff_dashboard');
         }
 
         return $this->redirectToRoute('home_page');

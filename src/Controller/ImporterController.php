@@ -27,7 +27,7 @@ class ImporterController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render('importer/index.html.twig', [
-            'importers' => $importerRepository->findBy(['deleted' => 0, 'manager' => $this->getUser()], ['id' => 'DESC']),
+            'importers' => $importerRepository->findBy(['deleted' => 0, 'user' => $this->getUser()], ['id' => 'DESC']),
         ]);
     }
 

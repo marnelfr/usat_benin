@@ -1,0 +1,70 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Demandes {{ title }}{% endblock %}
+
+{% block page_title %}Transfert{% endblock %}
+{% block page_title2 %}Transfert{% endblock %}
+{% block page_subtitle %}Demandes {{ title }}{% endblock %}
+
+{% block page_content %}
+  <div class="row pb-3">
+    <div class="col-12 col-sm-12 col-md-12">
+      <a class="btn btn-default" href="{{ path('security_check_user_profil') }}"><i class="fas fa-reply"></i> Tableau de bord</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-list"></i> Liste de Demandes</h3>
+      {#<div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fas fa-minus"></i></button>
+          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+              <i class="fas fa-times"></i></button>
+      </div>#}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>&ensp;Véhicule</th>
+              <th class="text-center">Date de demande</th>
+              <th class="text-center">Status</th>
+              <th class="text-right">Actions&ensp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transfer in transfers %}
+              <tr>
+                <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
+                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
+                <td class="text-center">{{ transfer.state }}</td>
+                <td class="text-right">
+                  <a class="btn btn-primary" title="Commencer le traitement de la demande" href="{{ path('staff_transfer_treatment', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Traité</a>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td class="text-center text-bold" colspan="5">{{ noData }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            <thead>
+            <tr>
+              <th>&ensp;Véhicule</th>
+              <th class="text-center">Date de demande</th>
+              <th class="text-center">Status</th>
+              <th class="text-right">Actions&ensp;</th>
+            </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    {#<div class="card-footer">
+        Footer
+    </div>#}
+  </div>
+{% endblock %}

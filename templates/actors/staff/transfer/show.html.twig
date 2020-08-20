@@ -1,25 +1,25 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Demande{% endblock %}
+{% block title %}Traitement de demande{% endblock %}
 
-{% block page_title %}Transfert{% endblock %}
-{% block page_title2 %}Transfert{% endblock %}
+{% block page_title %}Traitement{% endblock %}
+{% block page_title2 %}Traitement{% endblock %}
 {% block page_subtitle %}Demande de Transfert{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
-  {{ encore_entry_link_tags('transfer') }}
+  {{ encore_entry_link_tags('transfer_treatment') }}
 {% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
         <div class="col-12 col-sm-12 col-md-12">
-            <a class="btn btn-default" href="{{ path('transfer_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
+            <a class="btn btn-default" href="{{ path('staff_transfer_index') }}"><i class="fas fa-reply"></i> Les Demandes de Transfert</a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-eye"></i> Demande de Transfert</h3>
+            <h3 class="card-title"><i class="fas fa-edit"></i> Traitement : Demande de Transfert</h3>
           {#<div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                   <i class="fas fa-minus"></i></button>
@@ -30,15 +30,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                    {% include 'transfer/show_table.html.twig' %}
+                  {% include 'transfer/show_table.html.twig' %}
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                      {{ include('transfer/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
-                      {% if transfer.status != 'waiting' %}
-                          <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
-                      {% else %}
-                          <a class="btn btn-primary float-right" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
-                      {% endif %}
+                  <button id="transfert-verdict-reject" data-id="{{ transfer.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
+                  <button id="transfert-verdict-accept" data-id="{{ transfer.id }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</button>
                 </div>
             </div>
         </div>
@@ -49,5 +45,5 @@
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}
-  {{ encore_entry_script_tags('transfer') }}
+  {{ encore_entry_script_tags('transfer_treatment') }}
 {% endblock %}

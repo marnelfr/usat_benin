@@ -5,14 +5,11 @@ namespace App\Controller;
 use App\Entity\DemandeFile;
 use App\Entity\Transfer;
 use App\Entity\Vehicle;
-use App\Form\TransferType;
 use App\Form\VehicleType;
 use App\Repository\TransferRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +28,7 @@ class TransferController extends AbstractController
     }
 
     /**
-     * La liste des demande de transfert approuver, finaliser
+     * La liste des demande de transfert en attente
      *
      * @Route("/waiting", name="transfer_index", methods={"GET"})
      */
