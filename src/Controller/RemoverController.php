@@ -110,7 +110,7 @@ class RemoverController extends AbstractController
     public function img(Request $request, Remover $remover) {
         if ($request->isXmlHttpRequest()) {
             $view =  $this->renderView('vehicle/show_img.html.twig', [
-                'url' => '/uploads/cin/' . $remover->getCinFileName(),
+                'url' => '/uploads/' . $remover->getCinFileName(),
                 'alt' => 'Carte nationale d\'identité'
             ]);
             return new JsonResponse([
