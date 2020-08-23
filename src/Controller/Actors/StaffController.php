@@ -192,21 +192,17 @@ class StaffController extends AbstractController
         $html = $this->renderView('actors/staff/transfer/print.approval.html.twig', array(
             'var'  => 'mainteneuR'
         ));
-        $c = Cookie::create('downloaded')
+        $cookie = Cookie::create('downloaded')
             ->withValue(true)
             ->withExpires(new \DateTime('+10 seconds'))
             ->withSecure(false)
             ->withHttpOnly(false)
-//            ->withSecure(true)
-//            ->withHttpOnly(true)
         ;
-//        $pdf->setOption('cookie', ['download' => true]);
         $response = new PdfResponse(
             $pdf->getOutputFromHtml($html),
             'file.pdf'
         );
-        $response->headers->setCookie($c);
-//        $response->sendHeaders(['cookie' => $c]);
+        $response->headers->setCookie($cookie);
         return $response;
     }
 }
