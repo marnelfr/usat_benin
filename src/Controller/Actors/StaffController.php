@@ -8,9 +8,12 @@ use App\Entity\Remover;
 use App\Entity\Transfer;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -173,5 +176,37 @@ class StaffController extends AbstractController
         }
 
         return new Response('Page introuvable');
+    }
+
+    /**
+     * @Route("/staff/{id}/approval", name="staff_approval_demand")
+     * @param Request $request
+     */
+    public function approval(Transfer $transfer, Request $request, Pdf $pdf) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $transfer->setStatus('approved');
+        $transfer->getProcessing()->setVerdict(1);
+        $this->getDoctrine()->getManager()->flush();
+
+        $html = $this->renderView('actors/staff/transfer/print.approval.html.twig', array(
+            'var'  => 'mainteneuR'
+        ));
+        $c = Cookie::create('downloaded')
+            ->withValue(true)
+            ->withExpires(new \DateTime('+10 seconds'))
+            ->withSecure(false)
+            ->withHttpOnly(false)
+//            ->withSecure(true)
+//            ->withHttpOnly(true)
+        ;
+//        $pdf->setOption('cookie', ['download' => true]);
+        $response = new PdfResponse(
+            $pdf->getOutputFromHtml($html),
+            'file.pdf'
+        );
+        $response->headers->setCookie($c);
+//        $response->sendHeaders(['cookie' => $c]);
+        return $response;
     }
 }

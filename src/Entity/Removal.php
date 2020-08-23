@@ -115,6 +115,9 @@ class Removal
             case 'finalized':
                 $etat = 'Approuvée';
                 break;
+            case 'approved':
+                $etat = 'Approuvée';
+                break;
             default:
                 $etat = 'Rejetée';
         }
