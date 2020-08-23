@@ -19,6 +19,15 @@ class TransferRepository extends ServiceEntityRepository
         parent::__construct($registry, Transfer::class);
     }
 
+    public function getWaitingTransfer() {
+        return $this->_em->createQuery(
+            "select t
+            from App\Entity\Transfer t
+            where t.status not in ('finalized', 'rejected')
+            and t.deleted = 0"
+        )->getResult();
+    }
+
     // /**
     //  * @return Transfer[] Returns an array of Transfer objects
     //  */

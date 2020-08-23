@@ -132,7 +132,7 @@ class TransferController extends AbstractController
 
                     $entityManager->flush();
 
-                    $this->addFlash('Demande envoyée avec succès');
+                    $this->addFlash('success', 'Demande envoyée avec succès');
 
                     return $this->redirectToRoute('transfer_index');
                 }catch (\Exception $e) {
