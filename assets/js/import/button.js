@@ -31,12 +31,15 @@ export default class Button {
     return this.btn.closest('form')
   }
 
-  loadOnClick(submit_form) {
+  loadOnClick(submit_form, callable = null) {
     let $this = this
     $this.btn.on('click', function () {
       $this.loading()
       if (submit_form) {
         $this.btn.closest('form').submit()
+      }
+      if (callable !== null) {
+        callable()
       }
     })
   }

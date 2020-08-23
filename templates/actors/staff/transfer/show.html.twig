@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   <button id="transfert-verdict-reject" data-id="{{ transfer.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
-                  <button id="transfert-verdict-accept" data-id="{{ transfer.id }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</button>
+                  <a onclick="confirm('Approuver la demande génère la fiche de demande. Voulez-vous la télécharger en même temps ?')" id="transfert-verdict-accept" href="{{ path('staff_approval_demand', {id: transfer.id}) }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</a>
                 </div>
             </div>
         </div>
