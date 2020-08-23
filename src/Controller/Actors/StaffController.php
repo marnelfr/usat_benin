@@ -6,6 +6,7 @@ use App\Entity\Processing;
 use App\Entity\Removal;
 use App\Entity\Remover;
 use App\Entity\Transfer;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,7 +56,7 @@ class StaffController extends AbstractController
         return $this->render('actors/staff/transfer/index.html.twig', [
             'title' => 'En attente',
             'noData' => 'Aucune demande en attente',
-            'transfers' => $this->getDoctrine()->getRepository(Transfer::class)->findBy(['status' => 'waiting']),
+            'transfers' => $this->getDoctrine()->getRepository(Transfer::class)->getWaitingTransfer(),
         ]);
     }
 
@@ -70,11 +71,35 @@ class StaffController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        //On definit les differents message affichable à l'utilisateur
+        $message = 'La demande à déjà été traitée par ';
+        if ($transfer->getStatus() === 'inprogress') {
+            $message = 'La demande est déjà en cours de traitement par ';
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $currentFullname = $this->getUser()->getFullname();
+        //Le nom de celui qui est entrain de traiter la demande
+        $fullname = $transfer->getStatus() !== 'waiting' ? $transfer->getProcessing()->getUser()->getFullname() : '';
+
+        $message .= $fullname;
+
+        $ressouceNotAccessible = $transfer->getStatus() !== 'waiting' && $fullname !== $currentFullname;
+
         if ($request->isXmlHttpRequest()) {
-            if ($transfer->getStatus() === 'inprogress') {
+            //Un utilisateur ne peut commencer le traitement d'une demande s'il traite déjà une autre
+            if ($transfer->getStatus() === 'waiting' && $em->getRepository(User::class)->isMakingTreatement()) {
                 return new JsonResponse([
                     'typeMessage' => 'warning',
-                    'message' => 'Déjà en cours de traitement en cours par ' . $transfer->getProcessing()->getUser()->getFullname()
+                    'message' => 'Veuillez finaliser le traitement en cours et réessayer'
+                ]);
+            }
+            //un utilisateur ne peut accéder à une demande en cours de traitement par un autre utilisateur
+            if ($ressouceNotAccessible) {
+                return new JsonResponse([
+                    'typeMessage' => 'warning',
+                    'message' => $message
                 ]);
             } else {
                 return new JsonResponse([
@@ -82,9 +107,18 @@ class StaffController extends AbstractController
                 ]);
             }
         }
+        //un utilisateur ne peut accéder à une demande en cours de traitement par un autre utilisateur
+        if ($ressouceNotAccessible) {
+            $this->addFlash('warning', $message);
+            return $this->redirectToRoute('staff_transfer_index');
+        }
+        //Un utilisateur ne peut commencer le traitement d'une demande s'il traite déjà une autre
+        if ($transfer->getStatus() === 'waiting' && $em->getRepository(User::class)->isMakingTreatement()) {
+            $this->addFlash('warning', 'Veuillez finaliser le traitement en cours et réessayer');
+            return $this->redirectToRoute('staff_transfer_index');
+        }
 
         $transfer->setStatus('inprogress');
-        $em = $this->getDoctrine()->getManager();
         $em->getRepository(Processing::class)->add($transfer, 'transfer');
         $em->flush();
 

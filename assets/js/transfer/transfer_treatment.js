@@ -10,9 +10,28 @@ $(function () {
   Routing.setRoutingData(routes);
 
   //Start treatment
-  const btnStartTreatment = new Button('.transfer-start-treatment')
+  // const btnStartTreatment = new Button('.transfer-start-treatment')
 
-  btnStartTreatment.click(function () {
+  const btns = document.querySelectorAll('.transfer-start-treatment')
+  btns.forEach(function (btn) {
+    let button = new Button(btn)
+    button.click(function () {
+      const startTreatmentPath = button.data('href')
+      $.get(startTreatmentPath).then(function (data) {
+        if (data.typeMessage === 'success') {
+          window.location = startTreatmentPath
+        }else if (data.typeMessage === 'warning') {
+          alert(data.message)
+        } else {
+          u.notif('Erreur de chargement..')
+        }
+      }).always(function () {
+        button.reset()
+      })
+    })
+  })
+
+  /*btnStartTreatment.click(function () {
     const startTreatmentPath = btnStartTreatment.data('href')
     $.get(startTreatmentPath).then(function (data) {
       if (data.typeMessage === 'success') {
@@ -25,7 +44,7 @@ $(function () {
     }).always(function () {
       btnStartTreatment.reset()
     })
-  })
+  })*/
 
 
   const modalRejectTransfer = new Button('#transfert-verdict-reject')

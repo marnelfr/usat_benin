@@ -8,14 +8,10 @@ export default class Button {
 
   click(callable) {
     let $this = this
-    this.btn.each(function () {
-      const b = $(this)
-      b.off('click').click(function (e) {
-          e.preventDefault()
-
-          // b.loading()
-          callable()
-        })
+    this.btn.click(function (e) {
+      e.preventDefault()
+      $this.loading()
+      callable()
     })
   }
 
