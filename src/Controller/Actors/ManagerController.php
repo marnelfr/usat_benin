@@ -22,6 +22,9 @@ class ManagerController extends AbstractController
      * Le tableau de bord des managers de la plateforme
      *
      * @Route("/actors/manager", name="actors_manager_dashboard")
+     * @param EntityManagerInterface $em
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(EntityManagerInterface $em)
     {

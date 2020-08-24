@@ -1,0 +1,74 @@
+<table class="table">
+    <tbody>
+        <tr>
+            <th colspan="2">Véhicule</th>
+        </tr>
+        <tr>
+            <th>Châssis</th>
+            <td>{{ removal.vehicle.chassis }}</td>
+        </tr>
+        <tr>
+            <th>Marque</th>
+            <td>{{ removal.vehicle.brand.name }}</td>
+        </tr>
+        <tr>
+            <th>Navire</th>
+            <td>{{ removal.vehicle.ship.name }}</td>
+        </tr>
+        <tr>
+            <th>Importateur</th>
+            <td>{{ removal.vehicle.importer.fullname }}</td>
+        </tr>
+        <tr>
+            <th>Mise en circulation</th>
+            <td>{{ removal.vehicle.putInUseAt ? removal.vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Date d'arrivée</th>
+            <td>{{ removal.vehicle.cameAt ? removal.vehicle.cameAt|date('d-m-Y') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Consignataire</th>
+            <td>{{ removal.vehicle.consignee }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-center">
+                <button data-id="{{ removal.id }}" data-use="bol" id="removal-show-bol" class="btn btn-default"><i class="fas fa-eye"></i> Afficher le Connaissement</button>
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="2">Informations supplémentaires</th>
+        </tr>
+        <tr>
+            <th>Statut</th>
+            <td>{{ removal.state }}</td>
+        </tr>
+        <tr>
+            <th>N° BFU</th>
+            <td>
+              {{ removal.bfuNum }}
+                <button data-id="{{ removal.id }}" data-use="bfu" id="removal-show-bfu" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <th>N° Déclaration de Douane</th>
+            <td>
+              {{ removal.entryNum }}
+                <button data-id="{{ removal.id }}" data-use="entry" id="removal-show-entry" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <th>Banque de payement</th>
+            <td>{{ removal.payBank.name }}
+                <button data-id="{{ removal.id }}" data-use="receipt" id="removal-show-receipt" class="btn btn-default float-right"><i class="fas fa-eye"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <th>Date de demande</th>
+            <td>
+              {{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
+            </td>
+        </tr>
+    </tbody>
+</table>

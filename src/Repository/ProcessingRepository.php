@@ -36,7 +36,15 @@ class ProcessingRepository extends ServiceEntityRepository
      */
     public function add($entity, $entity_name = 'transfer', $verdict = null, $reason = ''): Processing
     {
-        $p = new Processing();
+        $old = $this->findOneBy([
+            $entity_name => $entity,
+            'verdict' => null
+        ]);
+        if ($old) {
+            $p = $old;
+        } else {
+            $p = new Processing();
+        }
         $p->setUser($this->security->getUser());
         if ($entity_name === 'transfer') {
             $p->setTransfer($entity);

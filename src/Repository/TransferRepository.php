@@ -23,7 +23,19 @@ class TransferRepository extends ServiceEntityRepository
         return $this->_em->createQuery(
             "select t
             from App\Entity\Transfer t
-            where t.status not in ('finalized', 'rejected')
+            left join App\Entity\Processing p with p.transfer = t
+            where ((t.status not in ('inprogress', 'finalized', 'rejected')) or (t.status = 'inprogress' and p.verdict is null))
+            and t.deleted = 0"
+        )->getResult();
+    }
+
+    public function getInProgressTransfer() {
+        return $this->_em->createQuery(
+            "select t
+            from App\Entity\Transfer t
+            inner join App\Entity\Processing p with p.transfer = t
+            where t.status = 'inprogress'
+            and p.verdict is not null
             and t.deleted = 0"
         )->getResult();
     }

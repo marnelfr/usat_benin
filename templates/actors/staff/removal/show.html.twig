@@ -1,25 +1,25 @@
 {% extends 'base-admin.html.twig' %}
 
-{% block title %}Demande{% endblock %}
+{% block title %}Traitement de demande{% endblock %}
 
-{% block page_title %}Enlevement{% endblock %}
-{% block page_title2 %}Enlevement{% endblock %}
+{% block page_title %}Traitement{% endblock %}
+{% block page_title2 %}Traitement{% endblock %}
 {% block page_subtitle %}Demande d'Enlevement{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
-  {{ encore_entry_link_tags('removal') }}
+  {{ encore_entry_link_tags('removal_treatment') }}
 {% endblock %}
 
 {% block page_content %}
     <div class="row pb-3">
         <div class="col-12 col-sm-12 col-md-12">
-            <a class="btn btn-default" href="{{ path('removal_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
+            <a class="btn btn-default" href="{{ path('staff_removal_index') }}"><i class="fas fa-reply"></i> Les Demandes d'Enlevement</a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-eye"></i> Demande d'Enlevement</h3>
+            <h3 class="card-title"><i class="fas fa-edit"></i> Traitement : Demande d'Enlevement</h3>
           {#<div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                   <i class="fas fa-minus"></i></button>
@@ -30,15 +30,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                    {% include 'removal/show_table.html.twig' %}
+                  {% include 'removal/show_table.html.twig' %}
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
-                  {{ include('removal/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
-                  {% if removal.status != 'waiting' %}
-                      <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
-                  {% else %}
-                      <a class="btn btn-primary float-right" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
-                  {% endif %}
+                  <button id="removal-verdict-reject" data-id="{{ removal.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
+                  <a onclick="confirm('Approuver la demande génère la fiche de demande. Voulez-vous la télécharger en même temps ?')" id="removal-verdict-accept" href="{{ path('staff_approval_demand', {id: removal.id}) }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</a>
                 </div>
             </div>
         </div>
@@ -49,5 +45,5 @@
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}
-  {{ encore_entry_script_tags('removal') }}
+  {{ encore_entry_script_tags('removal_treatment') }}
 {% endblock %}

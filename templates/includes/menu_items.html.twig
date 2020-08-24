@@ -176,10 +176,6 @@
   </a>
 {% endif %}
 
-{% if app.user.profil.slug == 'admin' %}
-
-{% endif %}
-
 {% if app.user.profil.slug == 'staff' %}
   <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
@@ -197,6 +193,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a href="{{ path('staff_transfer_inprogress') }}" id="{{ 'staff_transfer_inprogress'|md5 }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Demandes en encours</p>
+        </a>
+      </li>
+      <li class="nav-item">
         <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Demandes finalisés</p>
@@ -204,7 +206,9 @@
       </li>
     </ul>
   </li>
-  <li class="nav-item has-treeview">
+
+
+<li class="nav-item has-treeview">
     <a href="#" class="nav-link">
       <i class="nav-icon fas fa-tachometer-alt"></i>
       <p>
@@ -214,21 +218,33 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
-        <a href="{{ path('importer_new') }}" id="{{ 'importer_new'|md5 }}" class="nav-link">
+        <a href="{{ path('staff_removal_index') }}" id="{{ 'staff_removal_index'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Demandes en attente</p>
         </a>
       </li>
       <li class="nav-item">
+        <a href="{{ path('staff_removal_inprogress') }}" id="{{ 'staff_removal_inprogress'|md5 }}" class="nav-link">
+          <i class="far fa-circle nav-icon"></i>
+          <p>Demandes en encours</p>
+        </a>
+      </li>
+      <li class="nav-item">
         <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
-          <p>Demandes finalisées</p>
+          <p>Demandes finalisés</p>
         </a>
       </li>
     </ul>
-  </li>{% endif %}
+  </li>
+
+{% endif %}
 
 {% if app.user.profil.slug == 'control' %}
+
+{% endif %}
+
+{% if app.user.profil.slug == 'admin' %}
 
 {% endif %}
 
