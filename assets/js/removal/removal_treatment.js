@@ -8,18 +8,18 @@ import Cookies from 'js-cookie'
 //Enregistrement
 $(function () {
   Routing.setRoutingData(routes);
-  const approval = new Button('#transfert-verdict-accept')
+  const approval = new Button('#removal-verdict-accept')
   approval.loadOnClick(false, function () {
     const interval = setInterval(function () {
       if (Cookies.get('downloaded') == 1) {
         clearInterval(interval)
         approval.reset()
-        window.location = Routing.generate('staff_transfer_inprogress')
+        window.location = Routing.generate('staff_removal_inprogress')
       }
     }, 1000)
   })
 
-  const btns = document.querySelectorAll('.transfer-start-treatment')
+  const btns = document.querySelectorAll('.removal-start-treatment')
   btns.forEach(function (btn) {
     let button = new Button(btn)
     button.click(function () {
@@ -40,12 +40,12 @@ $(function () {
 
 
 
-  const modalRejectTransfer = new Button('#transfert-verdict-reject')
-  modalRejectTransfer.click(function () {
-    u.entityModalAdd(modalRejectTransfer, 'staff_reject_transfer', 'modal-transfer-reject-saver', '', {id: modalRejectTransfer.data('id')}, false)
+  const modalRejectRemoval = new Button('#removal-verdict-reject')
+  modalRejectRemoval.click(function () {
+    u.entityModalAdd(modalRejectRemoval, 'staff_reject_removal', 'modal-removal-reject-saver', '', {id: modalRejectRemoval.data('id')}, false)
   })
 
   //Affichage
-  u.showPicture('transfer-show-bol', 'vehicle_img')
+  u.showPicture('removal-show-bol', 'vehicle_img')
 
 })

@@ -181,9 +181,9 @@ class Transfer
     }
 
     /**
-     * @return Processing
+     * @return bool|Processing
      */
-    public function getProcessing(): Processing
+    public function getProcessing()
     {
         return $this->processings->last();
     }
