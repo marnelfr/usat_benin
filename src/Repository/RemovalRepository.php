@@ -19,6 +19,28 @@ class RemovalRepository extends ServiceEntityRepository
         parent::__construct($registry, Removal::class);
     }
 
+    public function getWaitingRemoval() {
+        return $this->_em->createQuery(
+            "select r
+            from App\Entity\Removal r
+            left join App\Entity\Processing p with p.removal = r
+            where ((r.status not in ('inprogress', 'finalized', 'rejected')) or (r.status = 'inprogress' and p.verdict is null))
+            and r.deleted = 0"
+        )->getResult();
+    }
+
+    public function getInProgressRemoval() {
+        return $this->_em->createQuery(
+            "select r
+            from App\Entity\Removal r
+            inner join App\Entity\Processing p with p.transfer = r
+            where r.status = 'inprogress'
+            and p.verdict is not null
+            and r.deleted = 0"
+        )->getResult();
+    }
+
+
     // /**
     //  * @return Removal[] Returns an array of Removal objects
     //  */
