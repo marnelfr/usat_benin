@@ -31,7 +31,7 @@
                         <tr>
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
-                            <th class="text-center">Status</th>
+                            <th class="text-center">{{ title == 'Rejetées' ? 'Raison rejet' : 'Status' }}</th>
                             <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>
@@ -40,10 +40,16 @@
                             <tr>
                                 <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
                                 <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
-                                <td class="text-center">{{ transfer.state }}</td>
+                                <td class="text-center">
+                                  {% if transfer.status == 'rejected' %}
+                                    {{ transfer.processing.reason }}
+                                  {% else %}
+                                    {{ transfer.state }}
+                                  {% endif %}
+                                </td>
                                 <td class="text-right">
                                     <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('transfer_show', {'id': transfer.id}) }}"><i class="fas fa-eye"></i></a>
-                                  {% if transfer.status != 'waiting' %}
+                                  {% if transfer.status != 'waiting' and transfer.status != 'rejected' %}
                                       <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                                   {% else %}
                                       <a class="btn btn-primary" title="Modifier la demande" href="{{ path('transfer_edit', {'id': transfer.id}) }}"><i class="fas fa-edit"></i></a>
@@ -61,7 +67,7 @@
                         <tr>
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
-                            <th class="text-center">Status</th>
+                            <th class="text-center">{{ title == 'Rejetées' ? 'Raison rejet' : 'Status' }}</th>
                             <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>

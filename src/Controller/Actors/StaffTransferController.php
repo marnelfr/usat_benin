@@ -142,6 +142,8 @@ class StaffTransferController extends AbstractController
 
             // TODO: Envoie un email au demandeur
 
+            $this->addFlash('success', 'Demande rejetée avec succès');
+
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('staff_transfer_index');
         }

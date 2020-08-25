@@ -189,10 +189,12 @@ class TransferController extends AbstractController
                 }
             }
 
+            $transfer->setStatus('waiting');
             $transfer->setVehicle($vehicle);
             $em->persist($transfer);
-
             $em->flush();
+
+            $this->addFlash('success', 'Demande modifiée avec succès');
 
             return $this->redirectToRoute('transfer_index');
         }
