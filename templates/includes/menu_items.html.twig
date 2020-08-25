@@ -64,7 +64,7 @@
         </a>
       </li>
     </ul>#}
-  </li>
+  {#</li>#}
 {% endif %}
 
 {% if app.user.profil.slug == 'agent' %}
@@ -224,12 +224,12 @@
           <p>Demandes en attente</p>
         </a>
       </li>
-      <li class="nav-item">
+      {#<li class="nav-item">
         <a href="{{ path('staff_removal_inprogress') }}" id="{{ 'staff_removal_inprogress'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Demandes en encours</p>
         </a>
-      </li>
+      </li>#}
       <li class="nav-item">
         <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
@@ -240,10 +240,10 @@
   </li>
 {% endif %}
 
-{% if isgranted('ROLE_STAFF_ADMIN') %}
+{% if app.user.profil.slug == 'staff' %}
   <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
-      <i class="nav-icon fas fa-group"></i>
+      <i class="nav-icon fas fa-user"></i>
       <p>
         Utilisateur
         <i class="right fas fa-angle-left"></i>

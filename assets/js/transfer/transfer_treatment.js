@@ -13,7 +13,7 @@ $(function () {
     const interval = setInterval(function () {
       if (Cookies.get('downloaded') == 1) {
         clearInterval(interval)
-        approval.reset()
+        // approval.reset()
         window.location = Routing.generate('staff_transfer_inprogress')
       }
     }, 1000)

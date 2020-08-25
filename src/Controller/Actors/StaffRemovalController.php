@@ -95,20 +95,20 @@ class StaffRemovalController extends AbstractController
     }
 
     /**
-     * La liste des demande de enlevement en cours afficher au staff
+     * La liste des demande de enlevement finalisés afficher au staff
      *
-     * @Route("/staff/removal/inprogress", options={"expose"=true}, name="staff_removal_inprogress", methods={"GET"})
+     * @Route("/staff/removal/finalized", options={"expose"=true}, name="staff_removal_finalized", methods={"GET"})
      */
     public function removal_inpgrosse(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render('actors/staff/removal/index.html.twig', [
-            'title' => 'En cours',
+            'title' => 'Finalisées',
             'btnLabel' => 'Finaliser',
             'btnPath' => 'staff_removal_treatment',
             'noData' => 'Aucune demande en cours',
-            'removals' => $this->getDoctrine()->getRepository(Removal::class)->getInProgressRemoval(),
+            'removals' => $this->getDoctrine()->getRepository(Removal::class)->getFinalizedRemoval(),
         ]);
     }
 
@@ -158,5 +158,34 @@ class StaffRemovalController extends AbstractController
         }
 
         return new Response('Page introuvable');
+    }
+
+
+    /**
+     * @Route("/staff/removal/{id}/approval", name="staff_approval_removal")
+     * @param Request $request
+     */
+    public function approval(Removal $removal, Request $request, Pdf $pdf) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $removal->setStatus('finalized');
+        $removal->getProcessing()->setVerdict(1);
+        $this->getDoctrine()->getManager()->flush();
+
+        $html = $this->renderView('actors/staff/removal/print.approval.html.twig', array(
+            'var'  => 'mainteneuR'
+        ));
+        $cookie = Cookie::create('downloaded')
+            ->withValue(true)
+            ->withExpires(new \DateTime('+10 seconds'))
+            ->withSecure(false)
+            ->withHttpOnly(false)
+        ;
+        $response = new PdfResponse(
+            $pdf->getOutputFromHtml($html),
+            'file.pdf'
+        );
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 }

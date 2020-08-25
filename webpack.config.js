@@ -35,6 +35,7 @@ Encore
     .addEntry('transfer', './assets/js/transfer/transfer.js')
     .addEntry('transfer_treatment', './assets/js/transfer/transfer_treatment.js')
     .addEntry('removal', './assets/js/removal/removal.js')
+    .addEntry('removal_treatment', './assets/js/removal/removal_treatment.js')
   //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
