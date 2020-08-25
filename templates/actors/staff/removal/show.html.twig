@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   <button id="removal-verdict-reject" data-id="{{ removal.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
-                  <a onclick="confirm('Approuver la demande génère la fiche de demande. Voulez-vous la télécharger en même temps ?')" id="removal-verdict-accept" href="{{ path('staff_approval_demand', {id: removal.id}) }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</a>
+                  <a onclick="confirm('Approuver la demande génère la fiche de demande. Voulez-vous la télécharger en même temps ?')" id="removal-verdict-accept" href="{{ path('staff_approval_removal', {id: removal.id}) }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</a>
                 </div>
             </div>
         </div>

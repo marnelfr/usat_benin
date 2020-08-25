@@ -113,10 +113,10 @@ class Removal
                 $etat = 'Annulée';
                 break;
             case 'finalized':
-                $etat = 'Approuvée';
+                $etat = 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname();
                 break;
             case 'approved':
-                $etat = 'Approuvée';
+                $etat = 'Approuvée par ' . $this->getProcessing()->getUser()->getFullname();
                 break;
             default:
                 $etat = 'Rejetée';
@@ -255,6 +255,14 @@ class Removal
     public function getProcessings(): Collection
     {
         return $this->processings;
+    }
+
+    /**
+     * @return bool|Processing
+     */
+    public function getProcessing()
+    {
+        return $this->processings->last();
     }
 
     public function addProcessing(Processing $processing): self

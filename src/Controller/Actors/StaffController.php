@@ -79,35 +79,7 @@ class StaffController extends AbstractController
             'btnLabel' => 'Traiter',
             'btnPath' => 'staff_removal_treatment',
             'noData' => 'Aucune demande en attente',
-            'removals' => $this->getDoctrine()->getRepository(Removal::class)->getWaitingTransfer(),
+            'removals' => $this->getDoctrine()->getRepository(Removal::class)->getWaitingRemoval(),
         ]);
-    }
-
-
-    /**
-     * @Route("/staff/{id}/approval", name="staff_approval_demand")
-     * @param Request $request
-     */
-    public function approval(Removal $removal, Request $request, Pdf $pdf) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $removal->getProcessing()->setVerdict(1);
-        $this->getDoctrine()->getManager()->flush();
-
-        $html = $this->renderView('actors/staff/removal/print.approval.html.twig', array(
-            'var'  => 'mainteneuR'
-        ));
-        $cookie = Cookie::create('downloaded')
-            ->withValue(true)
-            ->withExpires(new \DateTime('+10 seconds'))
-            ->withSecure(false)
-            ->withHttpOnly(false)
-        ;
-        $response = new PdfResponse(
-            $pdf->getOutputFromHtml($html),
-            'file.pdf'
-        );
-        $response->headers->setCookie($cookie);
-        return $response;
     }
 }

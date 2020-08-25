@@ -29,13 +29,13 @@ class RemovalRepository extends ServiceEntityRepository
         )->getResult();
     }
 
-    public function getInProgressRemoval() {
+    public function getFinalizedRemoval() {
         return $this->_em->createQuery(
             "select r
             from App\Entity\Removal r
-            inner join App\Entity\Processing p with p.transfer = r
-            where r.status = 'inprogress'
-            and p.verdict is not null
+            inner join App\Entity\Processing p with p.removal = r
+            where r.status = 'finalized'
+            and p.verdict=1
             and r.deleted = 0"
         )->getResult();
     }

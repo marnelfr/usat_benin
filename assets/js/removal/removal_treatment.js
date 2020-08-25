@@ -13,8 +13,8 @@ $(function () {
     const interval = setInterval(function () {
       if (Cookies.get('downloaded') == 1) {
         clearInterval(interval)
-        approval.reset()
-        window.location = Routing.generate('staff_removal_inprogress')
+        // approval.reset()
+        window.location = Routing.generate('staff_removal_finalized')
       }
     }, 1000)
   })

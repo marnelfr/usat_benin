@@ -51,7 +51,7 @@
                           class="btn {% if (transfer.status != 'waiting') %}btn-warning{% else %}btn-primary{% endif %} transfer-start-treatment"
                           data-href="{{ path(btnPath, {'id': transfer.id}) }}"
                           title="Commencer le traitement de la demande"
-                  ><i class="fas fa-edit"></i> Traiter</button>
+                  ><i class="fas fa-edit"></i> {{ btnLabel }}</button>
                 </td>
               </tr>
             {% else %}
