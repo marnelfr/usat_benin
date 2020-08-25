@@ -88,10 +88,10 @@ class Transfer
                 $etat = 'Annulée';
                 break;
             case 'finalized':
-                $etat = 'Approuvée';
+                $etat = $this->getProcessing()->getUser() ? 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname() : 'Approuvée';
                 break;
             case 'approved':
-                $etat = 'Approuvée';
+                $etat = $this->getProcessing()->getUser() ? 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname() : 'Approuvée';
                 break;
             default:
                 $etat = 'Rejetée';

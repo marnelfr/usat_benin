@@ -31,7 +31,7 @@
                         <tr>
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
-                            <th class="text-center">Status</th>
+                            <th class="text-center">{{ title == 'Rejetées' ? 'Raison rejet' : 'Status' }}</th>
                             <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>
@@ -40,10 +40,16 @@
                             <tr>
                                 <td>{{ removal.vehicle.brand.name ~ ' - ' ~ removal.vehicle.chassis }}</td>
                                 <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}</td>
-                                <td class="text-center">{{ removal.state }}</td>
+                                <td class="text-center">
+                                  {% if removal.status == 'rejected' %}
+                                    {{ removal.processing.reason }}
+                                  {% else %}
+                                    {{ removal.state }}
+                                  {% endif %}
+                                </td>
                                 <td class="text-right">
                                     <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('removal_show', {'id': removal.id}) }}"><i class="fas fa-eye"></i></a>
-                                  {% if removal.status != 'waiting' %}
+                                  {% if removal.status != 'waiting' and removal.status != 'rejected' %}
                                       <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary"><i class="fas fa-edit"></i></button>
                                   {% else %}
                                       <a class="btn btn-primary" title="Modifier la demande" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i></a>
@@ -61,7 +67,7 @@
                         <tr>
                             <th>&ensp;Véhicule</th>
                             <th class="text-center">Date de demande</th>
-                            <th class="text-center">Status</th>
+                            <th class="text-center">{{ title == 'Rejetées' ? 'Raison rejet' : 'Status' }}</th>
                             <th class="text-right">Actions&ensp;</th>
                         </tr>
                         </thead>

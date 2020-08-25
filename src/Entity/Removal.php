@@ -113,10 +113,10 @@ class Removal
                 $etat = 'Annulée';
                 break;
             case 'finalized':
-                $etat = 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname();
+                $etat = $this->getProcessing()->getUser() ? 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname() : 'Approuvée';
                 break;
             case 'approved':
-                $etat = 'Approuvée par ' . $this->getProcessing()->getUser()->getFullname();
+                $etat = $this->getProcessing()->getUser() ? 'Approuvée par <br>' . $this->getProcessing()->getUser()->getFullname() : 'Approuvée';
                 break;
             default:
                 $etat = 'Rejetée';
