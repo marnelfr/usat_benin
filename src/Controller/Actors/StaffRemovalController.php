@@ -5,7 +5,6 @@ namespace App\Controller\Actors;
 use App\Entity\Processing;
 use App\Entity\Removal;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -99,7 +98,7 @@ class StaffRemovalController extends AbstractController
      *
      * @Route("/staff/removal/finalized", options={"expose"=true}, name="staff_removal_finalized", methods={"GET"})
      */
-    public function removal_inpgrosse(): Response
+    public function removal_finalized(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -142,6 +141,7 @@ class StaffRemovalController extends AbstractController
             // TODO: Envoie un email au demandeur
 
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Demande rejetée avec succès');
             return $this->redirectToRoute('staff_removal_index');
         }
 
@@ -171,6 +171,8 @@ class StaffRemovalController extends AbstractController
         $removal->setStatus('finalized');
         $removal->getProcessing()->setVerdict(1);
         $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('success', 'Demande approuvée avec succès');
 
         $html = $this->renderView('actors/staff/removal/print.approval.html.twig', array(
             'var'  => 'mainteneuR'
