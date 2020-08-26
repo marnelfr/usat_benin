@@ -174,7 +174,6 @@ class StaffTransferController extends AbstractController
                 $transfer->setStatus('finalized');
 
                 $entityManager->flush();
-                $this->addFlash('success', 'Fichier d\'assurance enregistré avec succès');
                 return new JsonResponse([
                     'typeMessage' => 'success'
                 ]);
