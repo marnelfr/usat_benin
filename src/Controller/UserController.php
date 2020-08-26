@@ -87,6 +87,10 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         //todo: comment ne pas afficher le champs de mot de passe à la modification de l'utilisateur ?
+        /**
+         * Bon je me dis qu'on va supprimer le champs avec js genre .remove() quoi, quand le formulaire va s'afficher
+         *  Mais si on fait ça, ça va pas invalider le formulaire ?
+         */
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
