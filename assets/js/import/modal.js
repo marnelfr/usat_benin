@@ -1,7 +1,8 @@
 export default class Modal {
 
-  constructor() {
-    this.modal = $('<div class="modal modal-info fade"></div>')
+  constructor(noKeyBoradAction = false) {
+    const strict = noKeyBoradAction ? 'data-backdrop="static" data-keyboard="false"' : ''
+    this.modal = $(`<div class="modal modal-info fade" ${strict}></div>`)
     this.modal.html('<div class="modal-dialog"></div>');
   }
 

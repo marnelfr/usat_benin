@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+
 /*
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
@@ -40,6 +42,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *
      */
     private $username;
 
@@ -56,16 +59,19 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner le prénom")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner le nom")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
+     * @Assert\NotBlank(message="Veuillez renseigner le numéro de téléphone")
      */
     private $phone;
 
@@ -92,13 +98,14 @@ class User implements UserInterface, \Serializable
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastConnection;
 
     /**
      * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez choisir un profil")
      */
     private $profil;
 
@@ -133,8 +140,7 @@ class User implements UserInterface, \Serializable
 
     public function __construct()
     {
-        $this->status= 0;
-        $this->lastConnection = new \DateTime();
+        $this->status= 1;
         $this->createdAt = new \DateTime();
         $this->processings = new ArrayCollection();
         $this->fleets = new ArrayCollection();

@@ -231,7 +231,7 @@
         </a>
       </li>#}
       <li class="nav-item">
-        <a href="{{ path('importer_index') }}" id="{{ 'importer_index'|md5 }}" class="nav-link">
+        <a href="{{ path('staff_removal_finalized') }}" id="{{ 'staff_removal_finalized'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
           <p>Demandes finalisés</p>
         </a>
@@ -383,3 +383,10 @@
     </li>
   </ul>
 </li>#}
+
+
+
+{% if change_password == true %}
+  {#Utiliser pour savoir s'il faut forcer l'utilisateur à changer de mot de passe ou pas#}
+  <input type="hidden" id="e84nel915737a83ea2a59627de15bc521">
+{% endif %}

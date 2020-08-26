@@ -1,0 +1,21 @@
+<div class="modal-content">
+  {{ form_start(form, {action: path('pcn'), id: 'modal_form_pwd_new'}) }}
+  <div class="modal-header">
+    <h4 class="modal-title"><i class="fas fa-user-secret"></i> Code d'accès</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 text-center message">
+        Merci de personnalisez votre code d'accès
+      </div>
+    </div>
+    {{ form_widget(form) }}
+  </div>
+  <div class="modal-footer text-left">
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+    <button id="change-password-saver" class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
+  </div>
+  {{ form_end(form) }}
+</div>
