@@ -144,8 +144,7 @@ class SecurityController extends AbstractController
             $user->setPassword(
                 $encoder->encodePassword(
                     $user,
-                    $form->get('
-                    plainPassword')->getData()
+                    $form->get('plainPassword')->getData()
                 )
             );
             $user->setIsVerified(1);

@@ -1,50 +1,11 @@
-{#Messages vide#}
-<div class="row">
-  <div style="display: none;font-size: 15px;position: fixed;right: 4px;top: 30px;z-index: 999999999999999999;" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 alert text-center" id="alert-raw">
-    <div class="col-md-11">
-      <p></p>
-    </div>
-    <button type="button" class="close btn btn-warning user-close-message-box" aria-label="Close">
-      <span aria-hidden="true" style="font-size: 1.2em;">&times;</span>
-    </button>
-  </div>
-</div>
-
 {#Affichage des messages#}
 {% for message in app.session.flashbag.get('warning') %}
-  <div class="row">
-    <div style="font-size: 15px;position: fixed;right: 4px;top: 30px;z-index: 999999999999999999;" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 alert alert-warning text-center">
-      <div class="col-md-11">
-        <p>{{ message|raw }}</p>
-      </div>
-      <button type="button" class="close btn btn-warning user-close-message-box" aria-label="Close">
-        <span aria-hidden="true" style="font-size: 1.2em;">&times;</span>
-      </button>
-    </div>
-  </div>
+  <input type="hidden" class="alert" data-type="warning" value="{{ message|raw }}">
 {% endfor %}
 {% for message in app.session.flashbag.get('success') %}
-  <div class="row">
-    <div style="font-size: 15px;position: fixed;right: 4px;top: 30px;z-index: 999999999999999999;" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 alert alert-success text-center">
-      <div class="col-md-11">
-        <p>{{ message|raw }}</p>
-      </div>
-      <button type="button" class="close btn btn-success user-close-message-box" aria-label="Close">
-        <span aria-hidden="true" style="font-size: 1.2em;">&times;</span>
-      </button>
-    </div>
-  </div>
+  <input type="hidden" class="alert" data-type="success" value="{{ message|raw }}">
 {% endfor %}
 {% for message in app.session.flashbag.get('danger') %}
-  <div class="row">
-    <div style="font-size: 15px;position: fixed;right: 4px;top: 30px;z-index: 999999999999999999;" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 alert alert-danger text-center">
-      <div class="col-md-11">
-        <p>{{ message|raw }}</p>
-      </div>
-      <button type="button" class="close btn btn-danger user-close-message-box" aria-label="Close">
-        <span aria-hidden="true" style="font-size: 1.2em;">&times;</span>
-      </button>
-    </div>
-  </div>
+  <input type="hidden" class="alert" data-type="danger" value="{{ message|raw }}">
 {% endfor %}
 {# //Les messages#}

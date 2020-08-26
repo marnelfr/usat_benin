@@ -20,5 +20,3 @@ import '@fortawesome/fontawesome-free/js/all'
 // the bootstrap module doesn't export/return anything
 
 //$(document).find('body').html('ok')
-
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

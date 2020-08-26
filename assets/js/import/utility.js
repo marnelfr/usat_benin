@@ -4,6 +4,24 @@ import Button from './button'
 export default class Utility {
 
   static notif(message, type) {
+    if (type === 'danger') {
+      type = 'error'
+    }
+    import('sweetalert2').then(({default: Swal}) => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 15000
+      });
+      Toast.fire({
+        icon: type,
+        title: message,
+      })
+    })
+
+
+    /*
     if(!type) type = 'success'
     let element = $('#alert-raw')
     element.fadeOut(1)
@@ -15,7 +33,7 @@ export default class Utility {
     element.fadeIn(500)
     setTimeout(function () {
       element.fadeOut(2000)
-    }, 10000)
+    }, 10000)*/
   }
 
 

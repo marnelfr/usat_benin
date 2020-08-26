@@ -16,6 +16,9 @@ class MenuController extends AbstractController
 
             $user = $this->getUser();
             $role = $user->getRoles()[0];
+            if ($role === 'ROLE_STAFF_ADMIN') {
+                $role = 'ROLE_STAFF';
+            }
             $role = strtolower($role);
             $role = str_replace('role_', '', $role);
 
@@ -24,6 +27,7 @@ class MenuController extends AbstractController
             ];
 
             $profil = $user->getProfil()->getSlug();
+            $data['change_password'] = false;
             if ($profil !== 'agent' && $profil !== 'manager' && !$user->getIsVerified()) {
                 $data['change_password'] = true;
             }
