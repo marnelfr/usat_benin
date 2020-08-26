@@ -46,12 +46,16 @@
                 <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
                 <td class="text-center">{{ transfer.state }}</td>
                 <td class="text-right">
-                  <button
-                          {% if (transfer.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
-                          class="btn {% if (transfer.status != 'waiting') %}btn-warning{% else %}btn-primary{% endif %} transfer-start-treatment"
-                          data-href="{{ path(btnPath, {'id': transfer.id}) }}"
-                          title="Commencer le traitement de la demande"
-                  ><i class="fas fa-edit"></i> {{ btnLabel }}</button>
+                  {% if btnLabel == 'Finaliser' %}
+                    <button id="staff-transfer-finalizer" data-href="{{ path(btnPath, {'id': transfer.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Finaliser</button>
+                  {% else %}
+                    <button
+                            {% if (transfer.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
+                            class="btn {% if (transfer.status != 'waiting') %}btn-warning{% else %}btn-primary{% endif %} transfer-start-treatment"
+                            data-href="{{ path(btnPath, {'id': transfer.id}) }}"
+                            title="Commencer le traitement de la demande"
+                    ><i class="fas fa-edit"></i> {{ btnLabel }}</button>
+                  {% endif %}
                 </td>
               </tr>
             {% else %}

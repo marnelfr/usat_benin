@@ -100,7 +100,7 @@ class StaffTransferController extends AbstractController
      *
      * @Route("/staff/transfer/inprogress", options={"expose"=true}, name="staff_transfer_inprogress", methods={"GET"})
      */
-    public function transfer_inpgrosse(): Response
+    public function transfer_inprogress(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
