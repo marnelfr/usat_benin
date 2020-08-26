@@ -24,6 +24,7 @@ class GuestController extends AbstractController
             'login_form'            => $login ?? 0,
             'onTheVerificationWay'  => isset($flashBag->get('onTheVerificationWay')[0]),
             'emailNotVerified'  => count($flashBag->get('emailNotVerified')),
+            'blocked_user'  => count($flashBag->get('blocked_user')),
             'registration'          => isset($flashBag->get('registration')[0])
         ];
         dump($data);

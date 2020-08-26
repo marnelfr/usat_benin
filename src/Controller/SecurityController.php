@@ -3,9 +3,16 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends AbstractController
 {
@@ -57,8 +64,18 @@ class SecurityController extends AbstractController
 //        }
         // TODO: Est-ce qu'il faut vraiment interdit à cex qui n'ont pas valider leur email de se connecter
         $user = $this->getUser();
-        if (!$user->getIsVerified()) {
+        $profil = $user->getProfil()->getSlug();
+        if (!$user->getIsVerified() && $profil === 'agent' && $profil === 'manager') {
+            /*$profil = $user->getProfil()->getSlug();
+            if ($profil !== 'agent' && $profil !== 'manager') {
+                $this->addFlash('warning', 'Veuillez personnaliser votre code d\'accès');
+                return $this->redirectToRoute('user_new_password');
+            }*/
             $this->addFlash('emailNotVerified', true);
+            return $this->redirectToRoute('home_page');
+        }
+        if (!$user->getStatus()) {
+            $this->addFlash('blocked_user', true);
             return $this->redirectToRoute('home_page');
         }
 
@@ -90,9 +107,66 @@ class SecurityController extends AbstractController
     }
 
 
+    /**
+     * @param Request $request
+     * @Route("/p/c/n", name="pcn", options={"expose"=true})
+     * @return JsonResponse
+     */
+    public function change_password(Request $request, UserPasswordEncoderInterface $encoder) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $form = $this->createFormBuilder()
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'mapped' => false,
+                'invalid_message' => 'Vos codes d\'accès ne correspondent pas',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options'  => ['label' => 'Code d\'accès'],
+                'second_options' => ['label' => 'Confirmez code'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrez un code d\'accès',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Votre code doit avoir au moins {{ limit }} charactères',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ]
+            ])->getForm()
+        ;
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $user->setPassword(
+                $encoder->encodePassword(
+                    $user,
+                    $form->get('
+                    plainPassword')->getData()
+                )
+            );
+            $user->setIsVerified(1);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Code d\'accès modifier avec succès');
+            return new JsonResponse([
+                'typeMessage' => 'success',
+                'link' => $this->generateUrl('security_check_user_profil')
+            ]);
+        }
 
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'typeMessage' => 'form',
+                'view' => $this->renderView('security/new_pwd_form.html.twig', [
+                    'form' => $form->createView()
+                ])
+            ]);
+        }
+
+    }
 
 
     /**

@@ -10,12 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UserController
  * @package App\Controller
  * @Route("/user")
- * @IsGranted("ROLE_STAFF_ADMIN")
+ * @IsGranted("ROLE_STAFF")
  */
 class UserController extends AbstractController
 {
@@ -32,7 +33,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -40,6 +41,22 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $slug = $user->getProfil()->getSlug();
+            if ($slug === 'staff') {
+                $user->setRoles(['ROLE_STAFF']);
+            }elseif($slug === 'staff_admin') {
+                $user->setRoles(['ROLE_STAFF_ADMIN']);
+            }elseif($slug === 'controller') {
+                $user->setRoles(['ROLE_CONTROL']);
+            }
+            $user->setStatus(1);
+            $user->setIsVerified(1);
+            $user->setPassword(
+                $encoder->encodePassword(
+                    $user,
+                    $user->getPassword()
+                )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
 

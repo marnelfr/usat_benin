@@ -27,6 +27,15 @@
     <script type="application/javascript">
       document.addEventListener('DOMContentLoaded', function () {
         alert('Veuillez comfimer votre mail pour vous connecter.')
+        window.location = '/logout'
+      })
+    </script>
+  {% endif %}
+  {% if blocked_user %}
+    <script type="application/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        alert('Votre compte a été bloqué. Veuillez contacter un administrateur.')
+        window.location = '/logout'
       })
     </script>
   {% endif %}
