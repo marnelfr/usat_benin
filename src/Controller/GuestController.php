@@ -34,8 +34,8 @@ class GuestController extends AbstractController
                         ->orderBy('f.name', 'ASC')
                     ;
                 },
-            ])->getForm();
-
+            ])->getForm()
+        ;
         $parc->handleRequest($request);
 
         // TODO: Mettre en place une action pour afficher les informations
@@ -49,7 +49,8 @@ class GuestController extends AbstractController
                         ->orderBy('c.fullname', 'ASC')
                     ;
                 },
-            ])->getForm();
+            ])->getForm()
+        ;
 
         $commissionnaire->handleRequest($request);
 
@@ -66,5 +67,21 @@ class GuestController extends AbstractController
         ];
         //dump($data);
         return $this->render('guest/home/home.html.twig', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/guest/shpw/fleet", name="guest_show_fleet")
+     */
+    public function showFleet(Request $request) {
+
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/guest/shpw/agent", name="guest_show_agent")
+     */
+    public function showAgent(Request $request) {
+
     }
 }
