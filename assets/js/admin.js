@@ -14,8 +14,11 @@ import u from './import/utility'
 
 $(function () {
   setTimeout(function () {
-    $('.alert').fadeOut(2000)
-  }, 10000)
+    $('.alert').each(function () {
+      const alert = $(this)
+      u.notif(alert.val(), alert.attr('data-type'))
+    })
+  }, 2000)
 })
 
 
@@ -31,6 +34,7 @@ $(function () {
             if (data.typeMessage) {
               const modal = new Modal(true)
               modal.setContent(data.view)
+              u.notif("Merci de personnalisez votre code d'accès <br>C'est important de garder son code secret.", 'info')
               modal.show(function () {
                 let modalBtnSaver = new Button('#change-password-saver')
                 modalBtnSaver.click(function () {
@@ -50,8 +54,8 @@ $(function () {
                           //On affiche donc le nouveau formulaire reçu
                           let div = $form.closest('div')
                           div.html(data.form)
-                          div.find('.message').html('<p style="color: red"><i class="fas fa-exclamation-circle fa-2x"></i> <br> Les codes doivent être les mêmes et comporter au moins 6 charatères.</p>')
-
+                          u.notif('Les codes doivent être les mêmes et comporter au moins 6 charatères.', 'info')
+                          modalBtnSaver.reset()
                         } else
                         //Un vehicule a été trouvé, on affiche donc ses informations dans un modal
                         if (data.typeMessage === 'success') {
