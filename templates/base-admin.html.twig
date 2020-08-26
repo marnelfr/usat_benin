@@ -65,6 +65,8 @@
     </div>
 
     {% include 'includes/footer.html.twig' %}
+
+    {#Permet de savoir la route courrante#}
     <input type="hidden" id="current_sid_token" value="{{ app.request.get('_route')|md5 }}">
   </div>
 

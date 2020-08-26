@@ -1,0 +1,18 @@
+<div class="modal-content">
+  {{ form_start(form, {action: path('staff_finalize_transfer', {id: id}), method: 'POST'}) }}
+  <div class="modal-header">
+    <h4 class="modal-title"><i class="fas fa-edit"></i> Finalisation</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      {{ form_widget(form.assurance) }}
+    </div>
+  </div>
+  <div class="modal-footer text-left">
+    <button type="reset" class="btn btn-default float-left" data-dismiss="modal">Fermer</button>
+    <button id="modal-transfer-finalizer-saver" class="btn btn-danger float-right"><i class="fa fa-save"></i> Finaliser</button>
+  </div>
+  {{ form_end(form) }}
+</div>

@@ -47,7 +47,7 @@
                 <td class="text-center">{{ transfer.state }}</td>
                 <td class="text-right">
                   {% if btnLabel == 'Finaliser' %}
-                    <button id="staff-transfer-finalizer" data-href="{{ path(btnPath, {'id': transfer.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i> Finaliser</button>
+                    <button data-id="{{ transfer.id }}" data-href="{{ path(btnPath, {'id': transfer.id}) }}" class="btn btn-primary staff-transfer-finalizer"><i class="fas fa-edit"></i> Finaliser</button>
                   {% else %}
                     <button
                             {% if (transfer.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
