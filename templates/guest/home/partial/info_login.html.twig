@@ -5,7 +5,7 @@
       <div class="parc-container col-12 text-center pl-0 pr-0">
         <h3 class="parc-title mb-3 p-2">Parcs de ventes</h3>
         <p>Liste des gestionnaires de parc. Veuillez selectionner un parc pour voir ses informations</p>
-        {{ form_start(parc) }}
+        {{ form_start(parc, {action: path('guest_show_fleet')}) }}
           <div class="form-group m-2">
             {#<select name="" id="pack" class="form-control">
               <option>Selectionnez un parc</option>
@@ -73,7 +73,7 @@
         <h3 class="parc-title mb-3 p-2">Commissionnaires</h3>
         <p>Liste des commissionnaires agréés en Douanes. Veuillez selectionnner un commissionnaire pour afficher ses
           informations</p>
-        {{ form_start(commissionnaire) }}
+        {{ form_start(commissionnaire, {action: path('guest_show_agent')}) }}
         <div class="form-group m-2">
           {#<select name="" id="pack" class="form-control">
             <option>Selectionnez un commissionnaire</option>
