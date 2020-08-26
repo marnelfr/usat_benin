@@ -28,7 +28,7 @@ export default class Button {
   }
 
   row() {
-    return this.btn.closest('.row')
+    return this.btn.closest('tr')
   }
 
   getForm() {

@@ -110,9 +110,16 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
+            if ($user->getStatus()) {
+                $message = $user->getFullname() . ' a été bloqué avec succès';
+                $user->setStatus(0);
+            }else{
+                $message = $user->getFullname() . ' a été débloqué avec succès';
+                $user->setStatus(1);
+            }
+//            $entityManager->remove($user);
+            $this->addFlash('success', $message);
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->redirectToRoute('user_index');

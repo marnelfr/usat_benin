@@ -1,5 +1,13 @@
-<form method="post" style="display: inline" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-    <button class="btn btn-danger"><i class="fas fa-trash"></i> {{ label|default('') }}</button>
+{% if user.status %}
+  {% set message='Voulez-vous vraiment bloquer cet utilisateur ?' %}
+{% else %}
+  {% set message='Voulez-vous vraiment débloquer cet utilisateur ?' %}
+{% endif %}
+<form method="post" style="display: inline" action="{{ path('user_delete', {'id': user.id}) }}">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+  <button class="btn btn-danger btn-lock-user"><i class="fas {% if user.status %}fa-lock{% else %}fa-unlock-alt{% endif %}"></i> {{ label|default('') }}</button>
 </form>
+
+
+

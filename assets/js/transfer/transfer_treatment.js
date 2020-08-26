@@ -4,6 +4,7 @@ const routes = require('../../../public/js/fos_js_routes.json');
 import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 //https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/index.html
 import u from '../import/utility'
+import Modal from '../import/modal'
 import Cookies from 'js-cookie'
 
 $(function () {
@@ -25,9 +26,9 @@ $(function () {
   finalizers.forEach(function (btn) {
     const finalizer = new Button(btn)
     finalizer.click(function () {
-      $.get('staff_finalize_transfer', {id: finalizer.data('id')}).then(function (data) {
+      $.get(Routing.generate('staff_finalize_transfer', {id: finalizer.data('id')})).then(function (data) {
         if (data.typeMessage) {
-          const modal = new Modal(true)
+          let modal = new Modal()
           modal.setContent(data.view)
           //On informe l'utilisateur de ce qui se passe
           u.notif("Veuillez renseigner le fichier d'assurance", 'info')
@@ -61,6 +62,7 @@ $(function () {
                       const row = finalizer.row()
                       row.hide('slow', function () {
                         row.remove()
+                        u.notif('Demande de transfert finalisée avec succès', 'success')
                       })
                     } else {
                       u.notif('Echec de chargement...', 'warning')
@@ -79,6 +81,8 @@ $(function () {
         } else {
           u.notif('Erreur de chargement. Veuillez vérifier votre connexion internet et réessayer', 'danger')
         }
+      }).always(function () {
+        finalizer.reset()
       })
     })
   })

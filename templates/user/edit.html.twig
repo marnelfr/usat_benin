@@ -42,4 +42,9 @@
 {% block javascripts %}
   {{ parent() }}
   {{ encore_entry_script_tags('user') }}
+  <script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelector('#user_password').closest('.form-group').remove()
+    })
+  </script>
 {% endblock %}

@@ -5,6 +5,10 @@
 {% block page_title %}Utilisateur{% endblock %}
 {% block page_title2 %}Utilisateur{% endblock %}
 {% block page_subtitle %}Liste{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('user') }}
+{% endblock %}
 
 {% block page_content %}
   <div class="row pb-3">
@@ -55,8 +59,8 @@
                 <td class="text-right">
                   <a class="btn btn-primary" title="Afficher toutes les informations"
                      href="{{ path('user_show', {'id': user.id}) }}"><i class="fas fa-eye"></i></a>
-                  <a class="btn btn-primary" title="Editer les informations"
-                     href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-edit"></i></a>
+                  {#<a class="btn btn-primary" title="Editer les informations"
+                     href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-edit"></i></a>#}
                   {{ include('user/_delete_form.html.twig') }}
                 </td>
               </tr>
@@ -84,4 +88,8 @@
         Footer
     </div>#}
   </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('user') }}
 {% endblock %}

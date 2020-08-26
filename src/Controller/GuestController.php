@@ -46,7 +46,7 @@ class GuestController extends AbstractController
                 'placeholder' => 'Selectionnez un commissionnaire',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
-                        ->orderBy('c.fullname', 'ASC')
+                        ->orderBy('c.name', 'ASC')
                     ;
                 },
             ])->getForm()
@@ -62,8 +62,8 @@ class GuestController extends AbstractController
             'emailNotVerified'      => count($flashBag->get('emailNotVerified')),
             'blocked_user'          => count($flashBag->get('blocked_user')),
             'registration'          => isset($flashBag->get('registration')[0]),
-            'parc'                  => $parc->getViewData(),
-            'commissionnaire'       => $commissionnaire->getViewData()
+            'parc'                  => $parc->createView(),
+            'commissionnaire'       => $commissionnaire->createView()
         ];
         //dump($data);
         return $this->render('guest/home/home.html.twig', $data);
