@@ -5,73 +5,77 @@
       <div class="parc-container col-12 text-center pl-0 pr-0">
         <h3 class="parc-title mb-3 p-2">Parcs de ventes</h3>
         <p>Liste des gestionnaires de parc. Veuillez selectionner un parc pour voir ses informations</p>
-        <div class="form-group m-2">
-          <select name="" id="pack" class="form-control">
-            <option>Selectionnez un parc</option>
-            <option>TAG A,B,D</option>
-            <option>SOBAMAR</option>
-            <option>ROYAL</option>
-            <option>LAMA</option>
-            <option>STEPHANIE</option>
-            <option>AL-WOUDJOUD</option>
-            <option>TAU A,B</option>
-            <option>BALLA (Ekpè)</option>
-            <option>FADI-STAR</option>
-            <option>RANDA</option>
-            <option>RITIS 1,2,3</option>
-            <option>AT-SALAM</option>
-            <option>ASCOMAR</option>
-            <option>YASMINE</option>
-            <option>JANA 1</option>
-            <option>RACHA</option>
-            <option>FRANITA</option>
-            <option>COUBAICI</option>
-            <option>SOGIC</option>
-            <option>TRADE PARC</option>
-            <option>TREE KING</option>
-            <option>Domiane FIFA</option>
-            <option>Domaine GTS</option>
-            <option>AL MADINA</option>
-            <option>BAHSOUN</option>
-            <option>MIG INTERNATIONAL</option>
-            <option>SHARDI-CAR</option>
-            <option>NAS-WEBE</option>
-            <option>STAR FIVE</option>
-            <option>HADI CAR</option>
-            <option>BALLA</option>
-            <option>HOVAS + ANNEXE</option>
-            <option>GENERAL CONTRACTOR</option>
-            <option>MICHA</option>
-            <option>MICHA ANNEXE</option>
-            <option>CONSULTIVE</option>
-            <option>O-G Parc</option>
-            <option>SEATRAC</option>
-            <option>ZF</option>
-            <option>ENI-TRANS</option>
-            <option>SOBENI</option>
-            <option>SODECY</option>
-            <option>DAS</option>
-            <option>DAS AM</option>
-            <option>ATLANTIQUE PARC</option>
-            <option>CONTRACTOR</option>
-            <option>RANDA (SEKANDJI)</option>
-            <option>DOM TRACO</option>
-            <option>ROSE PARC</option>
-          </select>
-        </div>
-        <div class="form-group mt-3 mb-2">
-          <button onclick="alert('Fonctionnaité non codé pour le momment')" class="btn btn-info pl-4 pr-4">
-            Afficher Info
-          </button>
-        </div>
+        {{ form_start(parc) }}
+          <div class="form-group m-2">
+            {#<select name="" id="pack" class="form-control">
+              <option>Selectionnez un parc</option>
+              <option>TAG A,B,D</option>
+              <option>SOBAMAR</option>
+              <option>ROYAL</option>
+              <option>LAMA</option>
+              <option>STEPHANIE</option>
+              <option>AL-WOUDJOUD</option>
+              <option>TAU A,B</option>
+              <option>BALLA (Ekpè)</option>
+              <option>FADI-STAR</option>
+              <option>RANDA</option>
+              <option>RITIS 1,2,3</option>
+              <option>AT-SALAM</option>
+              <option>ASCOMAR</option>
+              <option>YASMINE</option>
+              <option>JANA 1</option>
+              <option>RACHA</option>
+              <option>FRANITA</option>
+              <option>COUBAICI</option>
+              <option>SOGIC</option>
+              <option>TRADE PARC</option>
+              <option>TREE KING</option>
+              <option>Domiane FIFA</option>
+              <option>Domaine GTS</option>
+              <option>AL MADINA</option>
+              <option>BAHSOUN</option>
+              <option>MIG INTERNATIONAL</option>
+              <option>SHARDI-CAR</option>
+              <option>NAS-WEBE</option>
+              <option>STAR FIVE</option>
+              <option>HADI CAR</option>
+              <option>BALLA</option>
+              <option>HOVAS + ANNEXE</option>
+              <option>GENERAL CONTRACTOR</option>
+              <option>MICHA</option>
+              <option>MICHA ANNEXE</option>
+              <option>CONSULTIVE</option>
+              <option>O-G Parc</option>
+              <option>SEATRAC</option>
+              <option>ZF</option>
+              <option>ENI-TRANS</option>
+              <option>SOBENI</option>
+              <option>SODECY</option>
+              <option>DAS</option>
+              <option>DAS AM</option>
+              <option>ATLANTIQUE PARC</option>
+              <option>CONTRACTOR</option>
+              <option>RANDA (SEKANDJI)</option>
+              <option>DOM TRACO</option>
+              <option>ROSE PARC</option>
+            </select>#}
+            {{ form_widget(parc.fleet) }}
+          </div>
+          <div class="form-group mt-3 mb-2">
+            <button class="btn btn-info pl-4 pr-4">
+              Afficher Info
+            </button>
+          </div>
+        {{ form_end(parc) }}
       </div>
 
       <div class="parc-container col-12 text-center pl-0 pr-0 mt-3">
         <h3 class="parc-title mb-3 p-2">Commissionnaires</h3>
         <p>Liste des commissionnaires agréés en Douanes. Veuillez selectionnner un commissionnaire pour afficher ses
           informations</p>
+        {{ form_start(commissionnaire) }}
         <div class="form-group m-2">
-          <select name="" id="pack" class="form-control">
+          {#<select name="" id="pack" class="form-control">
             <option>Selectionnez un commissionnaire</option>
             <option>TRANSIT PLUS</option>
             <option>MOUSTAPHA TRANSIT TRANSPORT</option>
@@ -280,13 +284,15 @@
             <option>ELOHIM INTERNATIONAL TRANSIT sa</option>
             <option>OLTRACO</option>
 
-          </select>
+          </select>#}
+          {{ form_widget(commissionnaire.agent) }}
         </div>
         <div class="form-group mt-3 mb-2">
-          <button onclick="alert('Fonctionnaité non codée pour le momment')" class="btn btn-info pl-4 pr-4">
+          <button class="btn btn-info pl-4 pr-4">
             Afficher Info
           </button>
         </div>
+        {{ form_end(commissionnaire) }}
       </div>
 
     </div>
@@ -330,8 +336,8 @@
           </div>
           <div class="text">
             <ul>
-              <li><a href="https://cv.rydynyart.com/">Usat-Bénin et ses structures de fonctionnement</a></li>
-              <li><a href="https://cv.rydynyart.com/">Historique de la filière et Recommandations</a></li>
+              <li><a href="#">Usat-Bénin et ses structures de fonctionnement</a></li>
+              <li><a href="#">Historique de la filière et Recommandations</a></li>
             </ul>
           </div>
         </div>
@@ -342,9 +348,9 @@
           </div>
           <div class="text">
             <ul>
-              <li><a href="https://cv.rydynyart.com/#">Forme et système juridique</a></li>
-              <li><a href="https://cv.rydynyart.com/#">Activités et les cibles</a></li>
-              <li><a href="https://cv.rydynyart.com/#">Visions, Missions et Objectifs de Usat-Benin</a></li>
+              <li><a href="#">Forme et système juridique</a></li>
+              <li><a href="#">Activités et les cibles</a></li>
+              <li><a href="#">Visions, Missions et Objectifs de Usat-Benin</a></li>
             </ul>
           </div>
         </div>
