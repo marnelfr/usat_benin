@@ -2,21 +2,26 @@
 
 namespace App\Controller\Actors;
 
+use App\Entity\DemandeFile;
 use App\Entity\Processing;
 use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\User;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
 
 /**
  * Class StaffController
@@ -111,6 +116,80 @@ class StaffTransferController extends AbstractController
             'noData' => 'Aucune demande en cours',
             'transfers' => $this->getDoctrine()->getRepository(Transfer::class)->getInProgressTransfer(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/staff/transfer/{id}/finalize", options={"expose" = true}, name="staff_finalize_transfer")
+     */
+    public function finalizer(Request $request, Transfer $transfer, FileUploader $uploader) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $form = $this->createFormBuilder()
+            ->add('assurance', FileType::class, [
+                'label' => 'Reçu d\'assurance',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => true,
+
+                'help' => 'Veuillez choisir un fichier image <b>jpg/jpeg</b> ou <b>png</b> d\'au plus 2048ko (2Mo)',
+                'help_html' => true,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez choisir un fichier image jpg ou png',
+                    ])
+                ],
+            ])->getForm()
+        ;
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $assurance */
+            $assurance = $form->get('assurance')->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            if ($assurance) {
+                $file = $uploader->upload($assurance, 'assurance');
+
+                $entityManager->getRepository(DemandeFile::class)->add(
+                    $file,
+                    'assurance',
+                    $transfer,
+                    'transfer'
+                );
+
+                $transfer->setStatus('finalized');
+
+                $entityManager->flush();
+                $this->addFlash('success', 'Fichier d\'assurance enregistré avec succès');
+                return new JsonResponse([
+                    'typeMessage' => 'success'
+                ]);
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'typeMessage' => 'form',
+                'view' => $this->renderView('actors/staff/transfer/form_finalizer.html.twig', [
+                    'form' => $form->createView(),
+                    'id' => $transfer->getId()
+                ])
+            ]);
+        }
     }
 
     /**
