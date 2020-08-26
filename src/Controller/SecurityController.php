@@ -108,6 +108,11 @@ class SecurityController extends AbstractController
 
 
     /**
+     * La logique de chagement obligatoire de mot de passe commence au niveau de menuController
+     *
+     * Cette action qui est contacté par ajax permet d'afficher le formulaire de changement de mot de passe
+     * Et renvoie le lien de redirection de l'utililsateur après le changement du mot de passe
+     *
      * @param Request $request
      * @Route("/p/c/n", name="pcn", options={"expose"=true})
      * @return JsonResponse
