@@ -86,6 +86,7 @@ class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        //todo: comment ne pas afficher le champs de mot de passe à la modification de l'utilisateur ?
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
