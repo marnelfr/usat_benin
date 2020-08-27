@@ -71,10 +71,15 @@ class GuestController extends AbstractController
 
     /**
      * @param Request $request
-     * @Route("/guest/shpw/fleet", name="guest_show_fleet")
+     * @Route("/guest/show/fleet", name="guest_show_fleet")
      */
     public function showFleet(Request $request) {
 
+        // TODO: Recuperer le fleet
+        $fleet = new Fleet();
+        return $this->render('guest/show_fleet.html.twig', [
+            'fleet' => $fleet
+        ]);
     }
 
     /**
@@ -83,5 +88,10 @@ class GuestController extends AbstractController
      */
     public function showAgent(Request $request) {
 
+        // TODO: Recuperer l'agent
+        $agent = new Agent();
+        return $this->render('guest/show_agent.html.twig', [
+            'agent' => $agent
+        ]);
     }
 }

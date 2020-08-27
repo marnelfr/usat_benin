@@ -1,4 +1,7 @@
 import '../../css/guest/home.scss';
+import Button from '../import/button'
+import Modal from '../import/modal'
+import Utility from '../import/utility'
 // import $ from 'jquery';
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
@@ -45,10 +48,10 @@ $(function () {
     alter('okkdsdss')
   })
 
-  $('#connexion').on('click', function (e) {
-    $(this).button('loading')
-  })
+  let connexion = new Button('#connexion')
+  connexion.loadOnClick(true)
 
+  //Animation des images
   let i = 1
   let ff = function () {
     setInterval(() => {
@@ -76,6 +79,7 @@ $(function () {
   ff()
 
 
+  //Animation de la voiture
   let ij = 1
   let fff = function () {
     setInterval(() => {
@@ -129,5 +133,39 @@ $(function () {
   if (!!logoutPath) {
     $.get(logoutPath.value)
   }
+
+
+  //Affichage des informations d'un parc
+  const fleetBtn = new Button('#guest-show-fleet')
+  fleetBtn.click(function () {
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        let $form = fleetBtn.getForm()
+        $.ajax({
+          url: $form.attr('action'),
+          type: 'POST',
+          data: new FormData($form[0]),
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            if (data.typeMessage) {
+              const modal = new Modal()
+              modal.setContent(data.view)
+              modal.show()
+            } else {
+              alert('Echec de chargement. Veuillez réessayer');
+            }
+          },
+          error: function () {
+            alert('Echec de chargement. Veuillez réessayer');
+          }
+        }).always(function () {
+          fleetBtn.reset()
+        });
+      })
+    })
+
+  })
 })
 
