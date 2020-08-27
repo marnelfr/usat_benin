@@ -1,0 +1,37 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ agent.fullname }}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12">
+      <h5>Information disponible</h5>
+      <table class="table">
+        <tr>
+          <th>Prénom</th>
+          <td>{{ agent.name }}</td>
+        </tr>
+        <tr>
+          <th>Nom</th>
+          <td>{{ agent.lastName }}</td>
+        </tr>
+        <tr>
+          <th>N° Téléphone</th>
+          <td>{{ agent.phone }}</td>
+        </tr>
+        <tr>
+          <th>E-mail</th>
+          <td>{{ agent.email }}</td>
+        </tr>
+        <tr>
+          <th>Adresse</th>
+          <td>{{ agent.address }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer text-left">
+    <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
+  </div>
+</div>
