@@ -58,7 +58,7 @@ class StaffRemovalController extends AbstractController
             if ($removal->getStatus() === 'waiting' && $em->getRepository(User::class)->isMakingTreatement()) {
                 return new JsonResponse([
                     'typeMessage' => 'warning',
-                    'message' => 'Veuillez finaliser le traitement en cours et réessayer'
+                    'message' => 'Veuillez finaliser le traitement (transfert ou enlèvement) en cours et réessayer'
                 ]);
             }
             //un utilisateur ne peut accéder à une demande en cours de traitement par un autre utilisateur

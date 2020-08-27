@@ -40,6 +40,18 @@ class RemovalRepository extends ServiceEntityRepository
         )->getResult();
     }
 
+    public function getLastTwinty() {
+        return $this->_em->createQuery(
+            "select r
+            from App\Entity\Removal r
+            inner join App\Entity\Processing p with p.removal = r
+            where r.status in ('inprogress', 'finalized', 'rejected')
+            and r.deleted = 0
+            order by p.createdAt desc"
+        )->setMaxResults(20)
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Removal[] Returns an array of Removal objects

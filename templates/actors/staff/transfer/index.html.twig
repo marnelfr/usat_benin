@@ -44,10 +44,14 @@
               <tr>
                 <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
                 <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
-                <td class="text-center">{{ transfer.state }}</td>
+                <td class="text-center">{{ transfer.state|raw }}</td>
                 <td class="text-right">
                   {% if btnLabel == 'Finaliser' %}
                     <button data-id="{{ transfer.id }}" data-href="{{ path(btnPath, {'id': transfer.id}) }}" class="btn btn-primary staff-transfer-finalizer"><i class="fas fa-edit"></i> Finaliser</button>
+                  {% elseif btnLabel == 'Voir' %}
+                    <a class="btn btn-primary staff-transfer-show" href="{{ path('staff_transfer_show', {'id': transfer.id}) }}">
+                      <i class="fas fa-eye"></i>
+                    </a>
                   {% else %}
                     <button
                             {% if (transfer.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
