@@ -16,7 +16,7 @@ $(function () {
       if (Cookies.get('downloaded') == 1) {
         clearInterval(interval)
         // approval.reset()
-        window.location = Routing.generate('staff_transfer_inprogress')
+        //window.location = Routing.generate('staff_transfer_inprogress')
       }
     }, 1000)
   })
@@ -118,5 +118,6 @@ $(function () {
 
   //Affichage
   u.showPicture('transfer-show-bol', 'vehicle_img')
+  u.showPicture('transfer-show-assurance', 'transfer_img')
 
 })

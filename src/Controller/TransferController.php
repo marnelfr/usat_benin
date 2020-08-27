@@ -11,6 +11,7 @@ use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -158,6 +159,25 @@ class TransferController extends AbstractController
         return $this->render('transfer/show.html.twig', [
             'transfer' => $transfer,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/img", options = { "expose" = true }, name="transfer_img", methods={"GET"})
+     */
+    public function img(Request $request, Transfer $transfer) {
+        if ($request->isXmlHttpRequest()) {
+            $demande = $this->getDoctrine()->getRepository(DemandeFile::class)
+                ->findOneBy(['transfer' => $transfer, 'usedFor' => 'assurance']);
+            $view = $this->renderView('vehicle/show_img.html.twig', [
+                'url' => '/uploads/' . $demande->getFile()->getLink(),
+                'alt' => 'Assurance'
+            ]);
+            return new JsonResponse([
+                'view' => $view,
+                'error' => !(bool)$demande
+            ]);
+        }
+        return new Response('access denied');
     }
 
     /**

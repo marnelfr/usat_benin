@@ -56,26 +56,36 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>Demandeur</th>
-                                    <th>Date de soumission</th>
-                                    <th>Date de traitement</th>
-                                    <th>Avis</th>
+                                    <th>&ensp;Demandeur</th>
+                                    <th class="text-center">Date de soumission</th>
+                                    <th class="text-center">Date de traitement</th>
+                                    <th class="text-right">Avis&ensp;&ensp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                {% for treatment in listTreatment %}
+                                    <tr>
+                                        <td>{{ treatment.agent.fullname }}</td>
+                                        <td class="text-center">{{ treatment.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
+                                        <td class="text-center">{{ treatment.processing.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
+                                        <td class="text-right">
+                                          {% if treatment.status == 'rejected' %}
+                                              <button style="width: 10em" disabled class="btn btn-outline-danger">Rejeter</button>
+                                          {% elseif treatment.status == 'inprogress' %}
+                                              <button style="width: 10em" disabled class="btn btn-outline-warning">En cours</button>
+                                          {% elseif treatment.status == 'finalized' %}
+                                              <button style="width: 10em" disabled class="btn btn-outline-success">Approuver</button>
+                                          {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>Demandeur</th>
-                                    <th>Date de soumission</th>
-                                    <th>Date de traitement</th>
-                                    <th>Avis</th>
+                                    <th>&ensp;Demandeur</th>
+                                    <th class="text-center">Date de soumission</th>
+                                    <th class="text-center">Date de traitement</th>
+                                    <th class="text-right">Avis&ensp;&ensp;</th>
                                 </tr>
                                 </tfoot>
                             </table>

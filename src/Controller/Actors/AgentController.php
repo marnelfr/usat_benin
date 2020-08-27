@@ -35,13 +35,10 @@ class AgentController extends AbstractController
         $vehicle = count($em->getRepository(Vehicle::class)->findBy(['deleted' => 0, 'user' => $this->getUser()]));
         $remover = count($em->getRepository(Remover::class)->findBy(['agent' => $this->getUser(), 'deleted'=> 0]));
 
+        $listTreatment = $removalRepo->getLastTwinty();
+
         return $this->render('actors/agent/index.html.twig', compact(
-            'finalized', 'waiting', 'vehicle', 'remover'
+            'finalized', 'waiting', 'vehicle', 'remover', 'listTreatment'
         ));
-
-
-        return $this->render('actors/agent/index.html.twig', [
-            'controller_name' => 'AgentController',
-        ]);
     }
 }

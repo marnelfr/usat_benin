@@ -40,6 +40,29 @@ class TransferRepository extends ServiceEntityRepository
         )->getResult();
     }
 
+    public function getFinalizedTransfer() {
+        return $this->_em->createQuery(
+            "select t
+            from App\Entity\Transfer t
+            inner join App\Entity\Processing p with p.transfer = t
+            where t.status = 'finalized'
+            and p.verdict is not null
+            and t.deleted = 0"
+        )->getResult();
+    }
+
+    public function getLastTwinty() {
+        return $this->_em->createQuery(
+            "select t
+            from App\Entity\Transfer t
+            inner join App\Entity\Processing p with p.transfer = t
+            where t.status in ('inprogress', 'finalized', 'rejected')
+            and t.deleted = 0
+            order by p.createdAt desc"
+        )->setMaxResults(20)
+            ->getResult();
+    }
+
     // /**
     //  * @return Transfer[] Returns an array of Transfer objects
     //  */

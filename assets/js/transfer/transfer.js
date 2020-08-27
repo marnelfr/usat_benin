@@ -70,5 +70,6 @@ $(function () {
 
   //Affichage
   u.showPicture('transfer-show-bol', 'vehicle_img')
+  u.showPicture('transfer-show-assurance', 'transfer_img')
 
 })

@@ -7,85 +7,95 @@
 {% block page_subtitle %}Gestionnaires de Parc{% endblock %}
 
 {% block page_content %}
-    <div class="row">
-      {% include 'includes/dashboard_bloc.html.twig' with {
-        total_item: finalized,
-        name_bloc: finalized > 1 ? 'Transferts finalisés' : 'Transfert finalisé',
-        icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: path('transfer_index_finalized'),
-        type_bloc: 'bg-green'
-      } %}
-      {% include 'includes/dashboard_bloc.html.twig' with {
-        total_item: waiting,
-        name_bloc: waiting > 1 ? 'Transferts en attente' : 'Transfert en attente',
-        icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: path('transfer_index'),
-        type_bloc: 'bg-yellow'
-      } %}
-      {% include 'includes/dashboard_bloc.html.twig' with {
-        total_item: importer,
-        name_bloc: importer > 1 ? 'Importateurs' : 'Importateur',
-        icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: path('importer_index'),
-        type_bloc: 'bg-blue'
-      } %}
-      {% include 'includes/dashboard_bloc.html.twig' with {
-        total_item: rejected,
-        name_bloc: rejected > 1 ? 'Transferts rejetés' : 'Transfert rejeté',
-        icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: path('transfer_index_rejected'),
-        type_bloc: 'bg-red'
-      } %}
-    </div>
+  <div class="row">
+    {% include 'includes/dashboard_bloc.html.twig' with {
+      total_item: finalized,
+      name_bloc: finalized > 1 ? 'Transferts finalisés' : 'Transfert finalisé',
+      icon_bloc: 'fas fa-tachometer-alt',
+      link_more_info: path('transfer_index_finalized'),
+      type_bloc: 'bg-green'
+    } %}
+    {% include 'includes/dashboard_bloc.html.twig' with {
+      total_item: waiting,
+      name_bloc: waiting > 1 ? 'Transferts en attente' : 'Transfert en attente',
+      icon_bloc: 'fas fa-tachometer-alt',
+      link_more_info: path('transfer_index'),
+      type_bloc: 'bg-yellow'
+    } %}
+    {% include 'includes/dashboard_bloc.html.twig' with {
+      total_item: importer,
+      name_bloc: importer > 1 ? 'Importateurs' : 'Importateur',
+      icon_bloc: 'fas fa-tachometer-alt',
+      link_more_info: path('importer_index'),
+      type_bloc: 'bg-blue'
+    } %}
+    {% include 'includes/dashboard_bloc.html.twig' with {
+      total_item: rejected,
+      name_bloc: rejected > 1 ? 'Transferts rejetés' : 'Transfert rejeté',
+      icon_bloc: 'fas fa-tachometer-alt',
+      link_more_info: path('transfer_index_rejected'),
+      type_bloc: 'bg-red'
+    } %}
+  </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-list"></i> Les 20 derniers transferts traités</h3>
-                  {#<div class="card-tools">
-                      <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                          <i class="fas fa-minus"></i></button>
-                      <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                          <i class="fas fa-times"></i></button>
-                  </div>#}
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Demandeur</th>
-                                    <th>Date de soumission</th>
-                                    <th>Date de traitement</th>
-                                    <th>Avis</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Demandeur</th>
-                                    <th>Date de soumission</th>
-                                    <th>Date de traitement</th>
-                                    <th>Avis</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-              {#<div class="card-footer">
-                  Footer
-              </div>#}
-            </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-list"></i> Les 20 derniers transferts traités</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
         </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>&ensp;Demandeur</th>
+                  <th class="text-center">Date de soumission</th>
+                  <th class="text-center">Date de traitement</th>
+                  <th class="text-right">Avis&ensp;&ensp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for treatment in listTreatment %}
+                  <tr>
+                    <td>{{ treatment.manager.fullname }}</td>
+                    <td class="text-center">{{ treatment.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
+                    <td class="text-center">{{ treatment.processing.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
+                    <td class="text-right">
+                      {% if treatment.status == 'rejected' %}
+                        <button style="width: 10em" disabled class="btn btn-outline-danger">Rejeter</button>
+                      {% elseif treatment.status == 'inprogress' %}
+                        <button style="width: 10em" disabled class="btn btn-outline-warning">En cours</button>
+                      {% elseif treatment.status == 'finalized' %}
+                        <button style="width: 10em" disabled class="btn btn-outline-success">Approuver</button>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>&ensp;Demandeur</th>
+                  <th class="text-center">Date de soumission</th>
+                  <th class="text-center">Date de traitement</th>
+                  <th class="text-right">Avis&ensp;&ensp;</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        {#<div class="card-footer">
+            Footer
+        </div>#}
+      </div>
     </div>
+  </div>
 {% endblock %}

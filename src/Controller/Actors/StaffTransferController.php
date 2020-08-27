@@ -40,9 +40,12 @@ class StaffTransferController extends AbstractController
      *
      * @return Response
      */
-    public function transfer_treatment(Request $request, Transfer $transfer): Response
+    public function treatment(Request $request, Transfer $transfer): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /*return $this->render('actors/staff/transfer/print.approval.html.twig', [
+            'transfer' => $transfer
+        ]);*/
 
         //On definit les differents message affichable à l'utilisateur
         $message = 'La demande à déjà été traitée par ';
@@ -65,7 +68,7 @@ class StaffTransferController extends AbstractController
             if ($transfer->getStatus() === 'waiting' && $em->getRepository(User::class)->isMakingTreatement()) {
                 return new JsonResponse([
                     'typeMessage' => 'warning',
-                    'message' => 'Veuillez finaliser le traitement en cours et réessayer'
+                    'message' => 'Veuillez finaliser le traitement (transfert ou enlèvement) en cours et réessayer'
                 ]);
             }
             //un utilisateur ne peut accéder à une demande en cours de traitement par un autre utilisateur
@@ -105,7 +108,7 @@ class StaffTransferController extends AbstractController
      *
      * @Route("/staff/transfer/inprogress", options={"expose"=true}, name="staff_transfer_inprogress", methods={"GET"})
      */
-    public function transfer_inprogress(): Response
+    public function inprogress(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -192,11 +195,42 @@ class StaffTransferController extends AbstractController
     }
 
     /**
+     * La liste des demande de transfert en cours afficher au staff
+     *
+     * @Route("/staff/transfer/finalized", name="staff_transfer_finalized", methods={"GET"})
+     */
+    public function finalized(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('actors/staff/transfer/index.html.twig', [
+            'title' => 'Finalisées',
+            'btnLabel' => 'Voir',
+            'btnPath' => 'staff_transfer_treatment',
+            'noData' => 'Aucune demande finalisée pour le moment',
+            'transfers' => $this->getDoctrine()->getRepository(Transfer::class)->getFinalizedTransfer(),
+        ]);
+    }
+
+    /**
+     * @return Response
+     * @Route("/staff/transfer/{id}/show", name="staff_transfer_show")
+     */
+    public function show(Transfer $transfer): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('transfer/show.html.twig', [
+            'transfer' => $transfer,
+        ]);
+    }
+
+    /**
      * @Route("/staff/transfer/{id}/reject", options = { "expose" = true }, name="staff_reject_transfer")
      * @param Request  $request
      * @param Transfer $transfer
      */
-    public function reject_transfer(Request $request, Transfer $transfer) {
+    public function reject(Request $request, Transfer $transfer) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $form = $this->createFormBuilder()
