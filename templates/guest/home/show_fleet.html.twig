@@ -1,0 +1,22 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ fleet.name }}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12">
+      <h5>Description</h5>
+      <p>{{ fleet.info }}</p>
+      <h5>Liste des gestionnaires du parc :</h5>
+      <ul>
+        {% for manager in fleet.managers %}
+          <li>{{ manager.fullname }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer text-left">
+    <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
+  </div>
+</div>
