@@ -8,6 +8,8 @@ use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\User;
 use App\Service\FileUploader;
+use AsyncAws\Core\Configuration;
+use AsyncAws\S3\S3Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
@@ -42,6 +44,53 @@ class StaffTransferController extends AbstractController
      */
     public function treatment(Request $request, Transfer $transfer): Response
     {
+        $config = Configuration::create([
+//            'region' => 'eu-central-1',
+            'region' => 'eu-west-3',
+            'accessKeyId' => 'AKIA2BY4C36SVCOVM57H',
+            'accessKeySecret' => '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',
+            'endpoint' => 'https://s3.eu-west-3.amazonaws.com'
+        ]);
+        $s3 = new S3Client($config);
+
+        /*$response = $s3->PutObject([
+            'Bucket' => 'usat',
+            'Key' => $this->getParameter('app.bol_dir') . '/20200808/bol/bol_20200825_5f458af4528f9.png',
+            'Body' => "User-agent: *\nDisallow:",
+        ]);*/
+
+        /*$resource = \fopen(
+            $this->getParameter('app.bol_dir') . '/20200808/bol/bol_20200825_5f458af4528f9.png','r'
+        );
+        $s3->PutObject([
+            'Bucket' => 'usat',
+            'Key' => 'bol/file.jpg',
+            'Body' => $resource,
+        ]);*/
+        // download a file and use it directly as string
+        $result = $s3->GetObject([
+            'Bucket' => 'usat',
+            'Key' => 'bol/file.jpg'
+        ]);
+        $metadata = $result->getBody()->getContentAsResource();
+//        dd($metadata, $result);
+
+        $fp = fopen($this->getParameter('app.bol_dir') . '20200808/tct.png', 'wb');
+        stream_copy_to_stream($metadata, $fp);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /*return $this->render('actors/staff/transfer/print.approval.html.twig', [
             'transfer' => $transfer
@@ -100,6 +149,7 @@ class StaffTransferController extends AbstractController
 
         return $this->render('actors/staff/transfer/show.html.twig', [
             'transfer' => $transfer,
+            'metadata' => 'uploads/20200808/tct.png'
         ]);
     }
 

@@ -67,4 +67,8 @@ class FileUploader
     {
         return $this->targetDirectory;
     }
+
+    private function getConfig() {
+
+    }
 }
