@@ -46,7 +46,7 @@ $(function () {
   })
 
   //Affichage
-  u.showPicture('removal-show-bol', 'vehicle_img')
+  u.showPicture('removal-show-bol', 'removal_img')
   u.showPicture('removal-show-bfu', 'removal_img')
   u.showPicture('removal-show-entry', 'removal_img')
   u.showPicture('removal-show-receipt', 'removal_img')
