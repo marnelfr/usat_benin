@@ -318,7 +318,13 @@ BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
 
 
 
-
+            // TODO: trouver le moyen de supprimer les fichiers vieux
+            /**
+             * Ce qui serait cool serait d'arriver à pouvoir mettre en place un cron qui s'execute toutes les nuits à 00h
+             * Et là, ça supprimer le dossier updloads carrement
+             * Mais pour ça, il faudrait pouvoir être sur que la taille de tous les fichiers qu'ils
+             * utiliserons dans une journée n'atteignera pas le disque dur alloué du serveur
+             */
 
 
 

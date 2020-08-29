@@ -160,17 +160,16 @@ class TransferController extends AbstractController
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="transfer_img", methods={"GET"})
      */
-    public function img(Request $request, Transfer $transfer) {
+    public function img(Request $request, Transfer $transfer, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
-            $demande = $this->getDoctrine()->getRepository(DemandeFile::class)
-                ->findOneBy(['transfer' => $transfer, 'usedFor' => 'assurance']);
+            $fileLink = $uploader->fileLink($transfer, 'transfer', 'assurance');
             $view = $this->renderView('vehicle/show_img.html.twig', [
-                'url' => '/uploads/' . $demande->getFile()->getLink(),
+                'url' => $fileLink,
                 'alt' => 'Assurance'
             ]);
             return new JsonResponse([
                 'view' => $view,
-                'error' => !(bool)$demande
+                'error' => $fileLink === false
             ]);
         }
         return new Response('access denied');
