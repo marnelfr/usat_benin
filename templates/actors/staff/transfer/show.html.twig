@@ -32,9 +32,6 @@
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   {% include 'transfer/show_table.html.twig' %}
                 </div>
-              <div class="row">
-                <img src="{{ asset(metadata) }}" alt="d">
-              </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   <button id="transfert-verdict-reject" data-id="{{ transfer.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
                   {# TODO: Mettre en place le confirm pour l'approval #}

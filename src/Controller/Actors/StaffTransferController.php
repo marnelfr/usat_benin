@@ -44,39 +44,42 @@ class StaffTransferController extends AbstractController
      */
     public function treatment(Request $request, Transfer $transfer): Response
     {
-        $config = Configuration::create([
-//            'region' => 'eu-central-1',
+        /*$config = Configuration::create([
             'region' => 'eu-west-3',
             'accessKeyId' => 'AKIA2BY4C36SVCOVM57H',
             'accessKeySecret' => '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',
             'endpoint' => 'https://s3.eu-west-3.amazonaws.com'
         ]);
-        $s3 = new S3Client($config);
+        $s3 = new S3Client($config);*/
 
         /*$response = $s3->PutObject([
             'Bucket' => 'usat',
             'Key' => $this->getParameter('app.bol_dir') . '/20200808/bol/bol_20200825_5f458af4528f9.png',
             'Body' => "User-agent: *\nDisallow:",
         ]);*/
+        //D:\Web\usat_benin\public\uploads\
 
         /*$resource = \fopen(
-            $this->getParameter('app.bol_dir') . '/20200808/bol/bol_20200825_5f458af4528f9.png','r'
+            $this->getParameter('app.bol_dir') . '/20200808/assurance/assurance_20200826_5f46b5175240d.png','r'
         );
         $s3->PutObject([
             'Bucket' => 'usat',
             'Key' => 'bol/file.jpg',
             'Body' => $resource,
-        ]);*/
+        ]);
+        dd('ok');*/
+
+
         // download a file and use it directly as string
-        $result = $s3->GetObject([
+        /*$result = $s3->GetObject([
             'Bucket' => 'usat',
             'Key' => 'bol/file.jpg'
         ]);
-        $metadata = $result->getBody()->getContentAsResource();
+        $metadata = $result->getBody()->getContentAsResource();*/
 //        dd($metadata, $result);
 
-        $fp = fopen($this->getParameter('app.bol_dir') . '20200808/tct.png', 'wb');
-        stream_copy_to_stream($metadata, $fp);
+        /*$fp = fopen($this->getParameter('app.bol_dir') . '20200808/tct.png', 'wb');
+        stream_copy_to_stream($metadata, $fp);*/
 
 
 
@@ -149,7 +152,6 @@ class StaffTransferController extends AbstractController
 
         return $this->render('actors/staff/transfer/show.html.twig', [
             'transfer' => $transfer,
-            'metadata' => 'uploads/20200808/tct.png'
         ]);
     }
 
@@ -214,15 +216,7 @@ class StaffTransferController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
 
-            if ($assurance) {
-                $file = $uploader->upload($assurance, 'assurance');
-
-                $entityManager->getRepository(DemandeFile::class)->add(
-                    $file,
-                    'assurance',
-                    $transfer,
-                    'transfer'
-                );
+            if ($assurance && $uploader->upload($assurance, 'assurance', $transfer, 'transfer')) {
 
                 $transfer->setStatus('finalized');
 

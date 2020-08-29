@@ -104,11 +104,6 @@ class Vehicle
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $bolFileName;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -283,18 +278,6 @@ class Vehicle
     public function __toString()
     {
         return $this->getBrand()->getName() . ' - ' . $this->getChassis();
-    }
-
-    public function getBolFileName(): ?string
-    {
-        return $this->bolFileName;
-    }
-
-    public function setBolFileName(string $bolFileName): self
-    {
-        $this->bolFileName = $bolFileName;
-
-        return $this;
     }
 
     public function getUser(): ?User

@@ -112,28 +112,24 @@ class TransferController extends AbstractController
 
             if ($bol) {
                 try{
-                    $file = $uploader->upload($bol);
-                    $vehicle->setBolFileName(
-                        $file->getLink()
-                    );
-
                     $vehicle->setUser($this->getUser());
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($vehicle);
+
+                    $message = 'Demande envoyée avec succès';
+                    $typeMessage = 'success';
+                    if(!$uploader->upload($bol, 'bol', $vehicle, 'vehicle')) {
+                        $message = 'Demande envoyée avec erreur. Veuillez modifier votre demande et rajouter le connaissement';
+                        $typeMessage = 'warning';
+                    }
 
                     $transfer->setVehicle($vehicle);
                     $transfer->setManager($this->getUser());
                     $entityManager->persist($transfer);
 
-                    $entityManager->getRepository(DemandeFile::class)->add(
-                        $file,
-                        'bol',
-                        $vehicle, 'vehicle'
-                    );
-
                     $entityManager->flush();
 
-                    $this->addFlash('success', 'Demande envoyée avec succès');
+                    $this->addFlash($typeMessage, $message);
 
                     return $this->redirectToRoute('transfer_index');
                 }catch (\Exception $e) {
@@ -201,9 +197,7 @@ class TransferController extends AbstractController
 
             if ($bol) {
                 try{
-                    $vehicle->setBolFileName(
-                        $uploader->upload($bol, 'bol', true, $vehicle->getBolFileName())->getLink()
-                    );
+                    $uploader->upload($bol, 'bol', $vehicle, 'vehicle', true);
                 }catch (\Exception $e) {
                     dump($e->getMessage()); die();
                 }

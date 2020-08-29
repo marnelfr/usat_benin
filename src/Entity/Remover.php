@@ -60,12 +60,6 @@ class Remover
      */
     private $agent;
 
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $cinFileName;
-
     /**
      * @ORM\Column(type="boolean")
      */
@@ -81,12 +75,18 @@ class Remover
      */
     private $vehicles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeFile::class, mappedBy="remover")
+     */
+    private $demandeFiles;
+
     public function __construct()
     {
         $this->deleted = 0;
         $this->createdAt = new \DateTime();
         $this->removals = new ArrayCollection();
         $this->vehicles = new ArrayCollection();
+        $this->demandeFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,18 +226,6 @@ class Remover
         return $this;
     }
 
-    public function getCinFileName(): ?string
-    {
-        return $this->cinFileName;
-    }
-
-    public function setCinFileName(string $cinFileName): self
-    {
-        $this->cinFileName = $cinFileName;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->getFullname();
@@ -268,6 +256,37 @@ class Remover
             // set the owning side to null (unless already changed)
             if ($vehicle->getRemover() === $this) {
                 $vehicle->setRemover(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DemandeFile[]
+     */
+    public function getDemandeFiles(): Collection
+    {
+        return $this->demandeFiles;
+    }
+
+    public function addDemandeFile(DemandeFile $demandeFile): self
+    {
+        if (!$this->demandeFiles->contains($demandeFile)) {
+            $this->demandeFiles[] = $demandeFile;
+            $demandeFile->setRemover($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandeFile(DemandeFile $demandeFile): self
+    {
+        if ($this->demandeFiles->contains($demandeFile)) {
+            $this->demandeFiles->removeElement($demandeFile);
+            // set the owning side to null (unless already changed)
+            if ($demandeFile->getRemover() === $this) {
+                $demandeFile->setRemover(null);
             }
         }
 

@@ -28,6 +28,8 @@ class DemandeFileRepository extends ServiceEntityRepository
             $demandeFile->setRemoval($entity);
         } elseif ($entity_name === 'vehicle'){
             $demandeFile->setVehicle($entity);
+        } elseif ($entity_name === 'remover'){
+            $demandeFile->setRemover($entity);
         } else{
             $demandeFile->setTransfer($entity);
         }
@@ -49,6 +51,8 @@ class DemandeFileRepository extends ServiceEntityRepository
             $demandeFile->setRemoval($entity);
         } elseif ($entity_name === 'vehicle'){
             $demandeFile->setVehicle($entity);
+        } elseif ($entity_name === 'remover'){
+            $demandeFile->setRemover($entity);
         } else {
             $demandeFile->setTransfer($entity);
         }
