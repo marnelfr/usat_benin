@@ -175,7 +175,8 @@ class StaffRemovalController extends AbstractController
         $this->addFlash('success', 'Demande approuvée avec succès');
 
         $html = $this->renderView('actors/staff/removal/print.approval.html.twig', array(
-            'var'  => 'mainteneuR'
+            'ref' => 'TR' . str_pad($removal->getId(), 10, "0", STR_PAD_LEFT),
+            'removal' => $removal
         ));
         $cookie = Cookie::create('downloaded')
             ->withValue(true)

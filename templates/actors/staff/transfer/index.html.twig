@@ -43,7 +43,7 @@
             {% for transfer in transfers %}
               <tr>
                 <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
-                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d-m-Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
+                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d/m/Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
                 <td class="text-center">{{ transfer.state|raw }}</td>
                 <td class="text-right">
                   {% if btnLabel == 'Finaliser' %}

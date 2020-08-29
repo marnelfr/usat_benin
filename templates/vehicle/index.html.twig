@@ -46,7 +46,7 @@
               <tr>
                 <td>{{ vehicle.brand.name }}</td>
                 <td class="text-center">{{ vehicle.chassis }}</td>
-                <td class="text-center">{{ vehicle.cameAt ? vehicle.cameAt|date('Y-m-d') : '' }}</td>
+                <td class="text-center">{{ vehicle.cameAt ? vehicle.cameAt|date('d/m/Y') : '' }}</td>
                 <td class="text-right">
                   <a class="btn btn-primary" href="{{ path('vehicle_show', {'id': vehicle.id}) }}"><i
                             class="fas fa-eye"></i></a>

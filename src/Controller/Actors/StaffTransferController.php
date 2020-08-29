@@ -281,7 +281,8 @@ class StaffTransferController extends AbstractController
         $this->getDoctrine()->getManager()->flush();
 
         $html = $this->renderView('actors/staff/transfer/print.approval.html.twig', array(
-            'var'  => 'mainteneuR'
+            'transfer'  => $transfer,
+            'ref' => 'TR' . str_pad($transfer->getId(), 10, "0", STR_PAD_LEFT)
         ));
         $cookie = Cookie::create('downloaded')
             ->withValue(true)

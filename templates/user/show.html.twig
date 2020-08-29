@@ -63,11 +63,11 @@
             </tr>
             <tr>
               <th>Créer le</th>
-              <td>{{ user.createdAt ? user.createdAt|date('Y-m-d') : '' }}</td>
+              <td>{{ user.createdAt ? user.createdAt|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
               <th>Dernière vue</th>
-              <td>{{ user.lastConnection ?user.lastConnection|date('d-m-Y') ~ ' à ' ~ user.lastConnection|date('H:i:s') : 'Jamais connecté' }}</td>
+              <td>{{ user.lastConnection ?user.lastConnection|date('d/m/Y') ~ ' à ' ~ user.lastConnection|date('H:i:s') : 'Jamais connecté' }}</td>
             </tr>
             </tbody>
           </table>
