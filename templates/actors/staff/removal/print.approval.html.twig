@@ -19,9 +19,14 @@
   </style>
 </head>
 <body>
+{% set top=-428 %}
 {% for i in 1..3 %}
+  {% set top=top+435 %}
   <div class="container text-center">
-    {{ asset('img/print/logo.png') }}
+    <div style="position: absolute; top: {{ top }}px; left: 29px" class="logo-content text-left">
+      <img src="{{ absolute_url(asset('img/print/logo.png')) }}" alt="logo"><br>
+      <img style="width: 99%; height: auto;" src="{{ absolute_url(asset('img/print/contact.png')) }}" alt="logo">
+    </div>
     <div class="col-md-10 offset-md-1 text-center">
       <h3 class="text-bold mb-0">REPUBLIC DU BENIN</h3>
       <p class="mt-0 mb-0">****_****</p>
