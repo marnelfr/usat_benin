@@ -43,7 +43,7 @@
             {% for removal in removals %}
               <tr>
                 <td>{{ removal.vehicle.brand.name ~ ' - ' ~ removal.vehicle.chassis }}</td>
-                <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}</td>
+                <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d/m/Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}</td>
                 <td class="text-center">{{ removal.status == 'finalized' ? removal.state|raw : removal.state }}</td>
                 <td class="text-right">
                   {% if removal.status == 'finalized' %}

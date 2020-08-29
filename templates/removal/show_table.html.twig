@@ -21,11 +21,11 @@
         </tr>
         <tr>
             <th>Mise en circulation</th>
-            <td>{{ removal.vehicle.putInUseAt ? removal.vehicle.putInUseAt|date('d-m-Y') : '' }}</td>
+            <td>{{ removal.vehicle.putInUseAt ? removal.vehicle.putInUseAt|date('d/m/Y') : '' }}</td>
         </tr>
         <tr>
             <th>Date d'arrivée</th>
-            <td>{{ removal.vehicle.cameAt ? removal.vehicle.cameAt|date('d-m-Y') : '' }}</td>
+            <td>{{ removal.vehicle.cameAt ? removal.vehicle.cameAt|date('d/m/Y') : '' }}</td>
         </tr>
         <tr>
             <th>Consignataire</th>
@@ -67,7 +67,7 @@
         <tr>
             <th>Date de demande</th>
             <td>
-              {{ removal.createdAt ? removal.createdAt|date('d-m-Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
+              {{ removal.createdAt ? removal.createdAt|date('d/m/Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
             </td>
         </tr>
     </tbody>

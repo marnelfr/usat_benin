@@ -139,7 +139,11 @@ export default class Utility {
         Routing.setRoutingData(routes);
         let btn = new Button('#'+btnID)
         btn.click(function () {
-          $.get(Routing.generate(imgPath, {id: btn.data('id'), use: btn.data('use')})).then(function (data) {
+          let datum = {id: btn.data('id')}
+          if (btn.data('use')) {
+            datum['use'] = btn.data('use')
+          }
+          $.get(Routing.generate(imgPath, datum)).then(function (data) {
             if (data.error) {
               alert('Aucune image trouvée')
             }else{

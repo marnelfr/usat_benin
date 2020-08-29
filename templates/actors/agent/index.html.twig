@@ -66,8 +66,8 @@
                                 {% for treatment in listTreatment %}
                                     <tr>
                                         <td>{{ treatment.agent.fullname }}</td>
-                                        <td class="text-center">{{ treatment.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
-                                        <td class="text-center">{{ treatment.processing.createdAt|date('d-m-Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
+                                        <td class="text-center">{{ treatment.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
+                                        <td class="text-center">{{ treatment.processing.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
                                         <td class="text-right">
                                           {% if treatment.status == 'rejected' %}
                                               <button style="width: 10em" disabled class="btn btn-outline-danger">Rejeter</button>
