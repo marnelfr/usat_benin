@@ -9,12 +9,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File as Files;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Filesystem\Filesystem;
 
 class FileUploader
 {
-    private $targetDirectory;
+    private $uploadsDirectory;
     /**
      * @var Security
      */
@@ -38,14 +39,59 @@ class FileUploader
 
     public function __construct($targetDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
     {
-        $this->targetDirectory = $targetDirectory;
+        $this->uploadsDirectory = $targetDirectory;
         $this->security = $security;
         $this->em = $em;
         $this->fileRepo = $fileRepository;
     }
 
+    public function fileLink($entity, string $entity_name, string $fileUsage) {
+        try{
+            $demandeFile = $this->fileRepo->findOneBy([
+                $entity_name => $entity,
+                'usedFor' => $fileUsage
+            ]);
+
+            if (!$demandeFile) {
+                return false;
+            }
+
+            $link = $demandeFile->getFile()->getLink();
+            $absolutePath = $this->uploadsDirectory . $link;
+            if (file_exists($absolutePath)) {
+                goto END;
+            }
+            // TODO: trouver le moyen de supprimer les fichiers vieux
+            /**
+             * Ce qui serait cool serait d'arriver à pouvoir mettre en place un cron qui s'execute toutes les nuits à 00h
+             * Et là, ça supprimer le dossier updloads carrement
+             * Mais pour ça, il faudrait pouvoir être sur que la taille de tous les fichiers qu'ils
+             * utiliserons dans une journée n'atteignera pas le disque dur alloué du serveur
+             */
+
+            $result = $this->client()->GetObject([
+                'Bucket' => 'usat',
+                'Key' => $link
+            ]);
+            $resource = $result->getBody()->getContentAsResource();
+            $dirname = dirname($absolutePath);
+            if (!is_dir($dirname)) {
+                if (!mkdir($dirname, 0755, true) && !is_dir($dirname)) {
+                    throw new \RuntimeException(sprintf('Impossible de créer le repertoire', $dirname));
+                }
+            }
+            $fp = fopen($absolutePath, 'wb');
+            stream_copy_to_stream($resource, $fp);
+
+            END:
+            return 'uploads/' . $link;
+        }catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public function upload(UploadedFile $file, string $for = 'bol', $entity, $entity_name = 'removal', bool $edit = false) {
-//        try{
+        try{
             $extension = $file->guessExtension();
 
             $oldDemandeFile = null;
@@ -56,6 +102,12 @@ class FileUploader
                 ]);
                 if ($oldDemandeFile) {
                     $oldFilePath = $oldDemandeFile->getFile()->getLink();
+
+                    $fileSys = new Filesystem();
+                    if ($fileSys->exists($this->uploadsDirectory . $oldFilePath)) {
+                        $fileSys->remove($this->uploadsDirectory . $oldFilePath);
+                    }
+
                     $parts = explode('.', $oldFilePath);
                     if (end($parts) === $extension) {
                         $filePath = $oldFilePath;
@@ -86,15 +138,14 @@ class FileUploader
             }
 
             $method = $edit ? 'edit' : 'add';
-//            $this->em->persist($entity);
             $this->fileRepo->$method($saveFile, $for, $entity, $entity_name);
             $this->em->flush();
 
             return true;
-//        }catch (\Exception $e) {
-//            dd($e->getMessage());
-//            return false;
-//        }
+        }catch (\Exception $e) {
+            dd($e->getMessage());
+            return false;
+        }
     }
 
     private function fillFile(File $file, $originalFilename, $filePath) {
@@ -120,12 +171,12 @@ class FileUploader
         try {
             if ($edit) {
                 $fileSys = new Filesystem();
-                if ($fileSys->exists($this->targetDirectory . $oldFileName)) {
-                    $fileSys->remove($this->targetDirectory . $oldFileName);
+                if ($fileSys->exists($this->uploadsDirectory . $oldFileName)) {
+                    $fileSys->remove($this->uploadsDirectory . $oldFileName);
                 }
             }
 
-            $file->move($this->targetDirectory . date('Ymm') . '/' . $for . '/', $newFilename);
+            $file->move($this->uploadsDirectory . date('Ymm') . '/' . $for . '/', $newFilename);
 
             $saveFile = new File();
             $saveFile->setClientName($originalFilename)
@@ -143,16 +194,20 @@ class FileUploader
         }
     }
 
+    public function showFile($entity, $entity_name, $usage, $view) {
+        $fileLink = $this->fileLink($entity, $entity_name, $usage);
+
+        return new JsonResponse([
+            'view' => $view,
+            'error' => $fileLink === false
+        ]);
+    }
+
     private function client() {
         if ($this->s3 === null) {
             $this->s3 = new S3Client($this->getConfig());
         }
         return $this->s3;
-    }
-
-    public function getTargetDirectory()
-    {
-        return $this->targetDirectory;
     }
 
     private function getConfig(): Configuration {

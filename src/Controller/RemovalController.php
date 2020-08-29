@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DemandeFile;
+use App\Entity\File;
 use App\Entity\Removal;
 use App\Entity\Vehicle;
 use App\Form\RemovalType;
@@ -165,24 +166,20 @@ class RemovalController extends AbstractController
      *
      * @return Response
      */
-    public function img(Request $request, Removal $removal) {
+    public function img(Request $request, Removal $removal, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
             $use = $request->get('use');
-            if ($use !== 'bol') {
-                $link = $file = $removal->getDemandeFile($request->get('use'));
-                if ($file) {
-                    $link = $file->getLink();
-                }
-            } else {
-                $link = $removal->getVehicle()->getBolFileName();
+            if ($use === 'bol') {
+                return $this->vehicleController->img($request, $removal->getVehicle(), $uploader);
             }
+            $fileLink = $uploader->fileLink($removal, 'removal', $use);
             $view = $this->renderView('vehicle/show_img.html.twig', [
-                'url' => $link ? '/uploads/' . $link : '#',
+                'url' => $fileLink,
                 'alt' => 'Document scanné',
             ]);
             return new JsonResponse([
                 'view' => $view,
-                'error' => $link === null
+                'error' => $fileLink === false
             ]);
         }
         return new Response('access denied');

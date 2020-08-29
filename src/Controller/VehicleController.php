@@ -60,15 +60,16 @@ class VehicleController extends AbstractController
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="vehicle_img", methods={"GET"})
      */
-    public function img(Request $request, Vehicle $vehicle) {
+    public function img(Request $request, Vehicle $vehicle, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
+            $fileLink = $uploader->fileLink($vehicle, 'vehicle', 'bol');
             $view = $this->renderView('vehicle/show_img.html.twig', [
-                'url' => '/uploads/' . $vehicle->getBolFileName(),
+                'url' => $fileLink,
                 'alt' => 'Connaissement de véhicule'
             ]);
             return new JsonResponse([
                 'view' => $view,
-                'error' => $vehicle->getBolFileName() === ''
+                'error' => $fileLink === false
             ]);
         }
         return new Response('access denied');
@@ -122,7 +123,7 @@ class VehicleController extends AbstractController
 
             //On enregistre un vehicule que si le connaissement est fourni ou s'il s'agit d'une modification
             if ($bol || $edit) {
-//                try {
+                try {
                     $vehicle->setUser($this->getUser());
                     $entityManager->persist($vehicle);
 
@@ -138,9 +139,9 @@ class VehicleController extends AbstractController
 
                     //Une fois le véhicule enregistré, on passe à l'étape 3 du formulaire d'enlèvement
                     return $removalController->newSaver($request, $vehicle);
-//                }catch (\Exception $e) {
-//                    dd($e->getMessage());
-//                }
+                }catch (\Exception $e) {
+                    dd($e->getMessage());
+                }
             }
             $form->get('bol')->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
 //            return $this->redirectToRoute('vehicle_index');

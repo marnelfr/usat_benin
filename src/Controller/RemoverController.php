@@ -100,15 +100,16 @@ class RemoverController extends AbstractController
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="remover_img", methods={"GET"})
      */
-    public function img(Request $request, Remover $remover) {
+    public function img(Request $request, Remover $remover, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
-            $view =  $this->renderView('vehicle/show_img.html.twig', [
-                'url' => '/uploads/' . $remover->getCinFileName(),
+            $fileLink = $uploader->fileLink($remover, 'remover', 'cin');
+            $view = $this->renderView('vehicle/show_img.html.twig', [
+                'url' => $fileLink,
                 'alt' => 'Carte nationale d\'identité'
             ]);
             return new JsonResponse([
                 'view' => $view,
-                'error' => $remover->getCinFileName() === ''
+                'error' => $fileLink === false
             ]);
         }
         return new Response('access denied');
