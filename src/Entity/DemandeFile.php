@@ -53,6 +53,11 @@ class DemandeFile
      */
     private $vehicle;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Remover::class, inversedBy="demandeFiles")
+     */
+    private $remover;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -144,6 +149,18 @@ class DemandeFile
     public function setVehicle(?Vehicle $vehicle): self
     {
         $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    public function getRemover(): ?Remover
+    {
+        return $this->remover;
+    }
+
+    public function setRemover(?Remover $remover): self
+    {
+        $this->remover = $remover;
 
         return $this;
     }

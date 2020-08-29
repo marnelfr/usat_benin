@@ -232,20 +232,17 @@ class RemovalController extends AbstractController
                     ->setAgent($this->getUser());
                 $entityManager->persist($removal);
 
-                $demandes = [];
+                $fileNotSent = false;
                 foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
-                    $demandeFile = $entityManager->getRepository(DemandeFile::class)->add(
-                        $this->uploader->upload($uploadedFile, $key),
-                        $key,
-                        $removal
-                    );
-                    $demandes[] = $demandeFile;
-                    $entityManager->persist(end($demandes));
+                    if (!$this->uploader->upload($uploadedFile, $key, $removal)) {
+                        $fileNotSent = true;
+                    }
                 }
-
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Demande d\'enlevement envoyée avec succès');
+                if ($fileNotSent) {
+                    $this->addFlash('warning', 'Demande d\'enlevement avec erreur d\'enregistrement. Veuiller modifier la demande et rajouter les fichiers scannés');
+                } else {
+                    $this->addFlash('success', 'Demande d\'enlevement envoyée avec succès');
+                }
             }
             return $this->redirectToRoute('removal_index');
         }
@@ -306,17 +303,7 @@ class RemovalController extends AbstractController
             $demandes = [];
             foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
                 if ($uploadedFile) {
-                    $file = $removal->getDemandeFile($key);
-                    $demandeFile = $objectManager->getRepository(DemandeFile::class)->edit(
-                        $file ?
-                            $this->uploader->upload($uploadedFile, $key, true, $file->getLink())
-                            : $this->uploader->upload($uploadedFile, $key)
-                        ,
-                        $key,
-                        $removal
-                    );
-                    $demandes[] = $demandeFile;
-                    $objectManager->persist(end($demandes));
+                    $this->uploader->upload($uploadedFile, $key, $removal, 'removal', true);
                 }
             }
 

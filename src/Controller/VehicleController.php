@@ -122,24 +122,14 @@ class VehicleController extends AbstractController
 
             //On enregistre un vehicule que si le connaissement est fourni ou s'il s'agit d'une modification
             if ($bol || $edit) {
-                try {
-                    if ($bol) {
-                        $file = $this->uploader->upload($bol, 'bol', $edit, $vehicle->getBolFileName());
-
-                        $entityManager->getRepository(DemandeFile::class)->add(
-                            $file,
-                            'bol',
-                            $vehicle,
-                            'vehicle'
-                        );
-
-                        $vehicle->setBolFileName(
-                            $file->getLink()
-                        );
-                    }
-
+//                try {
                     $vehicle->setUser($this->getUser());
                     $entityManager->persist($vehicle);
+
+                    if ($bol) {
+                        $this->uploader->upload($bol, 'bol', $vehicle, 'vehicle', $edit);
+                    }
+
                     $entityManager->flush();
 
                     if ($edit) {
@@ -148,9 +138,9 @@ class VehicleController extends AbstractController
 
                     //Une fois le véhicule enregistré, on passe à l'étape 3 du formulaire d'enlèvement
                     return $removalController->newSaver($request, $vehicle);
-                }catch (\Exception $e) {
-                    dd($e->getMessage());
-                }
+//                }catch (\Exception $e) {
+//                    dd($e->getMessage());
+//                }
             }
             $form->get('bol')->addError(new FormError('Veuillez téléverser le connaissement du véhicule'));
 //            return $this->redirectToRoute('vehicle_index');

@@ -47,18 +47,11 @@ class RemoverController extends AbstractController
             /** @var UploadedFile $cin */
             $cin = $form->get('cinName')->getData();
 
-            if ($cin) {
-                $file = $uploader->upload($cin, 'cin');
-                $remover->setCinFileName(
-                    $file->getLink()
-                );
-                $remover->setAgent($this->getUser());
+            $remover->setAgent($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($remover);
 
-                $entityManager = $this->getDoctrine()->getManager();
-
-                $entityManager->persist($remover);
-
-                $entityManager->flush();
+            if ($cin && $uploader->upload($cin, 'cin', $remover, 'remover')) {
 
                 $message = 'Enleveur enregistré avec succès';
 
@@ -137,9 +130,7 @@ class RemoverController extends AbstractController
 
             if ($cin) {
                 try{
-                    $remover->setCinFileName(
-                        $uploader->upload($cin, 'cin', true, $remover->getCinFileName())->getLink()
-                    );
+                    $uploader->upload($cin, 'cin', $remover, 'remover', true);
                 }catch (\Exception $e) {
                     dump($e->getMessage()); die();
                 }
