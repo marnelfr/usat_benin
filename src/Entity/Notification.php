@@ -49,6 +49,27 @@ class Notification
      */
     private $creator;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAlreadyRead;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->isAlreadyRead = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +143,42 @@ class Notification
     public function setCreator(?User $creator): self
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getIsAlreadyRead(): ?bool
+    {
+        return $this->isAlreadyRead;
+    }
+
+    public function setIsAlreadyRead(bool $isAlreadyRead): self
+    {
+        $this->isAlreadyRead = $isAlreadyRead;
 
         return $this;
     }

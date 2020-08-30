@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DemandeFile;
 use App\Entity\File;
+use App\Entity\Notification;
 use App\Entity\Removal;
 use App\Entity\Vehicle;
 use App\Form\RemovalType;
@@ -297,12 +298,15 @@ class RemovalController extends AbstractController
             /** @var UploadedFile $receipt */
             $receipt = $form->get('receipt')->getData();
 
-            $demandes = [];
             foreach (['bfu' => $bfu, 'entry' => $entry, 'receipt' => $receipt] as $key => $uploadedFile) {
                 if ($uploadedFile) {
                     $this->uploader->upload($uploadedFile, $key, $removal, 'removal', true);
                 }
             }
+            $removal->setStatus('waiting');
+            $removal->setCreatedAt(new \DateTime());
+            // TODO: si l'enlevement a été éditer sans que la personne ne clique sur la notification, on la marque quand même comme lu
+//            $objectManager->getRepository(Notification::class)->find
 
             $objectManager->flush();
 

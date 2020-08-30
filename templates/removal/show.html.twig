@@ -34,8 +34,8 @@
                 </div>
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   {{ include('removal/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
-                  {% if removal.status != 'waiting' %}
-                      <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
+                  {% if removal.status != 'waiting' and removal.status != 'rejected' %}
+                      <button disabled title="Seulement les demandes en attentes ou rejetées peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
                   {% else %}
                       <a class="btn btn-primary float-right" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
                   {% endif %}

@@ -3,6 +3,7 @@
 namespace App\Controller\Actors;
 
 use App\Entity\DemandeFile;
+use App\Entity\Notification;
 use App\Entity\Processing;
 use App\Entity\Removal;
 use App\Entity\Transfer;
@@ -170,6 +171,8 @@ class StaffTransferController extends AbstractController
 
                 $transfer->setStatus('finalized');
 
+                $entityManager->getRepository(Notification::class)->transferNotif($transfer);
+
                 $entityManager->flush();
                 return new JsonResponse([
                     'typeMessage' => 'success'
@@ -244,13 +247,17 @@ class StaffTransferController extends AbstractController
             $processing->setReason($form->get('reason')->getData());
             $processing->setVerdict(0);
 
+            $entityManager = $this->getDoctrine()->getManager();
+
             $transfer->setStatus('rejected');
+
+            $entityManager->getRepository(Notification::class)->transferNotif($transfer);
 
             // TODO: Envoie un email au demandeur
 
             $this->addFlash('success', 'Demande rejetée avec succès');
 
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('staff_transfer_index');
         }
 

@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\Processing;
+use App\Entity\Removal;
+use App\Entity\Transfer;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Notification|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +19,58 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Notification::class);
+        $this->security = $security;
+    }
+
+    public function transferNotif(Transfer $transfer) {
+        return $this->add($transfer->getProcessing(), $transfer);
+    }
+
+    public function removalNotif(Removal $removal) {
+        return $this->add($removal->getProcessing(), null, $removal);
+    }
+
+    public function add(Processing $processing, ?Transfer $transfer = null, ?Removal $removal = null) {
+        try {
+            $notif = new Notification();
+            $content = 'Votre demande ';
+            if ($transfer) {
+                $content .= 'de transfert du véhicule de châssis ' . $transfer->getVehicle()->getChassis() . ' a été ';
+                $notif->setTransfer($transfer);
+                $notif->setUser($transfer->getManager());
+            }
+            if ($removal) {
+                $content .= 'd\'enlèvement du véhicule de châssis ' . $removal->getVehicle()->getChassis() . ' a été ';
+                $notif->setRemoval($removal);
+                $notif->setUser($removal->getAgent());
+            }
+            if ($processing->getVerdict()) {
+                $content .= 'approuvée';
+                $notif->setType('success');
+                $notif->setTitle('Demande acceptée');
+            } else {
+                $content .= 'rejetée <br><b><u>Raison</u>: ' . $processing->getReason() . '</b>';
+                $notif->setType('danger');
+                $notif->setTitle('Demande rejetée');
+            }
+            $notif->setContent($content);
+            $notif->setCreator($this->security->getUser());
+
+            $this->_em->persist($notif);
+
+            return true;
+        }catch (\Exception $e) {
+            return false;
+        }
+
     }
 
     // /**

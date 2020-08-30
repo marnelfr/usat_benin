@@ -1,0 +1,31 @@
+{#Notifications Dropdown Menu#}
+<li class="nav-item dropdown">
+  <a class="nav-link" data-toggle="dropdown" href="#">
+    <i class="far fa-bell"></i>
+    <span class="badge badge-{{ total > 0 ? 'warning' : 'info' }} navbar-badge">{{ total }}</span>
+  </a>
+  <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+    {% for notification in notifications %}
+      <a href="{{ path('notification_show', {id: notification.id}) }}" class="dropdown-item">
+        <div class="media">
+          <div class="media-body">
+            <h3 class="dropdown-item-title text-{{ notification.type }}">
+              {{ notification.title }}
+              <span class="float-right text-sm"><i class="fas fa-star"></i></span>
+            </h3>
+            <p class="text-sm">
+              {{ notification.content|raw }}
+            </p>
+            {% set totalHeure=notification.createdAt|date('d/m/Y à H:m:s') %}
+            <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Reçu le {{ totalHeure }}</p>
+          </div>
+        </div>
+      </a>
+
+      <div class="dropdown-divider"></div>
+    {% endfor %}
+
+    <a href="#" class="dropdown-item dropdown-footer">Voir tous les traitements</a>
+  </div>
+</li>
