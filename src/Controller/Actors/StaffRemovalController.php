@@ -2,6 +2,7 @@
 
 namespace App\Controller\Actors;
 
+use App\Entity\Notification;
 use App\Entity\Processing;
 use App\Entity\Removal;
 use App\Entity\User;
@@ -33,7 +34,7 @@ class StaffRemovalController extends AbstractController
      *
      * @return Response
      */
-    public function removal_treatment(Request $request, Removal $removal): Response
+    public function treatment(Request $request, Removal $removal): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -98,7 +99,7 @@ class StaffRemovalController extends AbstractController
      *
      * @Route("/staff/removal/finalized", options={"expose"=true}, name="staff_removal_finalized", methods={"GET"})
      */
-    public function removal_finalized(): Response
+    public function finalized(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -116,7 +117,7 @@ class StaffRemovalController extends AbstractController
      * @param Request  $request
      * @param Removal $removal
      */
-    public function reject_removal(Request $request, Removal $removal) {
+    public function reject(Request $request, Removal $removal) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $form = $this->createFormBuilder()
@@ -135,12 +136,13 @@ class StaffRemovalController extends AbstractController
             $processing = $removal->getProcessing();
             $processing->setReason($form->get('reason')->getData());
             $processing->setVerdict(0);
-
+            $entityManager = $this->getDoctrine()->getManager();
             $removal->setStatus('rejected');
+            $entityManager->getRepository(Notification::class)->removalNotif($removal);
 
             // TODO: Envoie un email au demandeur
 
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'Demande rejetée avec succès');
             return $this->redirectToRoute('staff_removal_index');
         }
@@ -170,12 +172,17 @@ class StaffRemovalController extends AbstractController
 
         $removal->setStatus('finalized');
         $removal->getProcessing()->setVerdict(1);
-        $this->getDoctrine()->getManager()->flush();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->getRepository(Notification::class)->removalNotif($removal);
+
+        $entityManager->flush();
 
         $this->addFlash('success', 'Demande approuvée avec succès');
 
         $html = $this->renderView('actors/staff/removal/print.approval.html.twig', array(
-            'ref' => 'TR' . str_pad($removal->getId(), 10, "0", STR_PAD_LEFT),
+            'ref' => 'EN' . str_pad($removal->getId(), 10, "0", STR_PAD_LEFT),
             'removal' => $removal
         ));
         $cookie = Cookie::create('downloaded')

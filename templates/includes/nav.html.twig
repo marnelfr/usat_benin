@@ -28,7 +28,7 @@
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
 
-    {% include 'includes/nav_notification.html.twig' %}
+    {{ render(controller('App\\Controller\\NotificationController::index')) }}
 
     {% include 'includes/nav_user.html.twig' %}
 

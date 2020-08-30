@@ -203,6 +203,7 @@ class TransferController extends AbstractController
             }
 
             $transfer->setStatus('waiting');
+            $transfer->setCreatedAt(new \DateTime());
             $transfer->setVehicle($vehicle);
             $em->persist($transfer);
             $em->flush();
