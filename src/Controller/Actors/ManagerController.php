@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Le controlleur des actions spécifiques des manager.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
- * @IsGranted("ROLE_MANAGER")
  */
 class ManagerController extends AbstractController
 {
@@ -28,6 +27,13 @@ class ManagerController extends AbstractController
      */
     public function index(EntityManagerInterface $em)
     {
+
+
+
+
+
+
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $transfertRepo = $em->getRepository(Transfer::class);

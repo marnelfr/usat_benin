@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Condition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,22 @@ class ConditionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Condition::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function last() {
+        try {
+            return $this->_em->createQuery(
+                "select c
+                from App\Entity\Condition c
+                order by c.id desc"
+            )->setMaxResults(1)
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return false;
+        }
     }
 
     // /**

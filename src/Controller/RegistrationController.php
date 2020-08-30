@@ -137,17 +137,20 @@ class RegistrationController extends AbstractController
         }
 
         $user = $this->getUser();
+        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        $this->addFlash('emailVerifySuccessfully', 'Votre adresse email a été vérifié avec succès');
+
         if ($user->getProfil()->getSlug() === 'manager') {
             $user->setRoles(['ROLE_MANAGER']);
             $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('actors_manager_dashboard');
         }
         if ($user->getProfil()->getSlug() === 'agent') {
             $user->setRoles(['ROLE_AGENT']);
             $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('actors_agent_dashboard');
         }
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Votre adresse email a été vérifié avec succès');
 
-        return $this->redirectToRoute('security_check_user_profil');
+        return $this->redirectToRoute('home_page');
     }
 }

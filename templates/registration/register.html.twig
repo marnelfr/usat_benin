@@ -5,6 +5,7 @@
 {% block body %}
   <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
     <h1 class="text-center">Inscription</h1>
+
     {% for flashError in app.flashes('verify_email_error') %}
       <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
@@ -67,7 +68,7 @@
           </button>
         </div>
         <div class="col-sm-6 d-inline text-right">
-          <button class="btn btn-success" type="submit">
+          <button id="btn-registration" class="btn btn-success" type="submit">
             <i class="fas fa-plus-circle"></i> S'enregistrer
           </button>
           {#{{ form_row(registrationForm.save) }}#}
