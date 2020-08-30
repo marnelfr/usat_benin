@@ -5,9 +5,11 @@ namespace App\Controller\Actors;
 use App\Entity\Removal;
 use App\Entity\Remover;
 use App\Entity\Vehicle;
+use App\Service\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Le controlleur des actions spécifiques des agents.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
- * @IsGranted("ROLE_AGENT")
  */
 class AgentController extends AbstractController
 {
@@ -23,10 +24,20 @@ class AgentController extends AbstractController
      * Le tableau de bord des agents de la plateforme
      *
      * @Route("/actors/agent", name="actors_agent_dashboard")
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param UserAuthenticator      $authenticator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(EntityManagerInterface $em)
+    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $emailVerifySuccessfully = $request->getSession()->getFlashBag()->get('emailVerifySuccessfully');
+        if (isset($emailVerifySuccessfully[0])) {
+            $authenticator->auth($emailVerifySuccessfully[0], $request);
+        }
+
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $removalRepo = $em->getRepository(Removal::class);
 

@@ -134,6 +134,16 @@ class User implements UserInterface, \Serializable
      */
     private $importers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="user")
+     */
+    private $notifications;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="creator")
+     */
+    private $createdNotifications;
+
 
 
 
@@ -146,6 +156,8 @@ class User implements UserInterface, \Serializable
         $this->fleets = new ArrayCollection();
         $this->vehicles = new ArrayCollection();
         $this->importers = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+        $this->createdNotifications = new ArrayCollection();
     }
 
 
@@ -519,6 +531,68 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($importer->getUser() === $this) {
                 $importer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getCreatedNotifications(): Collection
+    {
+        return $this->createdNotifications;
+    }
+
+    public function addCreatedNotification(Notification $createdNotification): self
+    {
+        if (!$this->createdNotifications->contains($createdNotification)) {
+            $this->createdNotifications[] = $createdNotification;
+            $createdNotification->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedNotification(Notification $createdNotification): self
+    {
+        if ($this->createdNotifications->contains($createdNotification)) {
+            $this->createdNotifications->removeElement($createdNotification);
+            // set the owning side to null (unless already changed)
+            if ($createdNotification->getCreator() === $this) {
+                $createdNotification->setCreator(null);
             }
         }
 

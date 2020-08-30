@@ -56,6 +56,11 @@ class Transfer
      */
     private $vehicle;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="transfer")
+     */
+    private $notifications;
+
     public function __construct()
     {
         $this->status = 'waiting';
@@ -63,6 +68,7 @@ class Transfer
         $this->createdAt = new \DateTime();
         $this->demandeFiles = new ArrayCollection();
         $this->processings = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +225,37 @@ class Transfer
     public function setVehicle(Vehicle $vehicle): self
     {
         $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setTransfer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getTransfer() === $this) {
+                $notification->setTransfer(null);
+            }
+        }
 
         return $this;
     }

@@ -4,9 +4,10 @@ namespace App\Controller\Actors;
 
 use App\Entity\Importer;
 use App\Entity\Transfer;
+use App\Service\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,20 +22,21 @@ class ManagerController extends AbstractController
      * Le tableau de bord des managers de la plateforme
      *
      * @Route("/actors/manager", name="actors_manager_dashboard")
+     * @param Request                $request
      * @param EntityManagerInterface $em
+     *
+     * @param UserAuthenticator      $authenticator
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(EntityManagerInterface $em)
+    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator)
     {
+        $emailVerifySuccessfully = $request->getSession()->getFlashBag()->get('emailVerifySuccessfully');
+        if (isset($emailVerifySuccessfully[0])) {
+            $authenticator->auth($emailVerifySuccessfully[0], $request);
+        }
 
-
-
-
-
-
-
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $transfertRepo = $em->getRepository(Transfer::class);
 
