@@ -1,11 +1,75 @@
-<h1>Hi! Please confirm your email!</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Bienvenu à USAT-BENIN</title>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Alegreya Sans' rel='stylesheet'>
+</head>
 
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAt|date('d/m/Y') }} hour(s).
-</p>
+<body >
+<style type="text/css">
+    body {
+        font-family: 'Alegreya Sans';
+        font-size: 22px;
+    }
+    @media only screen and (max-width: 480px) {
+        img{
+            width: 190px !important;
+        }
+    }
+    .btn{}
+    .btn-outline-success{}
+</style>
+<div style="text-align:center;width: 90%;margin:auto;">
+    <div style="display:block;">
+        <div style="background-image: url('https://pixnio.com/free-images/2017/05/22/2017-05-22-07-32-26-900x506.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+            <div style="text-align: center;
+        background-color: #ffffff;
+        width: inherit;  border: 1px solid #183d81">
+                <div style="display: inline-block;">
+                    <img style="width:250px;padding:15px;" src="{{ absolute_url(asset('img/email/usat_logo.png')) }}" alt="Logo USAT-BENIN">
+                </div>
+            </div>
+            <br>
+            <div style=" padding: 70px 30px; text-align: center; color: #000">
+                <h2 style="color: #af6130; font-weight: bolder;">
+                    Bonjour {{ user.fullname|title }}
+                </h2>
+                <p style="color: #000;font-size:15px;">
+                    Merci pour votre inscription. Veuillez confirmer votre e-mail s'il vous plait.
+                </p>
 
-<p>
-    Cheers!
-</p>
+                <a class="btn btn-outline-success"
+                   style="display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-color:transparent;border:1px solid transparent;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius:.25rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;color:#28a745;border-color:#28a745;text-decoration: none"
+                   href="{{ signedUrl|raw }}">Comfirmer votre E-mail</a>
+
+                <p style="color: #000;font-size:15px;">
+                    Ce lien espire dans {{ expiresAt|date('g') }} heures.
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; font-size: 19px; border: 1px solid #898b8e; padding: 70px 50px;color: #605e5e;">
+            Ce mail vous a été envoyé enfin de s'assurer que vous vraiment accès à l'adrèsse e-mail fournir à l'inscription.
+            Ceci est important parce que des messages important vous seront communiqués par son intermédiaire.
+            <hr>
+            <p style="color: #000;font-size:11px;">
+                Remarque : Vous recevez ce mail parce que vous vous êtes inscrit sur le site de <a href="#">USAT-BENIN</a>.
+                Nul besoin d'y répondre.
+            </p>
+        </div>
+        <div style="background-color: #14346c; padding: 30px; color: #75a0ab; font-size: 17px; text-align: center;">
+            <div>
+                <div style="font-size:12px">
+                  {{ "now"|date("Y") }} &copy; <a href="#" style="color: #1ec1b8;">NelDev Conception</a> | <span style="color:#44666f;font-weight:bold;text-decoration:none;"> Tel: +229-97-40-36-27 </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

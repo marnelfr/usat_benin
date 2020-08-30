@@ -16,6 +16,11 @@
       })
     </script>
   {% endif %}
+  {% for message in app.session.flashbag.get('emailVerifySuccessfully') %}
+    <script type="application/javascript">
+      alert('{{ message|raw }}')
+    </script>
+  {% endfor %}
   {% if onTheVerificationWay %}
     <script type="application/javascript">
       document.addEventListener('DOMContentLoaded', function () {

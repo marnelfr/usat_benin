@@ -1,4 +1,5 @@
 import Modal from '../import/modal'
+import Button from '../import/button'
 
 $(function () {
   // TODO: Faire les controlles par rapport aux champs renseigner et tout avant de permettre le changement de page
@@ -25,15 +26,31 @@ $(function () {
   )
   label.find('a').on('click', function (e) {
     e.preventDefault()
-    const modal = new Modal()
-    modal.setContent(`
-    
-    `)
-    modal.show(function () {
-      $('#condition-btn').on('click', function () {
-        modal.hide()
+    const btn = $(this)
+    btn.html(`les conditions d'utilisation <i class="spinner-border spinner-border-sm"></i>`)
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        $.get(Routing.generate('condition_show')).then(function (data) {
+          if (data.typeMessage) {
+            const modal = new Modal()
+            modal.setContent(data.view)
+            modal.show(function () {
+              $('#close-condition').on('click', function () {
+                modal.hide()
+              })
+            })
+          }else{
+            alert('Erreur de chargement...')
+          }
+        }).always(function () {
+          btn.text('les conditions d\'utilisation')
+        })
       })
     })
   })
+
+  const register = new Button('#btn-registration')
+  register.loadOnClick(true)
 
 })
