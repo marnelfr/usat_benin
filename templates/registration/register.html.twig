@@ -37,8 +37,6 @@
         </div>
       </div>
 
-      {{ form_row(registrationForm.plainPassword) }}
-
       <div class="row">
         <div class="col-sm-12 d-inline text-right">
           <button id="register_next" class="btn btn-primary" type="button">
@@ -51,14 +49,18 @@
     <div id="register_last_page" style="display: none;">
       {{ form_row(registrationForm.address) }}
       {{ form_row(registrationForm.compagny) }}
-      {{ form_row(registrationForm.ifu) }}
-      {{ form_row(registrationForm.registerNum) }}
+      {#{{ form_row(registrationForm.ifu) }}#}
+      {#{{ form_row(registrationForm.registerNum) }}#}
       {{ form_row(registrationForm.fleet) }}
+      {{ form_row(registrationForm.plainPassword) }}
+      {{ form_row(registrationForm.agreeTerms) }}
+{#
       <div class="form-group">
         <div class="form-check">
           {{ form_widget(registrationForm.agreeTerms) }}
         </div>
       </div>
+#}
 
 
       <div class="row">
