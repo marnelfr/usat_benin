@@ -80,8 +80,8 @@ class RegistrationController extends AbstractController
                 ->setProfil($user->getProfil())
                 ->setUsername($user->getUsername())
                 ->setCompagny($data['compagny'])
-                ->setIfu($data['ifu'])
-                ->setRegisterNum($data['registerNum'])
+//                ->setIfu($data['ifu'])
+//                ->setRegisterNum($data['registerNum'])
             ;
 
             // encode the plain password
@@ -106,7 +106,6 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 //            $request->getSession()->getFlashBag()->add('registration', true);
-            dd('okkookkookoko');
             $this->addFlash('registration', true);
 
             return $this->redirectToRoute('home_page');

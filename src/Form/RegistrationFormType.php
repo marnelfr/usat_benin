@@ -29,7 +29,12 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'Identifiant'
+                'label' => 'Identifiant',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Vous devez renseigner un identifiant'
+                    ])
+                ]
             ])
             ->add('name', TextType::class, [
                 'label' => 'Prénom'
@@ -88,7 +93,7 @@ class RegistrationFormType extends AbstractType
             ])->add('compagny', TextType::class, [
                 'mapped' => false,
                 'label' => 'Compagnie'
-            ])->add('ifu', TextType::class, [
+            ])/*->add('ifu', TextType::class, [
                 'mapped' => false,
                 'label' => 'N° IFU'
             ])->add('registerNum', TextType::class, [
@@ -97,7 +102,7 @@ class RegistrationFormType extends AbstractType
             ])->add('fleet', null, [
                 'mapped' => false,
                 'label' => 'Parc'
-            ])
+            ])*/
             ->add('fleet', EntityType::class, [
                 'mapped' => false,
                 'label' => 'Parc',
