@@ -25,7 +25,9 @@
 </style>
 <div style="text-align:center;width: 90%;margin:auto;">
     <div style="display:block;">
-        <div style="background-image: url('https://pixnio.com/free-images/2017/05/22/2017-05-22-07-32-26-900x506.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://pixnio.com/free-images/2017/05/22/2017-05-22-07-32-26-900x506.jpg');
+        background-repeat: no-repeat;
+        background-size: cover; background-position: center;">
             <div style="text-align: center;
         background-color: #ffffff;
         width: inherit;  border: 1px solid #183d81">
@@ -34,20 +36,19 @@
                 </div>
             </div>
             <br>
-            <div style=" padding: 70px 30px; text-align: center; color: #000">
-                <h2 style="color: #af6130; font-weight: bolder;">
+            <div style=" padding: 70px 30px; text-align: center; color: #FFF">
+                <h2 style="color: #FFF; font-weight: bolder;">
                     Bonjour {{ user.fullname|title }}
                 </h2>
-                <p style="color: #000;font-size:15px;">
+                <p style="color: #FFF;font-size:15px;">
                     Merci pour votre inscription. Veuillez confirmer votre e-mail s'il vous plait.
                 </p>
 
-                <a class="btn btn-outline-success"
-                   style="display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-color:transparent;border:1px solid transparent;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius:.25rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;color:#28a745;border-color:#28a745;text-decoration: none"
-                   href="{{ signedUrl|raw }}">Comfirmer votre E-mail</a>
+                <a style="display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-color:transparent;border:1px solid transparent;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius:.25rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;color: #fff; background-color: #ff9800d1; border-color: #ff9800d1; text-decoration: none"
+                   href="{{ signedUrl|raw }}">Comfirmer mon email</a>
 
-                <p style="color: #000;font-size:15px;">
-                    Ce lien espire dans {{ expiresAt|date('g') }} heures.
+                <p style="color: #FFF;font-size:15px;">
+                    Ceci n'est valable que pour {{ expiresAt|date('g') }} heures.
                 </p>
             </div>
         </div>

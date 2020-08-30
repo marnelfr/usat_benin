@@ -106,6 +106,7 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 //            $request->getSession()->getFlashBag()->add('registration', true);
+            dd('okkookkookoko');
             $this->addFlash('registration', true);
 
             return $this->redirectToRoute('home_page');
@@ -137,8 +138,10 @@ class RegistrationController extends AbstractController
         }
 
         $user = $this->getUser();
+
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('emailVerifySuccessfully', 'Votre adresse email a été vérifié avec succès');
+        $this->addFlash('emailVerifySuccessfully', $user->getId());
+        $this->addFlash('success', 'Votre adresse email a été vérifié avec succès');
 
         if ($user->getProfil()->getSlug() === 'manager') {
             $user->setRoles(['ROLE_MANAGER']);
