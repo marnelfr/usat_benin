@@ -33,7 +33,8 @@
           <table class="table">
             <thead>
             <tr>
-              <th>&ensp;Véhicule</th>
+              <th>&ensp;Demandeur</th>
+              <th class="text-center">Véhicule</th>
               <th class="text-center">Date de demande</th>
               <th class="text-center">Status</th>
               <th class="text-right">Actions&ensp;</th>
@@ -42,8 +43,9 @@
             <tbody>
             {% for transfer in transfers %}
               <tr>
-                <td>{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
-                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d/m/Y') ~ ' à ' ~ transfer.createdAt|date('H:i:s') : '' }}</td>
+                <td>{{ transfer.manager.fleet.name }}</td>
+                <td class="text-center">{{ transfer.vehicle.brand.name ~ ' - ' ~ transfer.vehicle.chassis }}</td>
+                <td class="text-center">{{ transfer.createdAt ? transfer.createdAt|date('d/m/Y à H:i:s') : '' }}</td>
                 <td class="text-center">{{ transfer.state|raw }}</td>
                 <td class="text-right">
                   {% if btnLabel == 'Finaliser' %}
@@ -70,7 +72,8 @@
             </tbody>
             <thead>
             <tr>
-              <th>&ensp;Véhicule</th>
+              <th>&ensp;Demandeur</th>
+              <th class="text-center">Véhicule</th>
               <th class="text-center">Date de demande</th>
               <th class="text-center">Status</th>
               <th class="text-right">Actions&ensp;</th>

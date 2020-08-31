@@ -11,11 +11,14 @@
 {% endblock %}
 
 {% block page_content %}
+  {#Search est definit si on vient ici à parti d'une recherche#}
+  {% if search is not defined %}
     <div class="row pb-3">
-        <div class="col-12 col-sm-12 col-md-12">
-            <a class="btn btn-default" href="{{ path('transfer_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
-        </div>
+      <div class="col-12 col-sm-12 col-md-12">
+        <a class="btn btn-default" href="{{ path('transfer_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
+      </div>
     </div>
+  {% endif %}
 
     <div class="card">
         <div class="card-header">
@@ -30,11 +33,18 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+
+
                     {% include 'transfer/show_table.html.twig' %}
+
+
                 </div>
+              {% if search is not defined %}
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   {% if transfer.status != 'finalized' %}
+
                     {{ include('transfer/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
+
                     {% if transfer.status != 'waiting' and transfer.status != 'rejected' %}
                       <button disabled title="Seulement les demandes en attentes peuvent être modifiées" class="btn btn-primary float-right"><i class="fas fa-edit"></i> Modifier la demande</button>
                     {% else %}
@@ -42,6 +52,7 @@
                     {% endif %}
                   {% endif %}
                 </div>
+              {% endif %}
             </div>
         </div>
       {#<div class="card-footer">

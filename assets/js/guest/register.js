@@ -58,7 +58,7 @@ $(function () {
     })
   })
 
-  const register = new Button('#btn-registration')
-  register.loadOnClick(true)
+  // const register = new Button('#btn-registration')
+  // register.loadOnClick(true)
 
 })

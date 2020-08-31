@@ -87,6 +87,17 @@ class Removal
      */
     private $notifications;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Fleet::class, inversedBy="removals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $fleet;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reference;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -345,6 +356,30 @@ class Removal
                 $notification->setRemoval(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFleet(): ?Fleet
+    {
+        return $this->fleet;
+    }
+
+    public function setFleet(?Fleet $fleet): self
+    {
+        $this->fleet = $fleet;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

@@ -50,9 +50,15 @@ class Fleet
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Removal::class, mappedBy="fleet")
+     */
+    private $removals;
+
     public function __construct()
     {
         $this->managers = new ArrayCollection();
+        $this->removals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,5 +160,36 @@ class Fleet
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|Removal[]
+     */
+    public function getRemovals(): Collection
+    {
+        return $this->removals;
+    }
+
+    public function addRemoval(Removal $removal): self
+    {
+        if (!$this->removals->contains($removal)) {
+            $this->removals[] = $removal;
+            $removal->setFleet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemoval(Removal $removal): self
+    {
+        if ($this->removals->contains($removal)) {
+            $this->removals->removeElement($removal);
+            // set the owning side to null (unless already changed)
+            if ($removal->getFleet() === $this) {
+                $removal->setFleet(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -47,6 +47,7 @@ class AgentController extends AbstractController
         $remover = count($em->getRepository(Remover::class)->findBy(['agent' => $this->getUser(), 'deleted'=> 0]));
 
         $listTreatment = $removalRepo->getLastTwinty();
+//        dd($listTreatment);
 
         return $this->render('actors/agent/index.html.twig', compact(
             'finalized', 'waiting', 'vehicle', 'remover', 'listTreatment'

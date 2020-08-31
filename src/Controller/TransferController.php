@@ -8,6 +8,7 @@ use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\TransferRepository;
 use App\Service\FileUploader;
+use App\Service\RefGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -95,7 +96,7 @@ class TransferController extends AbstractController
     /**
      * @Route("/new", name="transfer_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileUploader $uploader): Response
+    public function new(Request $request, FileUploader $uploader, RefGenerator $generator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -125,6 +126,7 @@ class TransferController extends AbstractController
 
                     $transfer->setVehicle($vehicle);
                     $transfer->setManager($this->getUser());
+                    $transfer->setReference($generator->generate());
                     $entityManager->persist($transfer);
 
                     $entityManager->flush();

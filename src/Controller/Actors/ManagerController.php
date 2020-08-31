@@ -46,6 +46,7 @@ class ManagerController extends AbstractController
         $importer = count($em->getRepository(Importer::class)->findBy(['user' => $this->getUser(), 'deleted'=> 0]));
 
         $listTreatment = $transfertRepo->getLastTwinty();
+//        dd($listTreatment);
 
         return $this->render('actors/manager/index.html.twig', compact(
             'finalized', 'waiting', 'rejected', 'importer', 'listTreatment'

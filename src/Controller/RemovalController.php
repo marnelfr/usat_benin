@@ -11,6 +11,7 @@ use App\Form\RemovalType;
 use App\Repository\RemovalRepository;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
+use App\Service\RefGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -196,7 +197,7 @@ class RemovalController extends AbstractController
      *
      * @return Response
      */
-    public function newSaver(Request $request, Vehicle $vehicle): Response
+    public function newSaver(Request $request, Vehicle $vehicle, RefGenerator $generator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -227,7 +228,9 @@ class RemovalController extends AbstractController
                 }
 
                 $removal->setStatus('waiting')
-                    ->setAgent($this->getUser());
+                    ->setAgent($this->getUser())
+                    ->setReference($generator->generate('removal'))
+                ;
                 $entityManager->persist($removal);
 
                 $fileNotSent = false;

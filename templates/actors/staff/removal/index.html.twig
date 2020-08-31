@@ -34,6 +34,7 @@
             <thead>
             <tr>
               <th>&ensp;Véhicule</th>
+              <th class="text-center">Parc de sortie</th>
               <th class="text-center">Date de demande</th>
               <th class="text-center">Status</th>
               <th class="text-right">Actions&ensp;</th>
@@ -43,7 +44,8 @@
             {% for removal in removals %}
               <tr>
                 <td>{{ removal.vehicle.brand.name ~ ' - ' ~ removal.vehicle.chassis }}</td>
-                <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d/m/Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}</td>
+                <td class="text-center">{{ removal.fleet.name }}</td>
+                <td class="text-center">{{ removal.createdAt ? removal.createdAt|date('d/m/Y à H:i:s') : '' }}</td>
                 <td class="text-center">{{ removal.status == 'finalized' ? removal.state|raw : removal.state }}</td>
                 <td class="text-right">
                   {% if removal.status == 'finalized' %}
@@ -67,6 +69,7 @@
             <thead>
             <tr>
               <th>&ensp;Véhicule</th>
+              <th class="text-center">Parc de sortie</th>
               <th class="text-center">Date de demande</th>
               <th class="text-center">Status</th>
               <th class="text-right">Actions&ensp;</th>
