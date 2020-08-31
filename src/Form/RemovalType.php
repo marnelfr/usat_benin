@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Fleet;
 use App\Entity\Removal;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -51,6 +53,12 @@ class RemovalType extends AbstractType
                 'placeholder' => 'Sélectionnez une banque'
             ])
             ->add('receipt', FileType::class, $this->getFileOption('Reçu de banque scanné'))
+            ->add('fleet', EntityType::class, [
+                'label' => 'Parc',
+                'required' => true,
+                'class' => Fleet::class,
+                'placeholder' => 'Sélectionnez le parc du véhicule'
+            ])
         ;
     }
 

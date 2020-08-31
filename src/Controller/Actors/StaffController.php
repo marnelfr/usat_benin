@@ -32,6 +32,9 @@ class StaffController extends AbstractController
      * Le tableau de bord du personnel de USAT de la plateforme
      *
      * @Route("/actors/staff", name="actors_staff_dashboard")
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
      */
     public function index(EntityManagerInterface $em)
     {

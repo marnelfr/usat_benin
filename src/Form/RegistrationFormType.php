@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class RegistrationFormType extends AbstractType
 {
@@ -32,6 +33,9 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Identifiant',
                 'constraints' => [
                     new NotBlank([
+                        'message' => 'Vous devez renseigner un identifiant'
+                    ]),
+                    new NotNull([
                         'message' => 'Vous devez renseigner un identifiant'
                     ])
                 ]

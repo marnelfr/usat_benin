@@ -3,45 +3,43 @@
     +personnaliser la liste des vehicules
     +personnaliser la modification des importateurs
     +la liste des importateurs n'est pas personnelle
-    même les véhicules qui n'ont pas été transferer peuvent faire l'object d'enlevement
+    +même les véhicules qui n'ont pas été transferer peuvent faire l'object d'enlevement
     +marque + chassis = unique pour les vehicules
-    verifier l'existance des vehicules au niveau des commisionnaire
-    revoir la première connexion après l'incription. ça pose un problème bizarre là
-    usat pourra virsualiser la demande,
-      approuver la demande (pourra faire imprimer la fiche, pourra joindre le document de l'assurance apèrs le traitement [les demandeurs peuvent voir le document]),
-      rejeter la demande (donner la raison du rejet)
-    les importateurs sont des personnes morales
-    Tous les chasis ont 17 chiffres obligatoirement.
-    mettre les consignataires sous la forme de select.
+    +verifier l'existance des vehicules au niveau des commisionnaire
+    +revoir la première connexion après l'incription. ça pose un problème bizarre là
+    +usat pourra virsualiser la demande,
+      +approuver la demande (pourra faire imprimer la fiche, pourra joindre le document de l'assurance apèrs le traitement [les demandeurs peuvent voir le document]),
+      +rejeter la demande (donner la raison du rejet)
+    +les importateurs sont des personnes morales
+    +Tous les chasis ont 17 chiffres obligatoirement.
+    +Ne pas afficher celui qui à traiter la demande aux demandeur mais au personnel de usat
+    +les status: en attente, en cours de traitement, traité, rejeté
     Donc mettre en place une nouvelle table pour les stocker
-    Ne pas afficher celui qui à traiter la demande aux demandeur mais au personnel de usat
-    les status: en attente, en cours de traitement, traité, rejeté
+    mettre les consignataires sous la forme de select.
     les stats de la journée, de la semaine, du mois
-
-    Format: FICH022565200
-
     permettre au gestionnair de parc de voir toutes les informations relatives à un enlèvement a parti de l'identifiant de la fiche imprimer
+    Fiche
+        Format: FICH022565200
+
 
 30/08/2020
-    enlever le numero d'enregistrement et num ifu au niveau de l'enregistrement des utilsiateurs
-    au niveau des demadnes traité sur le tableau de bord des gestionnaires, ajouter le parc
-    coder les plus d'info du personnel
-    au niveau des info de demande afficher:
-    	le demandeur qui est le parc
-    pour enlevement:
-    	le parc de sortie
+    +enlever le numero d'enregistrement et num ifu au niveau de l'enregistrement des utilsiateurs
+    +au niveau des demadnes traité sur le tableau de bord des gestionnaires, ajouter le parc
+    +coder les "plus d'info" du tableau de bord du personnel
+    +au niveau des info de demande afficher:
+    	+le demandeur qui est le parc
+    +pour enlevement:
+    	+le parc de sortie
 
     sur les fiches
     	possible d'abreger les noms si trop long
-    	transfer
-    		demandeur: le parc
-    	enlevement
-    		demandeur: la societe
+    	+enlevement
+    		+demandeur: la societe
 
-    p/c: la raison social de l'importateur
+    +p/c: la raison social de l'importateur
 
-    coder la verification des recu de demande à
-    la place de recherche google disponible pour tout le monde
+    +coder la verification des recu de demande à
+    +la place de recherche google disponible pour tout le monde
 
     Proposition de nom de domain:
         1-usatbenin-solutions.bj

@@ -7,6 +7,7 @@ use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
+use App\Service\RefGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,10 +26,15 @@ class VehicleController extends AbstractController
      * @var FileUploader
      */
     private $uploader;
+    /**
+     * @var RefGenerator
+     */
+    private $ref;
 
-    public function __construct(FileUploader $uploader)
+    public function __construct(FileUploader $uploader, RefGenerator $ref)
     {
         $this->uploader = $uploader;
+        $this->ref = $ref;
     }
 
     /**
@@ -138,7 +144,7 @@ class VehicleController extends AbstractController
                     }
 
                     //Une fois le véhicule enregistré, on passe à l'étape 3 du formulaire d'enlèvement
-                    return $removalController->newSaver($request, $vehicle);
+                    return $removalController->newSaver($request, $vehicle, $this->ref);
                 }catch (\Exception $e) {
                     dd($e->getMessage());
                 }

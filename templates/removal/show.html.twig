@@ -11,11 +11,14 @@
 {% endblock %}
 
 {% block page_content %}
+  {#Search est definit si on vient ici à parti d'une recherche#}
+  {% if search is not defined %}
     <div class="row pb-3">
         <div class="col-12 col-sm-12 col-md-12">
             <a class="btn btn-default" href="{{ path('removal_index') }}"><i class="fas fa-reply"></i> Mes Demandes en Attente</a>
         </div>
     </div>
+  {% endif %}
 
     <div class="card">
         <div class="card-header">
@@ -30,8 +33,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
+
+
                     {% include 'removal/show_table.html.twig' %}
+
+
                 </div>
+              {% if search is not defined %}
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   {{ include('removal/_delete_form.html.twig', {label: 'Annuler la demande'}) }}
                   {% if removal.status != 'waiting' and removal.status != 'rejected' %}
@@ -40,6 +48,7 @@
                       <a class="btn btn-primary float-right" href="{{ path('removal_edit', {'id': removal.id}) }}"><i class="fas fa-edit"></i> Modifier la demande</a>
                   {% endif %}
                 </div>
+              {% endif %}
             </div>
         </div>
       {#<div class="card-footer">

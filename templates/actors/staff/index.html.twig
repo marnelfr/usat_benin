@@ -12,28 +12,28 @@
         total_item: waitingTransfer,
         name_bloc: waitingTransfer > 1 ? 'Transferts en attente' : 'Transfert en attente',
         icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: '#',
+        link_more_info: path('staff_transfer_index'),
         type_bloc: 'bg-yellow'
       } %}
       {% include 'includes/dashboard_bloc.html.twig' with {
         total_item: waitingRemoval,
         name_bloc: waitingRemoval > 1 ? 'Enlèvements en attente' : 'Enlèvement en attente',
         icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: '#',
+        link_more_info: path('staff_removal_index'),
         type_bloc: 'bg-blue'
       } %}
       {% include 'includes/dashboard_bloc.html.twig' with {
         total_item: finalizedTransfer,
         name_bloc: finalizedTransfer > 1 ? 'Transferts finalisés' : 'Transfert finalisé',
         icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: '#',
+        link_more_info: path('staff_transfer_finalized'),
         type_bloc: 'bg-green'
       } %}
       {% include 'includes/dashboard_bloc.html.twig' with {
         total_item: finalizedRemoval,
         name_bloc: finalizedRemoval > 1 ? 'Enlèvements finalisés' : 'Enlèvement finalisé',
         icon_bloc: 'fas fa-tachometer-alt',
-        link_more_info: '#',
+        link_more_info: path('staff_removal_finalized'),
         type_bloc: 'bg-info'
       } %}
     </div>

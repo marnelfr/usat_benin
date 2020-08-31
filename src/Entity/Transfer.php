@@ -61,6 +61,11 @@ class Transfer
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reference;
+
     public function __construct()
     {
         $this->status = 'waiting';
@@ -256,6 +261,18 @@ class Transfer
                 $notification->setTransfer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

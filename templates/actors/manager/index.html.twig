@@ -56,7 +56,8 @@
               <table class="table">
                 <thead>
                 <tr>
-                  <th>&ensp;Demandeur</th>
+                  <th>&ensp;Parc</th>
+                  <th class="text-center">Demandeur</th>
                   <th class="text-center">Date de soumission</th>
                   <th class="text-center">Date de traitement</th>
                   <th class="text-right">Avis&ensp;&ensp;</th>
@@ -65,7 +66,8 @@
                 <tbody>
                 {% for treatment in listTreatment %}
                   <tr>
-                    <td>{{ treatment.manager.fullname }}</td>
+                    <td>{{ treatment.manager.fleet.name }}</td>
+                    <td class="text-center">{{ treatment.manager.fullname }}</td>
                     <td class="text-center">{{ treatment.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
                     <td class="text-center">{{ treatment.processing.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
                     <td class="text-right">
@@ -82,7 +84,8 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>&ensp;Demandeur</th>
+                  <th>&ensp;Parc</th>
+                  <th class="text-center">Demandeur</th>
                   <th class="text-center">Date de soumission</th>
                   <th class="text-center">Date de traitement</th>
                   <th class="text-right">Avis&ensp;&ensp;</th>

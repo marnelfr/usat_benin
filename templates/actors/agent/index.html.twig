@@ -56,7 +56,8 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>&ensp;Demandeur</th>
+                                    <th>&ensp;Parc</th>
+                                    <th class="text-center">Demandeur</th>
                                     <th class="text-center">Date de soumission</th>
                                     <th class="text-center">Date de traitement</th>
                                     <th class="text-right">Avis&ensp;&ensp;</th>
@@ -65,9 +66,10 @@
                                 <tbody>
                                 {% for treatment in listTreatment %}
                                     <tr>
-                                        <td>{{ treatment.agent.fullname }}</td>
-                                        <td class="text-center">{{ treatment.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.createdAt|date('H:m:s') }}</td>
-                                        <td class="text-center">{{ treatment.processing.createdAt|date('d/m/Y') ~ ' à ' ~ treatment.processing.createdAt|date('H:m:s') }}</td>
+                                        <td>{{ treatment.fleet.name }}</td>
+                                        <td class="text-center">{{ treatment.agent.fullname }}</td>
+                                        <td class="text-center">{{ treatment.createdAt|date('d/m/Y à H:m:s') }}</td>
+                                        <td class="text-center">{{ treatment.processing.createdAt|date('d/m/Y à H:m:s') }}</td>
                                         <td class="text-right">
                                           {% if treatment.status == 'rejected' %}
                                               <button style="width: 10em" disabled class="btn btn-outline-danger">Rejeter</button>
@@ -82,7 +84,8 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>&ensp;Demandeur</th>
+                                    <th>&ensp;Parc</th>
+                                    <th class="text-center">Demandeur</th>
                                     <th class="text-center">Date de soumission</th>
                                     <th class="text-center">Date de traitement</th>
                                     <th class="text-right">Avis&ensp;&ensp;</th>
