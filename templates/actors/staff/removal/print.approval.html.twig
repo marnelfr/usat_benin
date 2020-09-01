@@ -38,9 +38,9 @@
       </h4>
       <table class="table table-borderless">
         <tr class="text-left">
-          <td colspan="4"><b>Commissionnaire Agrée :</b> {{ removal.agent.compagny }}</td>
-          <td colspan="3"><b>Enleveur :</b> {{ removal.remover.fullname }}</td>
-          <td colspan="2"><b>Tél :</b> {{ removal.remover.phone }}</td>
+          <td colspan="4"><b>Commissionnaire Agrée :</b> {{ removal.agent.compagny[0:17] ~ '.' }}</td>
+          <td colspan="3"><b>Enleveur :</b> {{ removal.remover.fullname[0:17] ~ '.' }}</td>
+          <td colspan="2"><b>Tél :</b> {{ removal.remover.phone[0:17] ~ '.' }}</td>
         </tr>
         <tr class="text-left">
           <td colspan="2"><b>Marque :</b> {{ removal.vehicle.brand.name }}</td>
@@ -49,10 +49,10 @@
         </tr>
         <tr class="text-left"><td colspan="3"><b>Navire :</b> {{ removal.vehicle.ship.name }}</td>
           <td colspan="2"><b>Date d’arrivée :</b> {{ removal.vehicle.cameAt|date('d/m/Y') }}</td>
-          <td colspan="4"><b>Consignataire :</b> {{ removal.vehicle.consignee }}</td>
+          <td colspan="4"><b>Consignataire :</b> {{ removal.vehicle.consignee[0:17] ~ '.' }}</td>
         </tr>
-        <tr class="text-left"><td colspan="3"><b>N° BFU Réglé :</b> {{ removal.bfuNum }}</td>
-          <td colspan="4"><b>N° déclaration Douane :</b> {{ removal.entryNum }}</td>
+        <tr class="text-left"><td colspan="3"><b>N° BFU Réglé :</b> {{ removal.bfuNum[0:17] ~ '.' }}</td>
+          <td colspan="4"><b>N° déclaration Douane :</b> {{ removal.entryNum[0:17] ~ '.' }}</td>
           <td colspan="2"><b>Bank de paiement :</b> {{ removal.payBank }}</td>
         </tr>
         <tr class="text-left"><td colspan="3"><b>Date de paiement :</b> {{ removal.createdAt|date('d/m/Y') }}</td>
