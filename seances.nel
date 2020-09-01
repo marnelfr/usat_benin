@@ -49,6 +49,16 @@
 
 
 
+Please add a DNS record with the following parameters:
+Record type: TXT
+Domain name: _acme-challenge.cv.rydynyart.com
+Record: EC7FdOBcnciVVlDzKTePFDz0iRnXgxq3umnSYzJVo7Y
+
+To terminate and delete the existing certificate request, click "Cancel".
+
+
+rootcv
+3mf4hG%1
 
 
 
