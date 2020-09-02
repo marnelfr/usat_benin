@@ -2,8 +2,13 @@
   background-color: #ffffff;
 }
 
+.menu-top{
+  @media (min-width: 1200px) {
+    width: 70%;
+  }
+}
+
 .menu-top-item {
-  padding: 0.5em;
   cursor: pointer;
 }
 
@@ -36,9 +41,21 @@
   font-size: small;
 }
 
+
+
+
+
+
+
+
+
+
+
+
 .second-menu {
-  margin-top: 0.5em;
-  margin-left: 0.4em;
+  div {
+    border-radius: 5em;
+  }
 }
 
 .logo {
@@ -64,7 +81,7 @@
   padding-right: 1em;
 }
 
-.second-menu span {
+.second-menu-item {
   border: 1px solid blue;
   margin-right: 1em;
   padding: 0.2em;

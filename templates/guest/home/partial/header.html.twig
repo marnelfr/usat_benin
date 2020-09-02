@@ -1,31 +1,72 @@
-<div style="position: relative;" class="col-12 col-sm-12 col-md-12 body">
-  <div class="mb-1">
-    <div class="top-menu text-center">
-      <span class="menu-top-item btn-plus">Contact/Aide</span>|
-      <span class="menu-top-item btn-plus">Nous joindre</span>|
-      <span class="menu-top-item btn-plus">Plan du site</span>|
-      <span class="menu-top-item btn-plus">Plan d'accès</span>|
-      <span class="menu-top-item btn-plus">Condition d'utilisation</span>|
-      <span class="menu-top-item btn-plus last">Mentions légales</span>
+<!-- menu top -->
+<section class="container-fluid">
+  <div class="text-center">
+    <div class="menu-top d-none d-md-flex flex-row m-md-auto">
+      <div class="flex-fill btn-plus menu-top-item">Contact/Aide</div>
+      <div class="flex-fill">|</div>
+      <div class="flex-fill btn-plus menu-top-item">Nous joindre</div>
+      <div class="flex-fill">|</div>
+      <div class="flex-fill btn-plus menu-top-item">Plan du site</div>
+      <div class="flex-fill">|</div>
+      <div class="flex-fill btn-plus menu-top-item">Plan d'accès</div>
+      <div class="flex-fill">|</div>
+      <div class="flex-fill btn-plus menu-top-item">Condition d'utilisation</div>
+      <div class="flex-fill">|</div>
+      <div class="flex-fill btn-plus menu-top-item">Mentions légales</div>
     </div>
   </div>
+</section>
+<!-- /menu top -->
+
+<!-- menu principal -->
+<section class="container-fluid">
+  <div class="d-flex flex-column flex-sm-row">
+    <div class="flex-fill">
+      <img width="100%" src="{{ asset('build/images/guest/logo.jpg') }}" alt="Logo USAT-BENIN">
+    </div>
+    <div class="flex-fill">
+      <div class="flex-column">
+        <div class="d-none d-sm-flex title">
+          <img width="100%" src="{{ asset('build/images/guest/tel.jpg') }}" alt="Definition sigle USAT">
+        </div>
+        <div class="d-flex flex-row flex-wrap second-menu">
+          <div class="flex-fill btn btn-outline-primary m-sm-1">
+            <span class="btn-ambition">NOTRE AMBITION</span>
+          </div>
+          <div class="flex-fill btn btn-outline-primary m-sm-1">
+            <span class="btn-service">NOS SERVICES</span>
+          </div>
+          <div class="flex-fill btn btn-outline-primary m-sm-1">
+            <span class="btn-contacte">CONTACTEZ-NOUS</span>
+          </div>
+          <div class="flex-fill btn btn-outline-primary m-sm-1">
+            {% if app.user %}
+              <a href="{{ path('security_check_user_profil') }}"><span class="btn-enregistrement pl-2 pr-2">Espace Utilisateur</span></a>
+            {% else %}
+              <a href="{{ path('app_register') }}"><span class="btn-enregistrement">ENREGISTREMENT</span></a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="flex-column">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /menu principal -->
+
+<div class="col-12 col-sm-12 col-md-12 body">
   <div class="row mt-2 mb-2">
     <div class="col-12 col-sm-5 col-md-4 logo">
-      <img src="{{ asset('build/images/guest/logo.jpg') }}" alt="Logo USAT-BENIN">
     </div>
     <div class="col-12 col-ms-7 col-md-8 large-logo">
       <div class="title">
-        <img src="{{ asset('build/images/guest/tel.jpg') }}" alt="Definition sigle USAT">
       </div>
       <div class="second-menu mt-3 mb-1 text-center">
-        <span class="second-menu-item btn-ambition">NOTRE AMBITION</span>
-        <span class="second-menu-item btn-service">NOS SERVICES</span>
-        <span class="second-menu-item btn-contacte">CONTACTEZ-NOUS</span>
-        {% if app.user %}
-          <a href="{{ path('security_check_user_profil') }}"><span class="second-menu-item btn-enregistrement pl-2 pr-2">Espace Utilisateur</span></a>
-        {% else %}
-            <a href="{{ path('app_register') }}"><span class="second-menu-item btn-enregistrement">ENREGISTREMENT</span></a>
-        {% endif %}
+
+
+
+
       </div>
     </div>
   </div>
