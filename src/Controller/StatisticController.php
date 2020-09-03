@@ -7,7 +7,12 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StatistiqueController extends AbstractController
+/**
+ * Class StatisticController
+ * @package App\Controller
+ * @Route("/statistic")
+ */
+class StatisticController extends AbstractController
 {
     /**
      * @param Request $request
@@ -35,8 +40,16 @@ class StatistiqueController extends AbstractController
 
         $form->handleRequest($request);
 
-        return $this->render('statistique/index.html.twig', [
+        return $this->render('statistic/index.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/load", options={"expose"=true}, ,name="statistic_load")
+     * @param Request $request
+     */
+    public function load(Request $request) {
+
     }
 }

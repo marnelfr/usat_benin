@@ -96,7 +96,8 @@ class RegistrationFormType extends AbstractType
                 ]
             ])->add('compagny', TextType::class, [
                 'mapped' => false,
-                'label' => 'Compagnie'
+                'label' => 'Compagnie',
+                'require' => false
             ])/*->add('ifu', TextType::class, [
                 'mapped' => false,
                 'label' => 'N° IFU'
