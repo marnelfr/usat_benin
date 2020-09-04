@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Transfer;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,30 @@ class TransferRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Transfer::class);
+    }
+
+    public function totalTransfer($status, ?User $user = null) {
+        try {
+            $params['status'] = $status;
+            if ($user) {
+                $params['user'] = $user;
+                $whereUser = 'and t.manager = :user';
+            } else {
+                $whereUser = '';
+            }
+            $total = $this->_em->createQuery(
+                "select count(t) nombre
+                from App\Entity\Transfer t
+                where t.deleted = 0
+                and t.status = :status
+                {$whereUser}"
+            )->setParameters($params)
+                ->getOneOrNullResult()
+            ;
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+        return $total['nombre'];
     }
 
     public function getWaitingTransfer() {

@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Removal;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,30 @@ class RemovalRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Removal::class);
+    }
+
+    public function totalRemoval($status, ?User $user = null) {
+        try {
+            $params['status'] = $status;
+            if ($user) {
+                $params['user'] = $user;
+                $whereUser = 'and r.agent = :user';
+            } else {
+                $whereUser = '';
+            }
+            $total = $this->_em->createQuery(
+                "select count(r) nombre
+                from App\Entity\Removal r
+                where r.deleted = 0
+                and r.status = :status
+                {$whereUser}"
+            )->setParameters($params)
+                ->getOneOrNullResult()
+            ;
+            return $total['nombre'];
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     public function getWaitingRemoval() {

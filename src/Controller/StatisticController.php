@@ -48,11 +48,10 @@ class StatisticController extends AbstractController
     }
 
     /**
-     * @Route("/load", options={"expose"=true}, ,name="statistic_load")
+     * @Route("/load", options={"expose"=true}, name="statistic_load")
      * @param Request $request
      */
     public function load(Request $request) {
-
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($request->isXmlHttpRequest()) {

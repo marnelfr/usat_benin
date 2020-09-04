@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Importer;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,27 @@ class ImporterRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Importer::class);
+    }
+
+    public function totalImporter(?User $user = null) {
+        try {
+            $params = [];
+            if ($user) {
+                $params['user'] = $user;
+                $whereUser = 'and i.user = :user';
+            }
+            $total = $this->_em->createQuery(
+               "select count(i) nombre
+                from App\Entity\Importer i
+                where i.deleted = 0
+                {$whereUser}"
+            )->setParameters($params)
+                ->getOneOrNullResult()
+            ;
+            return $total['nombre'];
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     // /**

@@ -40,10 +40,10 @@ class ManagerController extends AbstractController
 
         $transfertRepo = $em->getRepository(Transfer::class);
 
-        $finalized = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'finalized', 'manager' => $this->getUser()]));
-        $waiting = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'waiting', 'manager' => $this->getUser()]));
-        $rejected = count($transfertRepo->findBy(['deleted' => 0, 'status' => 'rejected', 'manager' => $this->getUser()]));
-        $importer = count($em->getRepository(Importer::class)->findBy(['user' => $this->getUser(), 'deleted'=> 0]));
+        $finalized = $transfertRepo->totalTransfer('finalized', $this->getUser()); //->findBy(['deleted' => 0, 'status' => , 'manager' => $this->getUser()]));
+        $waiting = $transfertRepo->totalTransfer('waiting', $this->getUser()); //o->findBy(['deleted' => 0, 'status' => , 'manager' => $this->getUser()]));
+        $rejected = $transfertRepo->totalTransfer('rejected', $this->getUser()); //->findBy(['deleted' => 0, 'status' => , 'manager' => $this->getUser()]));
+        $importer = $em->getRepository(Importer::class)->totalImporter($this->getUser());
 
         $listTreatment = $transfertRepo->getLastTwinty();
 //        dd($listTreatment);
