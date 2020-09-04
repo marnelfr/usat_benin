@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Brand;
+use App\Entity\User;
 use App\Entity\Vehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +26,27 @@ class VehicleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Vehicle::class);
+    }
+
+    public function totalVehicle(?User $user = null) {
+        try {
+            $params = [];
+            if ($user) {
+                $params['user'] = $user;
+                $whereUser = 'and v.user = :user';
+            }
+            $total = $this->_em->createQuery(
+                "select count(v) nombre
+                from App\Entity\Vehicle v
+                where v.deleted = 0
+                {$whereUser}"
+            )->setParameters($params)
+                ->getOneOrNullResult()
+            ;
+            return $total['nombre'];
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
 
