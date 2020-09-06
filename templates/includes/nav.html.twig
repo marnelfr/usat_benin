@@ -8,15 +8,12 @@
     <li class="nav-item d-none d-sm-inline-block">
       <a href="{{ path('home_page') }}" class="nav-link">Accueil</a>
     </li>
-    {#<li class="nav-item d-none d-sm-inline-block">
-      <a href="#" class="nav-link">Contact</a>
-    </li>#}
   </ul>
 
   <!-- SEARCH FORM -->
   <form action="{{ path('search_by_ref') }}" class="form-inline ml-3">
     <div class="input-group input-group-sm">
-      <input class="form-control form-control-navbar" name="ref" id="search-term" type="search" placeholder="Saissiez une référence" aria-label="Search">
+      <input class="form-control form-control-navbar" name="ref" id="search-term" type="search" placeholder="Saisissez une référence" aria-label="Search">
       <div class="input-group-append">
         <button class="btn btn-navbar" type="submit">
           <i class="fas fa-search"></i>

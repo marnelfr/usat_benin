@@ -39,10 +39,10 @@ class StaffController extends AbstractController
     public function index(EntityManagerInterface $em)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $waitingTransfer = count($em->getRepository(Transfer::class)->findBy(['deleted' => 0, 'status' => 'waiting']));
-        $waitingRemoval = count($em->getRepository(Removal::class)->findBy(['deleted' => 0, 'status' => 'waiting']));
-        $finalizedTransfer = count($em->getRepository(Transfer::class)->findBy(['deleted' => 0, 'status' => 'finalized']));
-        $finalizedRemoval = count($em->getRepository(Removal::class)->findBy(['deleted' => 0, 'status' => 'finalized']));
+        $waitingTransfer = $em->getRepository(Transfer::class)->totalTransfer('waiting');
+        $waitingRemoval = $em->getRepository(Removal::class)->totalRemoval('waiting');
+        $finalizedTransfer = $em->getRepository(Transfer::class)->totalTransfer('finalized');
+        $finalizedRemoval = $em->getRepository(Removal::class)->totalRemoval('finalized');
 
         $data = compact('waitingRemoval', 'waitingTransfer', 'finalizedRemoval', 'finalizedTransfer');
         return $this->render('actors/staff/index.html.twig', $data);

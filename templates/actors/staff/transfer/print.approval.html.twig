@@ -43,7 +43,7 @@
       <table class="table table-borderless">
         <tr class="text-left">
           <td width="50%" colspan="3">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Parc :</b> {{ transfer.manager.fleet.name }}</td>
-          <td width="50%" colspan="3">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>P/C :</b> {{ transfer.vehicle.importer.name }}</td>
+          <td width="50%" colspan="3">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>P/C :</b> {{ transfer.vehicle.importer.name[0:17] ~ '.' }}</td>
         </tr>
         <tr class="text-left">
           <td colspan="2"><b>Marque :</b> {{ transfer.vehicle.brand.name }}</td>
@@ -52,7 +52,7 @@
         </tr>
         <tr class="text-left"><td colspan="2"><b>Navire :</b> {{ transfer.vehicle.ship.name }}</td>
           <td colspan="2"><b>Date d’arrivée :</b> {{ transfer.vehicle.cameAt|date('d/m/Y') }}</td>
-          <td colspan="2"><b>Consignataire :</b> {{ transfer.vehicle.consignee }}</td>
+          <td colspan="2"><b>Consignataire :</b> {{ transfer.vehicle.consignee[0:17] ~ '.' }}</td>
         </tr>
         <tr class="text-left">
           <td colspan="3">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<b>Date :</b> {{ transfer.createdAt|date('d/m/Y') }}</td>
