@@ -21,21 +21,28 @@ class TransferRepository extends ServiceEntityRepository
         parent::__construct($registry, Transfer::class);
     }
 
-    public function totalTransfer($status, ?User $user = null) {
+    public function totalTransfer($status, ?User $user = null, $debut = null, $fin = null) {
         try {
             $params['status'] = $status;
+            $wherePeriod = '';
+            $whereUser = '';
             if ($user) {
                 $params['user'] = $user;
                 $whereUser = 'and t.manager = :user';
-            } else {
-                $whereUser = '';
+            }
+            if ($debut && $fin) {
+                $fin = new \DateTime($fin->format('Y-m-d 23:59:59'));
+                $params['debut'] = $debut;
+                $params['fin'] = $fin;
+                $wherePeriod = 'and t.createdAt between :debut and :fin';
             }
             $total = $this->_em->createQuery(
                 "select count(t) nombre
                 from App\Entity\Transfer t
                 where t.deleted = 0
                 and t.status = :status
-                {$whereUser}"
+                {$whereUser}
+                {$wherePeriod}"
             )->setParameters($params)
                 ->getOneOrNullResult()
             ;
