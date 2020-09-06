@@ -1,0 +1,64 @@
+{% block stylesheets %}
+  {{ encore_entry_link_tags('statistic') }}
+{% endblock %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><i class="fas fa-list"></i> Statistiques</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12">
+        {{ form_start(form) }}
+        <div class="row">
+          <div class="col-12 col-sm-5">
+            {{ form_row(form.from) }}
+          </div>
+          <div class="col-12 col-sm-5">
+            {{ form_row(form.to) }}
+          </div>
+          <div class="col-12 col-sm-2 text-right">
+            <div class="form-group mb-0 pb-0">
+              <label>&nbsp;</label>
+            </div>
+            <button id="statistic_loader" class="btn btn-primary">
+              <i class="fas fa-search"></i> Charger
+            </button>
+          </div>
+        </div>
+        {{ form_end(form) }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12">
+        <table class="table table-responsive-sm">
+          <thead>
+          <tr>
+            <th colspan="2" width="55%">&ensp; Entité</th>
+            <th class="text-center" width="23%">Réalisation de la période</th>
+            <th class="text-center" width="22%">Réalisation globale &ensp;</th>
+            {#<th>Action &ensp;</th>#}
+          </tr>
+          </thead>
+          <tbody id="statistic_table_body">
+          <tr>
+            <td class="text-center p-5" colspan="4">
+              <i class="m-5 fas spinner-border spinner-border-sm"></i>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <th colspan="2" width="55%">&ensp; Entité</th>
+            <th class="text-center" width="23%">Réalisation de la période</th>
+            <th class="text-center" width="22%">Réalisation globale &ensp;</th>
+            {#<th>Action &ensp;</th>#}
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% block javascripts %}
+  {{ encore_entry_script_tags('statistic') }}
+{% endblock %}

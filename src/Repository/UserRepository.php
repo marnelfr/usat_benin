@@ -55,6 +55,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return (int)$totalTreatement > 0;
     }
 
+    public function totalUser(string $profile_name = 'Agent', ?User $user = null, $debut = null, $fin = null) {
+        try {
+            $params = ['profile' => $profile_name];
+            $wherePeriod = '';
+            $whereUser = '';
+            if ($user) {
+                $params['user'] = $user;
+                $whereUser = 'and u.user = :user';
+            }
+            if ($debut && $fin) {
+                $fin = new \DateTime($fin->format('Y-m-d 23:59:59'));
+                $params['debut'] = $debut;
+                $params['fin'] = $fin;
+                $wherePeriod = 'and u.createdAt >= :debut and u.createdAt <= :fin';
+            }
+            $total = $this->_em->createQuery(
+                "select count(u) nombre
+                from App\Entity\User u
+                inner join App\Entity\Profil p with u.profil = p
+                where p.slug = :profile
+                {$whereUser}
+                {$wherePeriod}"
+            )->setParameters($params)
+                ->getOneOrNullResult()
+            ;
+            return $total['nombre'];
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

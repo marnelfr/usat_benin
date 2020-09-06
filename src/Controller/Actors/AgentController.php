@@ -41,10 +41,10 @@ class AgentController extends AbstractController
 
         $removalRepo = $em->getRepository(Removal::class);
 
-        $finalized = count($removalRepo->findBy(['deleted' => 0,'status' => 'finalized', 'agent' => $this->getUser()]));
-        $waiting = count($removalRepo->findBy(['deleted' => 0,'status' => 'waiting', 'agent' => $this->getUser()]));
-        $vehicle = count($em->getRepository(Vehicle::class)->findBy(['deleted' => 0, 'user' => $this->getUser()]));
-        $remover = count($em->getRepository(Remover::class)->findBy(['agent' => $this->getUser(), 'deleted'=> 0]));
+        $finalized = $removalRepo->totalRemoval('finalized', $this->getUser());
+        $waiting = $removalRepo->totalRemoval('waiting', $this->getUser());
+        $vehicle = $em->getRepository(Vehicle::class)->totalVehicle($this->getUser());
+        $remover = $em->getRepository(Remover::class)->totalRemover($this->getUser());
 
         $listTreatment = $removalRepo->getLastTwinty();
 //        dd($listTreatment);

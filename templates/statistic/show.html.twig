@@ -1,0 +1,45 @@
+<tr>
+  <td class="vertical-alignment align-middle" rowspan="4">Transfert</td>
+  <td>En attente</td><td class="text-center">{{ period.transfer.waiting }}</td><td class="text-center">{{ global.transfer.waiting }}</td>
+</tr>
+{#<tr><td>En traitement</td><td class="text-center">{{ period.transfer.inprogress }}</td><td class="text-center">{{ global.transfer.inprogress }}</td></tr>#}
+<tr><td>Rejetés</td><td class="text-center">{{ period.transfer.rejected }}</td><td class="text-center">{{ global.transfer.rejected }}</td></tr>
+<tr><td>Finalisés</td><td class="text-center">{{ period.transfer.finalized }}</td><td class="text-center">{{ global.transfer.finalized }}</td></tr>
+<tr>
+  <td>Total</td>
+  <td class="text-center">
+    {{ period.transfer.finalized + period.transfer.waiting + period.transfer.rejected }}
+  </td>
+  <td class="text-center">
+    {{ global.transfer.finalized + global.transfer.waiting + global.transfer.rejected }}
+  </td>
+</tr>
+
+<tr>
+  <td class="vertical-alignment align-middle" rowspan="4">Enlèvement</td>
+  <td>En attente</td><td class="text-center">{{ period.removal.waiting }}</td><td class="text-center">{{ global.removal.waiting }}</td>
+</tr>
+<tr><td>Rejetés</td><td class="text-center">{{ period.removal.rejected }}</td><td class="text-center">{{ global.removal.rejected }}</td></tr>
+<tr><td>Finalisés</td><td class="text-center">{{ period.removal.finalized }}</td><td class="text-center">{{ global.removal.finalized }}</td></tr>
+<tr>
+  <td>Total</td>
+  <td class="text-center">
+    {{ period.removal.finalized + period.removal.waiting + period.removal.rejected }}
+  </td>
+  <td class="text-center">
+    {{ global.removal.finalized + global.removal.waiting + global.removal.rejected }}
+  </td>
+</tr>
+
+
+<tr><td colspan="2">Véhicule</td><td class="text-center">{{ period.vehicle }}</td><td class="text-center">{{ global.vehicle }}</td></tr>
+<tr><td colspan="2">Importateur</td><td class="text-center">{{ period.importer }}</td><td class="text-center">{{ global.importer }}</td></tr>
+<tr><td colspan="2">Enleveur</td><td class="text-center">{{ period.remover }}</td><td class="text-center">{{ global.remover }}</td></tr>
+
+<tr><td colspan="2">Gestionnaire de Parc</td><td class="text-center">{{ period.manager }}</td><td class="text-center">{{ global.manager }}</td></tr>
+<tr><td colspan="2">Commissionnaire agrée en Douane</td><td class="text-center">{{ period.agent }}</td><td class="text-center">{{ global.agent }}</td></tr>
+<tr><td colspan="2">Personnel USAT-BENIN</td><td class="text-center">{{ period.staff }}</td><td class="text-center">{{ global.staff }}</td></tr>
+<tr><td colspan="2">Responsable USAT-BENIN</td><td class="text-center">{{ period.staff_admin }}</td><td class="text-center">{{ global.staff_admin }}</td></tr>
+<tr><td colspan="2">Contrôleur</td><td class="text-center">{{ period.controller }}</td><td class="text-center">{{ global.controller }}</td></tr>
+
+<input type="hidden" id="form_global" value="{{ global.global }}">
