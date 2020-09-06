@@ -2,8 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\Agent;
+use App\Entity\Importer;
+use App\Entity\Manager;
+use App\Entity\Removal;
+use App\Entity\Remover;
+use App\Entity\Transfer;
+use App\Entity\User;
+use App\Entity\Vehicle;
+use App\Repository\ImporterRepository;
+use App\Repository\RemovalRepository;
+use App\Repository\RemoverRepository;
+use App\Repository\TransferRepository;
+use App\Repository\UserRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +78,23 @@ class StatisticController extends AbstractController
                     'message' => 'Veuillez renseigner une date de début et une date fin'
                 ]);
             }
-            $statistics = $this->getStatistics($debut, $fin);
+
+            if ($request->get('initial') === 'false') {
+                $global = $request->get('global');
+                if (!$global) {
+                    return new JsonResponse([
+                        'typeMessage' => 'warning',
+                        'message' => 'Erreur de chargement. Veuillez recharger la page et réessayer'
+                    ]);
+                }
+                $statistics = ['global' => json_decode($global, true)];
+                $statistics['global']['global'] = $global;
+            } else {
+                $statistics = ['global' => $this->getStatistics()];
+            }
+
+            $statistics['period'] = $this->getStatistics($debut, $fin);
+
             return new JsonResponse([
                 'typeMessage' => 'success',
                 'view' => $this->renderView('statistic/show.html.twig', $statistics)
@@ -72,27 +103,50 @@ class StatisticController extends AbstractController
         return new Response('Accès interdit');
     }
 
-    private function getStatistics($debut, $fin)
+    private function getStatistics($debut = null, $fin = null): array
     {
-        /**
-         * nombre de transfert qui à été
-         *      demander
-         *      dont le traitement est encours
-         *      dont le traitement a été aprouvé
-         *      rejeter
-         * nombre d'enlevement qui a été
-         *      demander
-         *      dont le traitment est encours
-         *      dont le traitement est approuvé
-         *      rejeter
-         * nombre de gestionnaire qu'on a
-         * nombre de commissionnaire qu'on a
-         * nombre importer
-         * nombre de verification de fiche imprimer qui a été effectué
-         * nombre de vehicule qui a eté enregistré au total
-         */
+        $doctrine = $this->getDoctrine();
+        /** @var TransferRepository $transferRepo */
+        $transferRepo = $doctrine->getRepository(Transfer::class);
+        /** @var RemovalRepository $removalRepo */
+        $removalRepo = $doctrine->getRepository(Removal::class);
+        /** @var UserRepository $userRepo */
+        $userRepo = $doctrine->getRepository(User::class);
+        /** @var VehicleRepository $vehicleRepo */
+        $vehicleRepo = $doctrine->getRepository(Vehicle::class);
+        /** @var ImporterRepository $importerRepo */
+        $importerRepo = $doctrine->getRepository(Importer::class);
+        /** @var RemoverRepository $removerRepo */
+        $removerRepo = $doctrine->getRepository(Remover::class);
 
+        $global = [];
+        $global['transfer'] = [
+            'waiting' => $transferRepo->totalTransfer('waiting', null, $debut, $fin),
+            'inprogress' => $transferRepo->totalTransfer('inprogress', null, $debut, $fin),
+            'finalized' => $transferRepo->totalTransfer('finalized', null, $debut, $fin),
+            'rejected' => $transferRepo->totalTransfer('rejected', null, $debut, $fin),
+        ];
 
+        $global['removal'] = [
+            'waiting' => $removalRepo->totalRemoval('waiting', null, $debut, $fin),
+            'finalized' => $removalRepo->totalRemoval('finalized', null, $debut, $fin),
+            'rejected' => $removalRepo->totalRemoval('rejected', null, $debut, $fin),
+        ];
 
+        $global['vehicle'] = $vehicleRepo->totalVehicle(null, $debut, $fin);
+        $global['importer'] = $importerRepo->totalImporter(null, $debut, $fin);
+        $global['remover'] = $removerRepo->totalRemover(null, $debut, $fin);
+
+        $global['agent'] = $userRepo->totalUser('agent', null, $debut, $fin);
+        $global['manager'] = $userRepo->totalUser('manager', null, $debut, $fin);
+        $global['staff'] = $userRepo->totalUser('staff', null, $debut, $fin);
+        $global['staff_admin'] = $userRepo->totalUser('staff_admin', null, $debut, $fin);
+        $global['controller'] = $userRepo->totalUser('controller', null, $debut, $fin);
+
+        if (!$debut) {
+            $global['global'] = json_encode($global);
+        }
+
+        return $global;
     }
 }

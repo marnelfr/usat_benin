@@ -95,6 +95,20 @@ class StaffRemovalController extends AbstractController
     }
 
     /**
+     * @Route("/staff/removal/{id}/show", name="staff_removal_show", methods={"GET"})
+     * @param Removal $removal
+     *
+     * @return Response
+     */
+    public function show(Removal $removal) {
+        return $this->render('actors/staff/removal/show.html.twig', [
+            'finalized' => true,
+            'removal' => $removal
+        ]);
+    }
+
+
+    /**
      * La liste des demande de enlevement finalisés afficher au staff
      *
      * @Route("/staff/removal/finalized", options={"expose"=true}, name="staff_removal_finalized", methods={"GET"})

@@ -10,7 +10,7 @@
       <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    {{ form_start(registrationForm) }}
+    {{ form_start(registrationForm, {attr: {onsubmit: "return confirm('Confirmez-vous correctes, les informations entrées ?');"}}) }}
     {% if form_errors(registrationForm) %}
       <div class="alert alert-danger" role="alert">{{ form_errors(registrationForm) }}</div>
     {% endif %}

@@ -21,18 +21,27 @@ class ImporterRepository extends ServiceEntityRepository
         parent::__construct($registry, Importer::class);
     }
 
-    public function totalImporter(?User $user = null) {
+    public function totalImporter(?User $user = null, $debut = null, $fin = null) {
         try {
             $params = [];
+            $wherePeriod = '';
+            $whereUser = '';
             if ($user) {
                 $params['user'] = $user;
                 $whereUser = 'and i.user = :user';
+            }
+            if ($debut && $fin) {
+                $fin = new \DateTime($fin->format('Y-m-d 23:59:59'));
+                $params['debut'] = $debut;
+                $params['fin'] = $fin;
+                $wherePeriod = 'and i.createdAt >= :debut and i.createdAt <= :fin';
             }
             $total = $this->_em->createQuery(
                "select count(i) nombre
                 from App\Entity\Importer i
                 where i.deleted = 0
-                {$whereUser}"
+                {$whereUser}
+                {$wherePeriod}"
             )->setParameters($params)
                 ->getOneOrNullResult()
             ;
