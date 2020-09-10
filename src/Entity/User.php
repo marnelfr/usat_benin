@@ -144,6 +144,11 @@ class User implements UserInterface, \Serializable
      */
     private $createdNotifications;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Imform::class, mappedBy="user")
+     */
+    private $imforms;
+
 
 
 
@@ -158,6 +163,7 @@ class User implements UserInterface, \Serializable
         $this->importers = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->createdNotifications = new ArrayCollection();
+        $this->imforms = new ArrayCollection();
     }
 
 
@@ -593,6 +599,37 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($createdNotification->getCreator() === $this) {
                 $createdNotification->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Imform[]
+     */
+    public function getImforms(): Collection
+    {
+        return $this->imforms;
+    }
+
+    public function addImform(Imform $imform): self
+    {
+        if (!$this->imforms->contains($imform)) {
+            $this->imforms[] = $imform;
+            $imform->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImform(Imform $imform): self
+    {
+        if ($this->imforms->contains($imform)) {
+            $this->imforms->removeElement($imform);
+            // set the owning side to null (unless already changed)
+            if ($imform->getUser() === $this) {
+                $imform->setUser(null);
             }
         }
 
