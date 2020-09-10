@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\BrandRepository;
 use App\Repository\FleetRepository;
 use App\Repository\ShipRepository;
@@ -19,7 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ServiceController extends AbstractController
 {
     /**
-     * @Route("/brand", name="service_brand")
+     * @Route("/fleet", name="service_fleet")
      * @param FleetRepository $repo
      * @param UserRepository  $userRepo
      */
