@@ -28,6 +28,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class StaffController extends AbstractController
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * Le tableau de bord du personnel de USAT de la plateforme
      *
@@ -36,16 +47,23 @@ class StaffController extends AbstractController
      *
      * @return Response
      */
-    public function index(EntityManagerInterface $em)
+    public function index()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $waitingTransfer = $em->getRepository(Transfer::class)->totalTransfer('waiting');
-        $waitingRemoval = $em->getRepository(Removal::class)->totalRemoval('waiting');
-        $finalizedTransfer = $em->getRepository(Transfer::class)->totalTransfer('finalized');
-        $finalizedRemoval = $em->getRepository(Removal::class)->totalRemoval('finalized');
 
-        $data = compact('waitingRemoval', 'waitingTransfer', 'finalizedRemoval', 'finalizedTransfer');
+        $data = $this->getMiniStatistics();
+        $data['control'] = false;
+        $data['staff'] = true;
         return $this->render('actors/staff/index.html.twig', $data);
+    }
+
+    public function getMiniStatistics() {
+        $waitingTransfer = $this->em->getRepository(Transfer::class)->totalTransfer('waiting');
+        $waitingRemoval = $this->em->getRepository(Removal::class)->totalRemoval('waiting');
+        $finalizedTransfer = $this->em->getRepository(Transfer::class)->totalTransfer('finalized');
+        $finalizedRemoval = $this->em->getRepository(Removal::class)->totalRemoval('finalized');
+
+        return compact('waitingRemoval', 'waitingTransfer', 'finalizedRemoval', 'finalizedTransfer');
     }
 
 
