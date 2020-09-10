@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Brand;
+use App\Entity\User;
 use App\Repository\BrandRepository;
+use App\Repository\FleetRepository;
 use App\Repository\ShipRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -16,6 +18,27 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class ServiceController extends AbstractController
 {
+    /**
+     * @Route("/brand", name="service_brand")
+     * @param FleetRepository $repo
+     * @param UserRepository  $userRepo
+     */
+    public function fleet(FleetRepository $repo, UserRepository $userRepo)
+    {
+        $list = 'TAGA,B,D|SOBAMAR|ROYAL|LAMA|STEPHANIE|AL-WOUDJOUD|TAUA,B|BALLA(Ekpè)|FADI-STAR|RANDA|RITIS1,2,3|AT-SALAM|ASCOMAR|YASMINE|JANA1|RACHA|FRANITA|COUBAICI|SOGIC|TRADEPARC|TREEKING|DomianeFIFA|DomaineGTS|ALMADINA|BAHSOUN|MIGINTERNATIONAL|SHARDI-CAR|NAS-WEBE|STARFIVE|HADICAR|BALLA|HOVAS+ANNEXE|GENERALCONTRACTOR|MICHA|MICHAANNEXE|CONSULTIVE|O-GParc|SEATRAC|ZF|ENI-TRANS|SOBENI|SODECY|DAS|DASAM|ATLANTIQUEPARC|CONTRACTOR|RANDA(SEKANDJI)|DOMTRACO|ROSEPARC';
+        $fleets = explode('|', $list);
+        $user = $userRepo->find(1);
+        foreach ($fleets as $fleet) {
+            $repo->add(
+                $fleet,
+                'Description du parc ' . $fleet . ' à mettre à jour',
+                $user
+            );
+        }
+        $this->getDoctrine()->getManager()->flush();
+        dump('done...'); die();
+    }
+
     /**
      * @Route("/brand", name="service_brand")
      * @param BrandRepository  $repo
