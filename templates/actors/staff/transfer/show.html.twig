@@ -32,11 +32,13 @@
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   {% include 'transfer/show_table.html.twig' %}
                 </div>
+              {% if is_granted('ROLE_STAFF') %}
                 <div class="col-12 col-sm-8 col-md-6 offset-md-3 offset-sm-2">
                   <button id="transfert-verdict-reject" data-id="{{ transfer.id }}" class="btn btn-danger float-left"><i class="fas fa-times"></i> Rejeter</button>
                   {# TODO: Mettre en place le confirm pour l'approval #}
                   <a onclick="alert('Approuver la demande génère la fiche de demande. Le téléchargement du fichier sera lancé en même temps')" id="transfert-verdict-accept" href="{{ path('staff_approval_transfer', {id: transfer.id}) }}" class="btn btn-success float-right"><i class="fas fa-check"></i> Approuver</a>
                 </div>
+              {% endif %}
             </div>
         </div>
       {#<div class="card-footer">
