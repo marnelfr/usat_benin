@@ -51,12 +51,14 @@
                   {% if removal.status == 'finalized' %}
                     <a class="btn btn-primary" title="Afficher toutes les informations" href="{{ path('staff_removal_show', {'id': removal.id}) }}"><i class="fas fa-eye"></i></a>
                   {% else %}
-                    <button
-                            {% if (removal.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
-                            class="btn {% if (removal.status != 'waiting' and removal.status != 'finalized') %}btn-warning{% else %}btn-primary{% endif %} removal-start-treatment"
-                            data-href="{{ path(btnPath, {'id': removal.id}) }}"
-                            title="Commencer le traitement de la demande"
-                    ><i class="fas fa-edit"></i> {{ btnLabel }}</button>
+                    {% if is_granted('ROLE_STAFF') %}
+                      <button
+                              {% if (removal.status != 'waiting') %}title="La demande est déjà en cours de traitement"{% endif %}
+                              class="btn {% if (removal.status != 'waiting' and removal.status != 'finalized') %}btn-warning{% else %}btn-primary{% endif %} removal-start-treatment"
+                              data-href="{{ path(btnPath, {'id': removal.id}) }}"
+                              title="Commencer le traitement de la demande"
+                      ><i class="fas fa-edit"></i> {{ btnLabel }}</button>
+                    {% endif %}
                   {% endif %}
                 </td>
               </tr>
