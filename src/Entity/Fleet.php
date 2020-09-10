@@ -59,6 +59,8 @@ class Fleet
     {
         $this->managers = new ArrayCollection();
         $this->removals = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->deleted = 0;
     }
 
     public function getId(): ?int
