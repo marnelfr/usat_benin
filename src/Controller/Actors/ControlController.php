@@ -27,9 +27,7 @@ class ControlController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $data = $staffController->getMiniStatistics();
-        $data['control'] = true;
-        $data['staff'] = false;
+        $data = $staffController->getMiniStatistics(true, false);
         return $this->render('actors/staff/index.html.twig', $data);
     }
 }

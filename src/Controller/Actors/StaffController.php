@@ -51,19 +51,20 @@ class StaffController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $data = $this->getMiniStatistics();
-        $data['control'] = false;
-        $data['staff'] = true;
+        $data = $this->getMiniStatistics(false, true);
         return $this->render('actors/staff/index.html.twig', $data);
     }
 
-    public function getMiniStatistics() {
+    public function getMiniStatistics(bool $control, bool $staff) {
         $waitingTransfer = $this->em->getRepository(Transfer::class)->totalTransfer('waiting');
         $waitingRemoval = $this->em->getRepository(Removal::class)->totalRemoval('waiting');
         $finalizedTransfer = $this->em->getRepository(Transfer::class)->totalTransfer('finalized');
         $finalizedRemoval = $this->em->getRepository(Removal::class)->totalRemoval('finalized');
 
-        return compact('waitingRemoval', 'waitingTransfer', 'finalizedRemoval', 'finalizedTransfer');
+        $data = compact('waitingRemoval', 'waitingTransfer', 'finalizedRemoval', 'finalizedTransfer');
+        $data['control'] = $control;
+        $data['staff'] = $staff;
+        return $data;
     }
 
 

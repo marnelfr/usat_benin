@@ -50,22 +50,9 @@
       </li>
     </ul>
   </li>
-    {#<ul class="nav nav-treeview">
-      <li class="nav-item">
-        <a href="{{ path('vehicle_new') }}" id="{{ |md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Nouveau véhicule</p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ path('vehicle_index') }}" id="{{ |md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Liste des véhicules</p>
-        </a>
-      </li>
-    </ul>#}
   {#</li>#}
 {% endif %}
+
 
 {% if app.user.profil.slug == 'agent' %}
   {#Transfert de vehicule#}
@@ -177,7 +164,8 @@
   </li>
 {% endif %}
 
-{% if app.user.profil.slug == 'staff' or app.user.profil.slug == 'staff_admin' %}
+
+{% if app.user.profil.slug == 'staff' or app.user.profil.slug == 'control' or app.user.profil.slug == 'staff_admin' %}
   <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
       <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -240,6 +228,7 @@
   </li>
 {% endif %}
 
+
 {% if app.user.profil.slug == 'staff_admin' %}
   <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
@@ -266,9 +255,6 @@
   </li>
 {% endif %}
 
-{% if app.user.profil.slug == 'control' %}
-
-{% endif %}
 
 {% if app.user.profil.slug == 'admin' %}
 
