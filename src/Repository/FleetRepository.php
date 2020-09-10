@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Fleet;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,24 @@ class FleetRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Fleet::class);
+    }
+
+    /**
+     * @param string $name
+     * @param string $info
+     * @param User   $user
+     *
+     * @return Fleet
+     */
+    public function add(string $name, string $info, User $user): Fleet
+    {
+        $fleet = new Fleet();
+        $fleet->setName($name)
+            ->setInfo($info)
+            ->setUser($user)
+        ;
+        $this->_em->persist($fleet);
+        return $fleet;
     }
 
     // /**
