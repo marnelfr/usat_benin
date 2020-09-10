@@ -37,7 +37,7 @@ class MenuController extends AbstractController
                 $data['change_password'] = true;
             }
 
-            return $this->render('includes/menu_items.html.twig', $data);
+            return $this->render('menu/menu_items.html.twig', $data);
         } catch (\Exception $e) {
             return new Response('');
         }
