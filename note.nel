@@ -12,7 +12,7 @@ Tables
 			name: le prénom de l'utilisateur
 			lastName: le nom de famille de l'utilisateur
 			fullname: le nom complet de l'utilisateur
-				Je vais juste créer un getter pour ça
+      Je vais juste créer un getter pour ça
 			phone: le numéro de téléphone de l'utilisateur
 			email: l'adresse email de l'utilisateur
 			address: l'adresse physique de l'utilisateur
