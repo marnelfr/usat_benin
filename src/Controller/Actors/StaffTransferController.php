@@ -31,7 +31,6 @@ use Symfony\Component\Validator\Constraints\File;
  * Le controlleur des actions spécifiques du personnel de USAT.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
- * @IsGranted("ROLE_STAFF")
  */
 class StaffTransferController extends AbstractController
 {

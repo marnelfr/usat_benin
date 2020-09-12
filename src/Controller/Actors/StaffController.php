@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Le controlleur des actions spécifiques du personnel de USAT.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
- * @IsGranted("ROLE_STAFF")
  */
 class StaffController extends AbstractController
 {
@@ -73,7 +72,7 @@ class StaffController extends AbstractController
      *
      * @Route("/staff/transfer/waiting", name="staff_transfer_index", methods={"GET"})
      */
-    public function transfer_index(): Response
+    public function transfer(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -92,7 +91,7 @@ class StaffController extends AbstractController
      *
      * @Route("/staff/removal/waiting", name="staff_removal_index", methods={"GET"})
      */
-    public function removal_index(): Response
+    public function removal(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
