@@ -22,7 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Le controlleur des actions spécifiques du personnel de USAT.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
- * @IsGranted("ROLE_STAFF")
  */
 class StaffRemovalController extends AbstractController
 {
