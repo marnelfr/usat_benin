@@ -8,9 +8,12 @@ import 'bootstrap'
 import '../js/adminlte.min'
 import '../js/demo'
 import u from './import/utility'
+import Table from './import/table'
 
 
 $(function () {
+  let table = new Table()
+  table.DataTable()
   setTimeout(function () {
     //Permet d'afficher les alerts au chargement de la page
     $('.alert').each(function () {

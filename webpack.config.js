@@ -98,4 +98,15 @@ Encore
     //.addEntry('admin', './assets/js/admin.js')
 ;
 
-module.exports = Encore.getWebpackConfig();
+// module.exports = Encore.getWebpackConfig();
+
+var config = Encore.getWebpackConfig();
+
+//disable amd loader
+config.module.rules.unshift({
+  parser: {
+    amd: false,
+  }
+});
+
+module.exports = config;
