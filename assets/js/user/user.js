@@ -3,6 +3,7 @@ import Button from '../import/button'
 $(function () {
   let btn = new Button('.btn-user-saver')
   btn.loadOnClick(true)
+  $('.table').DataTable(Button.dataTableOption())
 
   let lockers = document.querySelectorAll('.btn-lock-user')
   lockers.forEach(function (btn) {

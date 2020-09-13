@@ -1,0 +1,74 @@
+{% extends 'base-admin.html.twig' %}
+
+{% block title %}Configuration | Communiqués{% endblock %}
+
+{% block page_title %}Configuration{% endblock %}
+{% block page_title2 %}Configuration{% endblock %}
+{% block page_subtitle %}Communiqués{% endblock %}
+
+{% block page_content %}
+    <div class="row pb-3">
+        <div class="col-12 col-sm-12 col-md-12">
+            <a class="btn btn-default" href="{{ path('inform_new') }}"><i class="fas fa-plus-circle"></i> Nouvelle Info.</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list"></i> Liste des Communiqués</h3>
+          {#<div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fas fa-times"></i></button>
+          </div>#}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <table class="datatable table table-responsive-sm">
+                        <thead>
+                        <tr>
+                            <th width="25%">&ensp;Titre</th>
+                            <th width="50%">Description</th>
+                            <th width="10%" class="text-center">Avec image</th>
+                            <th width="15%" class="text-center">Publiée le</th>
+                            {#<th class="text-right">Actions &ensp;</th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for inform in informs %}
+                            <tr>
+                                <td>{{ inform.title }}</td>
+                                <td>{{ inform.description }}</td>
+                                <td class="text-center">{{ inform.id }}</td>
+                                <td class="text-center">{{ inform.createdAt ? inform.createdAt|date('d/m/Y à H:i:s') : '' }}</td>
+                                {#<td>#}
+                                    {#<a href="{{ path('inform_show', {'id': inform.id}) }}">show</a>#}
+                                    {#<a href="{{ path('inform_edit', {'id': inform.id}) }}">edit</a>#}
+                                {#</td>#}
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-bold text-center" colspan="3">Aucune communiquée trouvée</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>&ensp; Titre</th>
+                            <th>Description</th>
+                            <th class="text-center">Avec image</th>
+                            <th class="text-center">Publiée le &ensp;</th>
+                            {#<th class="text-right">Actions &ensp;</th>#}
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+      {#<div class="card-footer">
+          Footer
+      </div>#}
+    </div>
+{% endblock %}

@@ -22,11 +22,16 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/", name="user_index", methods={"GET"})
+     * @param UserRepository $userRepository
+     *
+     * @return Response
      */
     public function index(UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->all(),
         ]);
     }
 
@@ -35,6 +40,8 @@ class UserController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -46,6 +53,10 @@ class UserController extends AbstractController
                 $user->setRoles(['ROLE_STAFF', 'ROLE_CONTROL']);
             }elseif($slug === 'staff_admin') {
                 $user->setRoles(['ROLE_STAFF_ADMIN', 'ROLE_STAFF', 'ROLE_CONTROL']);
+            }elseif($slug === 'respo_manager') {
+                $user->setRoles(['ROLE_MANAGER_ADMIN', 'ROLE_MANAGER']);
+            }elseif($slug === 'customs_officer') {
+                $user->setRoles(['ROLE_CUSTOMS_OFFICER', 'ROLE_AGENT']);
             }elseif($slug === 'controller') {
                 $user->setRoles(['ROLE_CONTROL']);
             }
@@ -74,6 +85,8 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -84,6 +97,8 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         //todo: comment ne pas afficher le champs de mot de passe à la modification de l'utilisateur ?
@@ -109,6 +124,8 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             if ($user->getStatus()) {
                 $message = $user->getFullname() . ' a été bloqué avec succès';

@@ -212,12 +212,6 @@
           <p>Demandes en attente</p>
         </a>
       </li>
-      {#<li class="nav-item">
-        <a href="{{ path('staff_removal_inprogress') }}" id="{{ 'staff_removal_inprogress'|md5 }}" class="nav-link">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Demandes en encours</p>
-        </a>
-      </li>#}
       <li class="nav-item">
         <a href="{{ path('staff_removal_finalized') }}" id="{{ 'staff_removal_finalized'|md5 }}" class="nav-link">
           <i class="far fa-circle nav-icon"></i>
@@ -230,6 +224,30 @@
 
 
 {% if app.user.profil.slug == 'staff_admin' %}
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="nav-icon fas fa-cogs"></i>
+      <p>
+        Configuration
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{{ path('inform_index') }}" id="{{ 'inform_index'|md5 }}" class="nav-link">
+          <i class="fas fa-info-circle nav-icon"></i>
+          <p>Communiqués</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('user_index') }}" id="{{ 'user_index'|md5 }}" class="nav-link">
+          <i class="fas fa-list nav-icon"></i>
+          <p>Liste des utilisateurs</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+
   <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
       <i class="nav-icon fas fa-users"></i>

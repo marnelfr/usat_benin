@@ -58,6 +58,11 @@ class DemandeFile
      */
     private $remover;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Inform::class, inversedBy="demandeFiles")
+     */
+    private $inform;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -161,6 +166,18 @@ class DemandeFile
     public function setRemover(?Remover $remover): self
     {
         $this->remover = $remover;
+
+        return $this;
+    }
+
+    public function getInform(): ?Inform
+    {
+        return $this->inform;
+    }
+
+    public function setInform(?Inform $inform): self
+    {
+        $this->inform = $inform;
 
         return $this;
     }

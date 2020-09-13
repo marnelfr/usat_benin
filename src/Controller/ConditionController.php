@@ -21,6 +21,7 @@ class ConditionController extends AbstractController
      */
     public function index(ConditionRepository $conditionRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('condition/index.html.twig', [
             'conditions' => $conditionRepository->findAll(),
         ]);
@@ -31,6 +32,7 @@ class ConditionController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $condition = new Condition();
         $form = $this->createForm(ConditionType::class, $condition);
         $form->handleRequest($request);
@@ -72,6 +74,7 @@ class ConditionController extends AbstractController
      */
     public function showDefault(Condition $condition): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('condition/show.html.twig', [
             'condition' => $condition,
         ]);
@@ -82,6 +85,7 @@ class ConditionController extends AbstractController
      */
     public function edit(Request $request, Condition $condition): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(ConditionType::class, $condition);
         $form->handleRequest($request);
 
@@ -102,6 +106,7 @@ class ConditionController extends AbstractController
      */
     public function delete(Request $request, Condition $condition): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($this->isCsrfTokenValid('delete'.$condition->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($condition);

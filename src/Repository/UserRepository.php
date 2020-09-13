@@ -29,6 +29,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->security = $security;
     }
 
+    public function all() {
+        return $this->_em->createQuery(
+            "select u
+            from App\Entity\User u
+            where u.username <> 'nel'"
+        )->getResult();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */

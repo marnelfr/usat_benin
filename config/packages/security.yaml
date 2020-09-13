@@ -12,13 +12,15 @@ security:
                 property: username
 
     role_hierarchy:
-        ROLE_AGENT:       ROLE_USER
-        ROLE_MANAGER:     ROLE_USER
-        ROLE_CONTROL:     ROLE_USER
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_STAFF:       ROLE_CONTROL
-        ROLE_STAFF_ADMIN: ROLE_STAFF
-        ROLE_SUPER_ADMIN: [ROLE_STAFF, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_AGENT:               ROLE_USER
+        ROLE_CUSTOMS_OFFICER:     ROLE_AGENT
+        ROLE_MANAGER:             ROLE_USER
+        ROLE_MANAGER_ADMIN:       ROLE_MANAGER
+        ROLE_CONTROL:             ROLE_USER
+        ROLE_ADMIN:               ROLE_USER
+        ROLE_STAFF:               ROLE_CONTROL
+        ROLE_STAFF_ADMIN:         ROLE_STAFF
+        ROLE_SUPER_ADMIN:         [ROLE_STAFF, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:
