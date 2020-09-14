@@ -21,6 +21,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "ckeditor": "^4.12.1",
         "datatables.net": "^1.10.21",
         "datatables.net-bs4": "^1.10.21",
         "datatables.net-dt": "^1.10.21",

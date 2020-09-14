@@ -30,7 +30,9 @@ class DemandeFileRepository extends ServiceEntityRepository
             $demandeFile->setVehicle($entity);
         } elseif ($entity_name === 'remover'){
             $demandeFile->setRemover($entity);
-        } else{
+        } elseif ($entity_name === 'inform'){
+            $demandeFile->setInform($entity);
+        } else {
             $demandeFile->setTransfer($entity);
         }
         $this->_em->persist($demandeFile);

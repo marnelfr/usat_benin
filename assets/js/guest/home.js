@@ -135,6 +135,30 @@ $(function () {
   }
 
 
+  //Affichage des informations des communiquées
+  const link = $('.btn_link')
+  link.on('click', function (e) {
+    e.preventDefault()
+    const btn = $(this)
+    const text = btn.html()
+    btn.html(text + '<i class="spinner-border spinner-border-sm"></i>')
+    $.get(link.attr('href')).then(function (data) {
+      btn.html(text)
+      if (data.typeMessage) {
+        if (data.typeMessage === 'success') {
+          const modal = new Modal(false, 'large')
+          modal.setContent(data.view)
+          modal.show()
+        } else {
+          alert(data.message)
+        }
+      } else {
+        alert('Erreur de chargement...')
+      }
+    })
+  })
+
+
   //Affichage des informations d'un parc
   const fleetBtn = new Button('#guest-show-fleet')
   fleetBtn.click(function () {

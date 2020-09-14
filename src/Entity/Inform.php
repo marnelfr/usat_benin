@@ -53,6 +53,7 @@ class Inform
     public function __construct()
     {
         $this->demandeFiles = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
