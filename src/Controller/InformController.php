@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Inform;
 use App\Form\InformType;
 use App\Repository\InformRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,14 +25,14 @@ class InformController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
         return $this->render('inform/index.html.twig', [
-            'informs' => $informRepository->findAll(),
+            'informs' => $informRepository->all(),
         ]);
     }
 
     /**
      * @Route("/new", name="inform_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
@@ -39,10 +41,17 @@ class InformController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($inform);
-            $entityManager->flush();
+            /** @var UploadedFile $image */
+            $image = $form->get('image')->getData();
 
+            $entityManager = $this->getDoctrine()->getManager();
+            $inform->setUser($this->getUser());
+            $entityManager->persist($inform);
+            if ($image) {
+                $uploader->upload($image, 'inform', $inform, 'inform');
+            }
+            $entityManager->flush();
+            $this->addFlash('success', 'Communiqué publié avec succès');
             return $this->redirectToRoute('inform_index');
         }
 
@@ -55,13 +64,16 @@ class InformController extends AbstractController
     /**
      * @Route("/{id}", name="inform_show", methods={"GET"})
      */
-    public function show(Inform $inform): Response
+    public function show(Request $request, Inform $inform): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
-
-        return $this->render('inform/show.html.twig', [
-            'inform' => $inform,
-        ]);
+        if ($request->isXmlHttpRequest()) {
+            $data['typeMessage'] = 'success';
+            $data['view'] = $this->renderView('inform/show.html.twig', [
+                'inform' => $inform,
+            ]);
+            return new JsonResponse($data);
+        }
+        return new Response('Accès interdit');
     }
 
     /**

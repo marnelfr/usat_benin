@@ -19,6 +19,31 @@ class InformRepository extends ServiceEntityRepository
         parent::__construct($registry, Inform::class);
     }
 
+
+    public function all() {
+        $sansImages = $this->_em->createQuery(
+            "select i.id, i.title, i.resume, i.createdAt, u.username, 0 idFile
+            from App\Entity\Inform i
+            inner join App\Entity\User u with i.user = u
+            where i not in (
+              select ii
+              from App\Entity\DemandeFile d
+              inner join App\Entity\Inform ii with d.inform = ii
+            )
+            order by i.createdAt desc"
+        )->setMaxResults(2)
+            ->getResult();
+        $avecImages = $this->_em->createQuery(
+            "select i.id, i.title, i.resume, i.createdAt, u.username, d.id idFile
+            from App\Entity\Inform i
+            inner join App\Entity\User u with i.user = u
+            inner join App\Entity\DemandeFile d with d.inform = i
+            order by i.createdAt desc"
+        )->setMaxResults(2)
+            ->getResult();
+        return array_merge($sansImages, $avecImages);
+    }
+
     // /**
     //  * @return Inform[] Returns an array of Inform objects
     //  */

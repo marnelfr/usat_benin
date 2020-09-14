@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Agent;
 use App\Entity\Fleet;
+use App\Entity\Inform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,6 +38,7 @@ class GuestController extends AbstractController
             ])->getForm()
         ;
         $parc->handleRequest($request);
+        $informs = $em->getRepository(Inform::class)->all();
 
         // TODO: Mettre en place une action pour afficher les informations
         $commissionnaire = $this->createFormBuilder()
@@ -63,7 +65,8 @@ class GuestController extends AbstractController
             'blocked_user'          => count($flashBag->get('blocked_user')),
             'registration'          => isset($flashBag->get('registration')[0]),
             'parc'                  => $parc->createView(),
-            'commissionnaire'       => $commissionnaire->createView()
+            'commissionnaire'       => $commissionnaire->createView(),
+            'informs'               => $informs
         ];
         //dump($data);
         return $this->render('guest/home/home.html.twig', $data);

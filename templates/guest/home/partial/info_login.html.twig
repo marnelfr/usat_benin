@@ -46,13 +46,22 @@
     font-weight: bolder;
 ">COMMUNIQUES URGENTS</h5>
             <ul>
-              <li class="mb-3">Depuis le 1er mars 2020, le Gouvernement du Bénin accorde une réduction de 30% sur les
+              {% for inform in informs %}
+                {% if inform.idFile == 0 %}
+                  <li class="mb-3">
+                    {{ inform.resume }}
+                    <br>
+                    <a class="btn_link" href="{{ path('inform_show', {id: inform.id}) }}">&gt;&gt; Lire la suite</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              {#<li class="mb-3">Depuis le 1er mars 2020, le Gouvernement du Bénin accorde une réduction de 30% sur les
                 droits de douane des véhicules d'occasion acquis et mis à la consommation au Bénin...
                 <a class="btn-plus" href="http://usat.test/#">&gt;&gt; Lire la suite</a></li>
               <li>D'importants dégâts enregistrés dans un incendie le dimanche 15 mars 2020 sur le parc automobile de
                 vente de véhicules d'occasion Micha à Sèkandji. Des douzaines de voitures ont été touchées par les
                 flammes...
-                <a class="btn-plus" href="http://usat.test/#">&gt;&gt; Lire la suite</a></li>
+                <a class="btn-plus" href="http://usat.test/#">&gt;&gt; Lire la suite</a></li>#}
             </ul>
           </div>
         </div>
