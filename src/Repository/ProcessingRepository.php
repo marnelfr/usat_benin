@@ -56,6 +56,7 @@ class ProcessingRepository extends ServiceEntityRepository
             $p->setVerdict($verdict)
                 ->setReason($reason);
         }
+        $p->setCreatedAt(new \DateTime());
         $this->_em->persist($p);
         return $p;
     }

@@ -25,9 +25,16 @@ class MenuController extends AbstractController
             $role = str_replace('role_', '', $role);
 
             //On construit le lien du tableau de bord
+            if ($role === 'manager_admin') {
+                $role = 'manager';
+            }
+            if ($role === 'customs_officer') {
+                $role = 'agent';
+            }
             $data = [
                 'dashboard_path' => 'actors_' . $role . '_dashboard'
             ];
+            //dd($data, $role);
 
             $profil = $user->getProfil()->getSlug();
             $data['change_password'] = false;
