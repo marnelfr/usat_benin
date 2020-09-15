@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Inform;
+use App\Service\FileUploader;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,15 +15,21 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class InformRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var FileUploader
+     */
+    private $uploader;
+
+    public function __construct(ManagerRegistry $registry, FileUploader $uploader)
     {
         parent::__construct($registry, Inform::class);
+        $this->uploader = $uploader;
     }
 
 
     public function all() {
         $sansImages = $this->_em->createQuery(
-            "select i.id, i.title, i.resume, i.createdAt, u.username, 0 idFile
+            "select i.id, i.title, i.resume, i.createdAt, u.username, 0 idFile, '' link
             from App\Entity\Inform i
             inner join App\Entity\User u with i.user = u
             where i not in (
@@ -41,6 +48,9 @@ class InformRepository extends ServiceEntityRepository
             order by i.createdAt desc"
         )->setMaxResults(2)
             ->getResult();
+        foreach ($avecImages as &$avecImage) {
+            $avecImage['link'] = $this->uploader->fileLink($this->find($avecImage['id']), 'inform', 'inform');
+        }
         return array_merge($sansImages, $avecImages);
     }
 
