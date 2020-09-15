@@ -55,13 +55,6 @@
                   </li>
                 {% endif %}
               {% endfor %}
-              {#<li class="mb-3">Depuis le 1er mars 2020, le Gouvernement du Bénin accorde une réduction de 30% sur les
-                droits de douane des véhicules d'occasion acquis et mis à la consommation au Bénin...
-                <a class="btn-plus" href="http://usat.test/#">&gt;&gt; Lire la suite</a></li>
-              <li>D'importants dégâts enregistrés dans un incendie le dimanche 15 mars 2020 sur le parc automobile de
-                vente de véhicules d'occasion Micha à Sèkandji. Des douzaines de voitures ont été touchées par les
-                flammes...
-                <a class="btn-plus" href="http://usat.test/#">&gt;&gt; Lire la suite</a></li>#}
             </ul>
           </div>
         </div>
@@ -77,30 +70,20 @@
       </div>
 
       <div class="row mt-3">
-        <div class="col-6">
-          <div class="img">
-            <img width="100%" src="{{ asset('build/images/guest/rubon1-ad5fc.png') }}" alt="">
-          </div>
-          <div class="text">
-            <ul>
-              <li><a href="#">Usat-Bénin et ses structures de fonctionnement</a></li>
-              <li><a href="#">Historique de la filière et Recommandations</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-6">
-          <div class="img">
-            <img width="100%" src="{{ asset('build/images/guest/rubon3-920f9.png') }}" alt="">
-          </div>
-          <div class="text">
-            <ul>
-              <li><a href="#">Forme et système juridique</a></li>
-              <li><a href="#">Activités et les cibles</a></li>
-              <li><a href="#">Visions, Missions et Objectifs de Usat-Benin</a></li>
-            </ul>
-          </div>
-        </div>
+        {% for inform in informs %}
+          {% if inform.idFile > 0 %}
+            <div class="col-6">
+              <div class="img">
+                <img width="100%" height="190px" style="border: 1px solid #e1e1e1;" src="{{ asset(inform.link) }}" alt="">
+              </div>
+              <div class="text">
+                <ul>
+                  <li><a class="btn_link" href="{{ path('inform_show', {id: inform.id}) }}">{{ inform.resume }}</a></li>
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>

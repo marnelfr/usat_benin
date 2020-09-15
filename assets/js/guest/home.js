@@ -136,27 +136,30 @@ $(function () {
 
 
   //Affichage des informations des communiquées
-  const link = $('.btn_link')
-  link.on('click', function (e) {
-    e.preventDefault()
-    const btn = $(this)
-    const text = btn.html()
-    btn.html(text + '<i class="spinner-border spinner-border-sm"></i>')
-    $.get(link.attr('href')).then(function (data) {
-      btn.html(text)
-      if (data.typeMessage) {
-        if (data.typeMessage === 'success') {
-          const modal = new Modal(false, 'large')
-          modal.setContent(data.view)
-          modal.show()
+  $('.btn_link').each(function () {
+    const link = $(this)
+    link.on('click', function (e) {
+      e.preventDefault()
+      const btn = $(this)
+      const text = btn.html()
+      btn.html(text + '<i class="spinner-border spinner-border-sm"></i>')
+      $.get(link.attr('href')).then(function (data) {
+        btn.html(text)
+        if (data.typeMessage) {
+          if (data.typeMessage === 'success') {
+            const modal = new Modal(false, 'large')
+            modal.setContent(data.view)
+            modal.show()
+          } else {
+            alert(data.message)
+          }
         } else {
-          alert(data.message)
+          alert('Erreur de chargement...')
         }
-      } else {
-        alert('Erreur de chargement...')
-      }
+      })
     })
   })
+
 
 
   //Affichage des informations d'un parc
@@ -186,6 +189,39 @@ $(function () {
           }
         }).always(function () {
           fleetBtn.reset()
+        });
+      })
+    })
+
+  })
+
+  //Affichage des informations d'une commissionnaire
+  const agentBtn = new Button('#guest-show-agent')
+  agentBtn.click(function () {
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        let $form = agentBtn.getForm()
+        $.ajax({
+          url: $form.attr('action'),
+          type: 'POST',
+          data: new FormData($form[0]),
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            if (data.typeMessage) {
+              const modal = new Modal()
+              modal.setContent(data.view)
+              modal.show()
+            } else {
+              alert('Echec de chargement. Veuillez réessayer');
+            }
+          },
+          error: function () {
+            alert('Echec de chargement. Veuillez réessayer');
+          }
+        }).always(function () {
+          agentBtn.reset()
         });
       })
     })

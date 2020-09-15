@@ -9,7 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GuestController extends AbstractController
@@ -77,24 +79,38 @@ class GuestController extends AbstractController
      * @Route("/guest/show/fleet", name="guest_show_fleet")
      */
     public function showFleet(Request $request) {
-
-        // TODO: Recuperer le fleet
-        $fleet = new Fleet();
-        return $this->render('guest/show_fleet.html.twig', [
-            'fleet' => $fleet
-        ]);
+        if (isset($request->get('form')['fleet'])){
+            if ((int)$request->get('form')['fleet'] > 0) {
+                $fleet = $this->getDoctrine()->getRepository(Fleet::class)->find($request->get('form')['fleet']);
+                if ($fleet) {
+                    $typeMessage = 'success';
+                    $view = $this->renderView('guest/home/show_fleet.html.twig', [
+                        'fleet' => $fleet
+                    ]);
+                    return new JsonResponse(compact('typeMessage', 'view'));
+                }
+            }
+        }
+        return new Response('Erreur de chargement');
     }
 
     /**
      * @param Request $request
-     * @Route("/guest/shpw/agent", name="guest_show_agent")
+     * @Route("/guest/show/agent", name="guest_show_agent")
      */
     public function showAgent(Request $request) {
-
-        // TODO: Recuperer l'agent
-        $agent = new Agent();
-        return $this->render('guest/show_agent.html.twig', [
-            'agent' => $agent
-        ]);
+        if (isset($request->get('form')['agent'])){
+            if ((int)$request->get('form')['agent'] > 0) {
+                $agent = $this->getDoctrine()->getRepository(Agent::class)->find($request->get('form')['agent']);
+                if ($agent) {
+                    $typeMessage = 'success';
+                    $view = $this->renderView('guest/home/show_agent.html.twig', [
+                        'agent' => $agent
+                    ]);
+                    return new JsonResponse(compact('typeMessage', 'view'));
+                }
+            }
+        }
+        return new Response('Erreur de chargement');
     }
 }
