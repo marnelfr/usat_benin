@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <th>Statut</th>
-            <td>{{ removal.state }}</td>
+            <td>{{ removal.state|replace({'<br>': ''}) }}</td>
         </tr>
         <tr>
             <th>N° BFU</th>
