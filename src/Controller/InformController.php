@@ -64,12 +64,13 @@ class InformController extends AbstractController
     /**
      * @Route("/{id}", name="inform_show", methods={"GET"})
      */
-    public function show(Request $request, Inform $inform): Response
+    public function show(Request $request, Inform $inform, FileUploader $uploader): Response
     {
         if ($request->isXmlHttpRequest()) {
             $data['typeMessage'] = 'success';
             $data['view'] = $this->renderView('inform/show.html.twig', [
                 'inform' => $inform,
+                'link' => $uploader->fileLink($inform, 'inform', 'inform')
             ]);
             return new JsonResponse($data);
         }
