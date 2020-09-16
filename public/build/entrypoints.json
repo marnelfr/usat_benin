@@ -1,0 +1,125 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/8.e6d6f4aa.js",
+        "/build/app.2c921363.js"
+      ],
+      "css": [
+        "/build/app.5f39a8c5.css"
+      ]
+    },
+    "admin": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/admin.2e5398b5.js"
+      ],
+      "css": [
+        "/build/admin.1d3f1b98.css"
+      ]
+    },
+    "home": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/home.be1c5bff.js"
+      ],
+      "css": [
+        "/build/home.82ed20b3.css"
+      ]
+    },
+    "menu": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/menu.8dd95020.js"
+      ]
+    },
+    "user": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/user.88ba9d06.js"
+      ]
+    },
+    "statistic": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/statistic.d84d919e.js"
+      ]
+    },
+    "register": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/register.3bb408e0.js"
+      ]
+    },
+    "importer": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/importer.8644c892.js"
+      ]
+    },
+    "remover": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/remover.3ea224e5.js"
+      ]
+    },
+    "vehicle": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/vehicle.0c2353fb.js"
+      ]
+    },
+    "transfer": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/transfer.1b79cd2d.js"
+      ]
+    },
+    "transfer_treatment": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/transfer_treatment.7389fc13.js"
+      ]
+    },
+    "removal": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/removal.12d19dc3.js"
+      ]
+    },
+    "removal_treatment": {
+      "js": [
+        "/build/runtime.570af11b.js",
+        "/build/0.14b1a7c9.js",
+        "/build/1.626e70d2.js",
+        "/build/removal_treatment.c4dd9174.js"
+      ]
+    }
+  }
+}
