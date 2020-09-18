@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.bol_dir: '%kernel.project_dir%/public/uploads/'
+    app.local_dir: '%kernel.project_dir%/public/local/'
 
 services:
     # default configuration for services in *this* file
@@ -33,3 +34,6 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%app.bol_dir%'
+    App\Service\LocalFileUploader:
+        arguments:
+            $targetDirectory: '%app.local_dir%'

@@ -1,7 +1,9 @@
 <?php
 namespace App\Service;
 
+use App\Entity\DemandeFile;
 use App\Entity\File;
+use App\Repository\DemandeFileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File as Files;
@@ -21,15 +23,20 @@ class LocalFileUploader
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var DemandeFile
+     */
+    private $fileRepo;
 
-    public function __construct($targetDirectory, Security $security, EntityManagerInterface $em)
+    public function __construct($targetDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
     {
         $this->targetDirectory = $targetDirectory;
         $this->security = $security;
+        $this->fileRepo = $fileRepository;
         $this->em = $em;
     }
 
-    public function upload(UploadedFile $file, string $for = 'bol', bool $edit = false, $oldFileName = null)
+    public function upload(UploadedFile $file, string $for = 'dp', $entity, $entity_name = 'removal', bool $edit = false)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
@@ -39,9 +46,23 @@ class LocalFileUploader
         // Move the file to the directory where brochures are stored
         try {
             if ($edit) {
-                $fileSys = new Filesystem();
-                if ($fileSys->exists($this->targetDirectory . $oldFileName)) {
-                    $fileSys->remove($this->targetDirectory . $oldFileName);
+                $oldDemandeFile = $this->fileRepo->findOneBy([
+                    $entity_name => $entity,
+                    'usedFor' => $for
+                ]);
+                if ($oldDemandeFile) {
+                    $oldFilePath = $oldDemandeFile->getFile()->getLink();
+
+                    $fileSys = new Filesystem();
+                    if ($fileSys->exists($this->uploadsDirectory . $oldFilePath)) {
+                        $fileSys->remove($this->uploadsDirectory . $oldFilePath);
+                    }
+
+                    $parts = explode('.', $oldFilePath);
+                    if (end($parts) === $extension) {
+                        $filePath = $oldFilePath;
+                        goto AfterFileName;
+                    }
                 }
             }
 

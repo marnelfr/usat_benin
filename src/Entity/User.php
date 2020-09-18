@@ -154,6 +154,11 @@ class User implements UserInterface, \Serializable
      */
     private $informs;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeFile::class, mappedBy="user")
+     */
+    private $picture;
+
 
 
 
@@ -170,6 +175,7 @@ class User implements UserInterface, \Serializable
         $this->createdNotifications = new ArrayCollection();
         $this->imforms = new ArrayCollection();
         $this->informs = new ArrayCollection();
+        $this->picture = new ArrayCollection();
     }
 
 
@@ -667,6 +673,37 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($inform->getUser() === $this) {
                 $inform->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DemandeFile[]
+     */
+    public function getPicture(): Collection
+    {
+        return $this->picture;
+    }
+
+    public function addPicture(DemandeFile $picture): self
+    {
+        if (!$this->picture->contains($picture)) {
+            $this->picture[] = $picture;
+            $picture->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(DemandeFile $picture): self
+    {
+        if ($this->picture->contains($picture)) {
+            $this->picture->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getUser() === $this) {
+                $picture->setUser(null);
             }
         }
 
