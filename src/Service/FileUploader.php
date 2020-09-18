@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class FileUploader
 {
     private $uploadsDirectory;
+
     /**
      * @var Security
      */
@@ -37,9 +38,12 @@ class FileUploader
      */
     private $fileRepo;
 
-    public function __construct($targetDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
+    private $localUploadsDirectory;
+
+    public function __construct($targetDirectory, $localDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
     {
         $this->uploadsDirectory = $targetDirectory;
+        $this->localUploadsDirectory = $localDirectory;
         $this->security = $security;
         $this->em = $em;
         $this->fileRepo = $fileRepository;
@@ -90,7 +94,7 @@ class FileUploader
         }
     }
 
-    public function upload(UploadedFile $file, string $for = 'bol', $entity, $entity_name = 'removal', bool $edit = false) {
+    public function upload(UploadedFile $file, string $for = 'bol', $entity, $entity_name = 'removal', bool $edit = false, bool $local = false) {
         try{
             $extension = $file->guessExtension();
 
