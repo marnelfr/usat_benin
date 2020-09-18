@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\LocalFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +38,14 @@ class UserController extends AbstractController
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $encoder
+     *
+     * @param LocalFileUploader            $uploader
+     *
+     * @return Response
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, LocalFileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
@@ -47,6 +54,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $image */
+            $image = $form->get('image')->getData();
+
             $entityManager = $this->getDoctrine()->getManager();
             $slug = $user->getProfil()->getSlug();
             if ($slug === 'staff') {
@@ -69,6 +79,11 @@ class UserController extends AbstractController
                 )
             );
             $entityManager->persist($user);
+
+            if ($image) {
+                $uploader->upload($image, 'dp', $user, 1);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index');
@@ -81,7 +96,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param User $user
      * @Route("/{id}", name="user_show", methods={"GET"})
+     *
+     * @return Response
      */
     public function show(User $user): Response
     {
