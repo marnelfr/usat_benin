@@ -10,10 +10,10 @@
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="{{ asset('img/user/default.jpg') }}" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ asset(app.user.username|dp) }}" style="height: 34px;" class="user-image img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="file:///D:/Web/AdminLTE-3.0.5/pages/examples/blank.html#" class="d-block">{{ app.user.fullname }}</a>
+        <a href="#" class="d-block">{{ app.user.fullname }}</a>
       </div>
     </div>
     <div class="user-panel mt-1 pb-3 mb-4 pl-3 d-flex menu-header">
