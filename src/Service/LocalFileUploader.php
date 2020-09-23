@@ -65,6 +65,7 @@ class LocalFileUploader
                     }
                 }
             }
+            AfterFileName:
 
             $file->move($this->targetDirectory . date('Ymm') . '/' . $for . '/', $newFilename);
 

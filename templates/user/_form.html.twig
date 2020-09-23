@@ -1,5 +1,31 @@
 {{ form_start(form) }}
-  {{ form_widget(form) }}
+  {{ form_row(form.username) }}
+  <div class="row">
+    <div class="col-sm-6 mr-0 d-inline">
+      {{ form_row(form.lastName) }}
+    </div>
+    <div class="col-sm-6 ml-0 d-inline">
+      {{ form_row(form.name) }}
+    </div>
+  </div>
+  {{ form_row(form.password) }}
+  <div class="row">
+    <div class="col-sm-6 mr-0 d-inline">
+      {{ form_row(form.email) }}
+    </div>
+    <div class="col-sm-6 ml-0 d-inline">
+      {{ form_row(form.phone) }}
+    </div>
+  </div>
+  {{ form_row(form.address) }}
+  <div class="row">
+    <div class="col-sm-6 mr-0 d-inline">
+      {{ form_row(form.profil) }}
+    </div>
+    <div class="col-sm-6 ml-0 d-inline">
+      {{ form_row(form.image) }}
+    </div>
+  </div>
   <div class="row">
       <div class="col-md-12 text-right">
           <button type="submit" class="btn btn-success btn-user-saver"><i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}</button>
