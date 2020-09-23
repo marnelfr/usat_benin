@@ -679,12 +679,9 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * @return Collection|DemandeFile[]
-     */
-    public function getPicture(): Collection
+    public function getPicture()
     {
-        return $this->picture;
+        return $this->picture->last();
     }
 
     public function addPicture(DemandeFile $picture): self

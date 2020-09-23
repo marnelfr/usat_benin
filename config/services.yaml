@@ -34,6 +34,7 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%app.bol_dir%'
+            $localDirectory: '%app.local_dir%'
     App\Service\LocalFileUploader:
         arguments:
             $targetDirectory: '%app.local_dir%'

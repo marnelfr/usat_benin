@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use App\Service\LocalFileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,11 +43,12 @@ class UserController extends AbstractController
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $encoder
      *
-     * @param LocalFileUploader            $uploader
+     *
+     * @param FileUploader                 $uploader
      *
      * @return Response
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder, LocalFileUploader $uploader): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, FileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
@@ -71,7 +74,7 @@ class UserController extends AbstractController
                 $user->setRoles(['ROLE_CONTROL']);
             }
             $user->setStatus(1);
-            $user->setIsVerified(1);
+            $user->setIsVerified(0);
             $user->setPassword(
                 $encoder->encodePassword(
                     $user,
@@ -81,7 +84,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
 
             if ($image) {
-                $uploader->upload($image, 'dp', $user, 1);
+                $uploader->upload($image, 'dp', $user, 'user', false, true);
             }
 
             $entityManager->flush();

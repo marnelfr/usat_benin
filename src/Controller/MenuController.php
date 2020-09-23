@@ -43,6 +43,7 @@ class MenuController extends AbstractController
             if ($profil !== 'agent' && $profil !== 'manager' && !$user->getIsVerified()) {
                 $data['change_password'] = true;
             }
+            dump($data, $profil, $user->getIsVerified());
 
             return $this->render('menu/menu_items.html.twig', $data);
         } catch (\Exception $e) {
