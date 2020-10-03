@@ -21,55 +21,13 @@ $(function () {
   modalAddRemover.click(function () {
     u.entityModalAdd(modalAddRemover, 'importer_new', 'modal-importer-saver', 'vehicle_importer')
   })
-  /*let btnImporter = new Button('#vehicle-new-importer')
-  btnImporter.click(function () {
-    $.get(Routing.generate('importer_new')).then(function (data) {
-      btnImporter.reset()
-      let modal = new Modal()
-      modal.setContent(data.view)
-
-      modal.show(function () {
-        let modalBtnSaver = new Button('#modal-importer-saver')
-        modalBtnSaver.click(function () {
-          let $form = modalBtnSaver.getForm()
-          let formData = new FormData($form[0])
-          $.ajax({
-            url: $form.attr('action'),
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-              if (!!data.typeMessage) {
-                if (data.typeMessage === 'success') {
-                  u.notif(data.message, data.typeMessage)
-                  let select = $('#vehicle_importer')
-                  select.prepend(`<option value="${data.id}">${data.name}</option>`)
-
-                  //Ici, j'essaie d'afficher en même temps l'importer
-                  select.val(data.id)
-                  modal.hide()
-                } else {
-                  modal.setContent(data.view)
-                }
-              } else {
-                u.notif('Echec de chargement.', 'danger')
-              }
-            },
-            error: function () {
-              u.notif("Echec de chargement. Veuillez réessayer", 'warning');
-            }
-          }).always(function () {
-            modalBtnSaver.reset()
-          });
-
-        })
-      })
-    })
-  })*/
 
   //Affichage
   u.showPicture('transfer-show-bol', 'vehicle_img')
   u.showPicture('transfer-show-assurance', 'transfer_img')
+
+  //Affichage pdf   static showPdf(btnID, pdfPath, typeDemand) {
+  u.showPdf('transfer-show-attestation', 'transfer_attestation_pdf', 'transfer')
+    //modal.setContent('<embed src="https://www.labri.fr/perso/billaud/Resources/resources/bash2004/COURS-BASH-2004.pdf" width="100%" height="600" type="application/pdf">')
 
 })
