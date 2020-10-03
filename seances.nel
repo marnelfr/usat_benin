@@ -49,6 +49,13 @@
 
 
 
+ssh username@host -p port
+
+
+
+
+
+
 Please add a DNS record with the following parameters:
 Record type: TXT
 Domain name: _acme-challenge.cv.rydynyart.com

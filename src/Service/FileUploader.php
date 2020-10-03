@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class FileUploader
 {
     private $uploadsDirectory;
+
     /**
      * @var Security
      */
@@ -37,15 +38,18 @@ class FileUploader
      */
     private $fileRepo;
 
-    public function __construct($targetDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
+    private $localUploadsDirectory;
+
+    public function __construct($targetDirectory, $localDirectory, Security $security, EntityManagerInterface $em, DemandeFileRepository $fileRepository)
     {
         $this->uploadsDirectory = $targetDirectory;
+        $this->localUploadsDirectory = $localDirectory;
         $this->security = $security;
         $this->em = $em;
         $this->fileRepo = $fileRepository;
     }
 
-    public function fileLink($entity, string $entity_name, string $fileUsage) {
+    public function fileLink($entity, string $entity_name, string $fileUsage, $local = false) {
         try{
             $demandeFile = $this->fileRepo->findOneBy([
                 $entity_name => $entity,
@@ -57,7 +61,11 @@ class FileUploader
             }
 
             $link = $demandeFile->getFile()->getLink();
-            $absolutePath = $this->uploadsDirectory . $link;
+            if ($local) {
+                $absolutePath = $this->localUploadsDirectory . $link;
+            } else {
+                $absolutePath = $this->uploadsDirectory . $link;
+            }
             if (file_exists($absolutePath)) {
                 goto END;
             }
@@ -90,7 +98,7 @@ class FileUploader
         }
     }
 
-    public function upload(UploadedFile $file, string $for = 'bol', $entity, $entity_name = 'removal', bool $edit = false) {
+    public function upload(UploadedFile $file, string $for = 'bol', $entity, $entity_name = 'removal', bool $edit = false, bool $local = false) {
         try{
             $extension = $file->guessExtension();
 
@@ -117,19 +125,29 @@ class FileUploader
             }
 
             $safeFilename = $for . '_' . date('Ymd') . '_' . uniqid();
-            $filePath = $for . '/' . date('Ymm') . '/' . $safeFilename . '.' . $extension;
+            $newFilename = $safeFilename . '.' . $file->guessExtension();
+
+            if ($local) {
+                $filePath = $for . '/' . $safeFilename . '.' . $extension;
+            } else {
+                $filePath = $for . '/' . date('Ymm') . '/' . $safeFilename . '.' . $extension;
+            }
 
             AfterFileName:
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
-            $resource = \fopen(
-                $file->getRealPath(),'r'
-            );
-            $this->client()->PutObject([
-                'Bucket' => 'usat',
-                'Key' => $filePath,
-                'Body' => $resource,
-            ]);
+            if ($local) {
+                $file->move($this->localUploadsDirectory . $for . '/', $newFilename);
+            } else {
+                $resource = \fopen(
+                    $file->getRealPath(),'r'
+                );
+                $this->client()->PutObject([
+                    'Bucket' => 'usat',
+                    'Key' => $filePath,
+                    'Body' => $resource,
+                ]);
+            }
 
             if ($edit && $oldDemandeFile) {
                 $saveFile = $this->fillFile($oldDemandeFile->getFile(), $originalFilename, $filePath);

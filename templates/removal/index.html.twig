@@ -44,7 +44,7 @@
                                   {% if removal.status == 'rejected' %}
                                     {{ removal.processing.reason }}
                                   {% else %}
-                                    {{ removal.state }}
+                                    {{ removal.state|raw }}
                                   {% endif %}
                                 </td>
                                 <td class="text-right">

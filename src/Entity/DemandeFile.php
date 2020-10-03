@@ -63,6 +63,11 @@ class DemandeFile
      */
     private $inform;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="picture")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->deleted = 0;
@@ -178,6 +183,18 @@ class DemandeFile
     public function setInform(?Inform $inform): self
     {
         $this->inform = $inform;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

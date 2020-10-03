@@ -44,7 +44,7 @@
                                   {% if transfer.status == 'rejected' %}
                                     {{ transfer.processing.reason }}
                                   {% else %}
-                                    {{ transfer.state }}
+                                    {{ transfer.state|raw }}
                                   {% endif %}
                                 </td>
                                 <td class="text-right">
