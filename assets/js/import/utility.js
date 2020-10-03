@@ -160,4 +160,28 @@ export default class Utility {
   }
 
 
+  static showPdf(btnID, pdfPath, typeDemand) {
+    import('../../../public/js/fos_js_routes.json').then(({default: routes}) => {
+      import('../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js').then(({default: Routing}) => {
+        Routing.setRoutingData(routes);
+        let btn = new Button('#'+btnID)
+        btn.click(function () {
+          let datum = {id: btn.data('id'), type: typeDemand}
+          $.get(Routing.generate(pdfPath, datum)).then(function (data) {
+            if (data.error) {
+              alert('Aucun document n\'a été trouvé')
+            }else{
+              let modal = new Modal(false, 'large')
+              modal.setContent(data.view)
+              modal.show()
+            }
+          }).always(function () {
+            btn.reset()
+          })
+        })
+      })
+    })
+  }
+
+
 }
