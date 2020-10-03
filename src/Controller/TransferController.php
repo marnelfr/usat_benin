@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\DemandeFile;
+use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\TransferRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
+use Knp\Bundle\SnappyBundle\Snappy\Response\JpegResponse;
+use Knp\Snappy\Image;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -176,6 +180,49 @@ class TransferController extends AbstractController
         }
         return new Response('access denied');
     }
+
+
+    /**
+     * @Route("/{id}/pdf", options = { "expose" = true }, name="transfer_attestation_pdf", methods={"GET"})
+     */
+    public function pdf(Request $request, FileUploader $uploader, Pdf $pdf, Image $imager) {
+        if ($request->isXmlHttpRequest()) {
+            $type = $request->get('type');
+            if ($type === 'transfer') {
+                $entity = Transfer::class;
+            }else {
+                $entity = Removal::class;
+            }
+            $entity = $this->getDoctrine()->getRepository($entity)->find($request->get('id'));
+            if (!$entity) {
+                return new Response('Error');
+            }
+            $html = $this->renderView('actors/staff/'. $type .'/print.approval.html.twig', array(
+                $type  => $entity
+            ));
+            /*return new JpegResponse(
+                $imager->getOutputFromHtml($html),
+                'image.jpg'
+            );*/
+
+
+            $time = time();
+            $pdf->generateFromHtml($html, $this->getParameter('app.bol_dir') . 'temp/' . $time . '.pdf');
+            /*$response = new PdfResponse(
+                $pdf->getOutputFromHtml($html),
+                'file.pdf'
+            );*/
+            $view = $this->renderView('transfer/pdf_show.html.twig', [
+                'link' => 'https://127.0.0.1:8000/' . 'uploads/temp/' . $time . '.pdf'
+            ]);
+            return new JsonResponse([
+                'view' => $view,
+                'error' => false
+            ]);
+        }
+        return new Response('access denied');
+    }
+
 
     /**
      * @Route("/{id}/edit", name="transfer_edit", methods={"GET","POST"})
