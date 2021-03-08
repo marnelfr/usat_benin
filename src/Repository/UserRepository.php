@@ -33,7 +33,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->_em->createQuery(
             "select u
             from App\Entity\User u
-            where u.username <> 'nel'"
+            where u.username <> 'nell'"
         )->getResult();
     }
 
