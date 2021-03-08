@@ -2,7 +2,7 @@
 <section class="container-fluid">
   <div class="text-center">
     <div class="menu-top d-none d-md-flex flex-row m-md-auto">
-      <div class="flex-fill btn-plus menu-top-item">Contact/Aide</div>
+      <div data-toggle="modal" data-target="#modal-contact-aide" class="flex-fill menu-top-item">Contact/Aide</div>
       <div class="flex-fill">|</div>
       <div class="flex-fill btn-plus menu-top-item">Nous joindre</div>
       <div class="flex-fill">|</div>
@@ -17,6 +17,53 @@
   </div>
 </section>
 <!-- /menu top -->
+
+<div class="modal fade" id="modal-contact-aide">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form name="importer" method="post" action="/importxfdsfdfdsfer/new">
+        <div class="modal-header">
+          <h4 class="modal-title">Contact - Aide</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div id="importer">
+            <div class="form-group">
+              <label for="name" class="required">Nom et Prénom</label>
+              <input type="text" name="name" required="required" maxlength="255" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="email" class="required">E-mail</label>
+              <input type="email" name="email" required="required" maxlength="255" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="subject" class="required">Sujet</label>
+              <select id="subject" name="subject" required="required" class="form-control">
+                <option value="Proposition">Proposition</option>
+                <option value="Demande d'aide">Demande d'aide</option>
+                <option value="Demande d'assistance">Demande d'assistance</option>
+                <option value="Signaler un disfonctionnement">Signaler un disfonctionnement</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="content" class="required">Message</label>
+              <textarea name="content" id="content" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer text-left">
+          <button onclick="this.setAttributes('disabled', 'disabled')" class="btn btn-success float-right">
+            <i class="fas fa-save"></i> Enregistrer
+          </button>
+        </div>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 
 <!-- menu principal -->
 <section class="container-fluid">
@@ -56,7 +103,8 @@
 <!-- /menu principal -->
 
 <div class="col-12 col-sm-12 col-md-12 body">
-  <div class="details ambition row mt-0 mb-2 ml-0 pl-0" style="position: absolute; z-index: 20; background-color: white; margin-right: 0px; display: none;">
+  <div class="details ambition row mt-0 mb-2 ml-0 pl-0"
+       style="position: absolute; z-index: 20; background-color: white; margin-right: 0px; display: none;">
     <div class="col-12 col-sm-2 col-md-2 logo">
       <img src="{{ asset('build/images/guest/jarre.jpg') }}" alt="Symbole Jarre">
     </div>
@@ -97,8 +145,10 @@
   </div>
 
   <div class="carousele mb-0" style="z-index: -15">
-    <img class="img-carousel" id="imgc1" src="{{ asset('build/images/guest/img.jpg') }}" alt="Image Parcking" style="display: none">
-    <img class="img-carousel" style="display: none" id="imgc2" src="{{ asset('build/images/guest/img2.jpg') }}" alt="Image Parcking">
+    <img class="img-carousel" id="imgc1" src="{{ asset('build/images/guest/img.jpg') }}" alt="Image Parcking"
+         style="display: none">
+    <img class="img-carousel" style="display: none" id="imgc2" src="{{ asset('build/images/guest/img2.jpg') }}"
+         alt="Image Parcking">
     <img class="img-carousel" id="imgc3" style="" src="{{ asset('build/images/guest/img3.jpg') }}" alt="Image Parcking">
   </div>
 </div>
