@@ -2,123 +2,105 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/8.e6d6f4aa.js",
-        "/build/app.2c921363.js"
-      ],
-      "css": [
-        "/build/app.5f39a8c5.css"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/app.js"
       ]
     },
     "admin": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/admin.2e5398b5.js"
-      ],
-      "css": [
-        "/build/admin.1d3f1b98.css"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/admin.js"
       ]
     },
     "home": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/home.be1c5bff.js"
-      ],
-      "css": [
-        "/build/home.82ed20b3.css"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/vendors~home~removal~transfer.js",
+        "https://localhost:8080/build/home.js"
       ]
     },
     "menu": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/menu.8dd95020.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/menu.js"
       ]
     },
     "user": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/user.88ba9d06.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/user.js"
       ]
     },
     "statistic": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/statistic.d84d919e.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/statistic.js"
       ]
     },
     "register": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/register.3bb408e0.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/register.js"
       ]
     },
     "importer": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/importer.8644c892.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/importer.js"
       ]
     },
     "remover": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/remover.3ea224e5.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/remover.js"
       ]
     },
     "vehicle": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/vehicle.0c2353fb.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/vehicle.js"
       ]
     },
     "transfer": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/transfer.1b79cd2d.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/vendors~home~removal~transfer.js",
+        "https://localhost:8080/build/0.js",
+        "https://localhost:8080/build/transfer.js"
       ]
     },
     "transfer_treatment": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/transfer_treatment.7389fc13.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/transfer_treatment.js"
       ]
     },
     "removal": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/removal.12d19dc3.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/vendors~home~removal~transfer.js",
+        "https://localhost:8080/build/0.js",
+        "https://localhost:8080/build/removal.js"
       ]
     },
     "removal_treatment": {
       "js": [
-        "/build/runtime.570af11b.js",
-        "/build/0.14b1a7c9.js",
-        "/build/1.626e70d2.js",
-        "/build/removal_treatment.c4dd9174.js"
+        "https://localhost:8080/build/runtime.js",
+        "https://localhost:8080/build/vendors~_tmp_copy~admin~app~home~importer~menu~register~removal~removal_treatment~remover~statistic~~9ba5940b.js",
+        "https://localhost:8080/build/removal_treatment.js"
       ]
     }
   }
