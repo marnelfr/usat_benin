@@ -40,10 +40,10 @@ class MenuController extends AbstractController
             $data['change_password'] = false;
             //S'il s'agit pas d'un agent ni d'un manager, on ne vérifie en reéalité par le mail
             //La vérification de l'email se substitue ici à la personnalisation du mot de passe qui est obligatoire
-            if ($profil !== 'agent' && $profil !== 'manager' && !$user->getIsVerified()) {
+            if (/*$profil !== 'agent' && $profil !== 'manager' && */!$user->getIsVerified()) {
                 $data['change_password'] = true;
             }
-            dump($data, $profil, $user->getIsVerified());
+//            dump($data, $profil, $user->getIsVerified(), $this->getParameter('app.base_url'));
 
             return $this->render('menu/menu_items.html.twig', $data);
         } catch (\Exception $e) {

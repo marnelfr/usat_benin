@@ -46,6 +46,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, FleetRepository $fleetRepo): Response
     {
+        return $this->redirectToRoute('home_page', [], 301);
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         if ($user->getUsername() === null) {
@@ -125,6 +126,8 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request): Response
     {
+        return $this->redirectToRoute('home_page', [], 301);
+
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $this->addFlash('onTheVerificationWay', true);
         }

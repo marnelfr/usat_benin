@@ -33,7 +33,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->_em->createQuery(
             "select u
             from App\Entity\User u
-            where u.username <> 'nell'"
+            where u.username <> 'nel'"
         )->getResult();
     }
 
@@ -83,6 +83,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 from App\Entity\User u
                 inner join App\Entity\Profil p with u.profil = p
                 where p.slug = :profile
+                and u.username <> 'nel'
                 {$whereUser}
                 {$wherePeriod}"
             )->setParameters($params)
