@@ -62,7 +62,11 @@ class UserController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $slug = $user->getProfil()->getSlug();
-            if ($slug === 'staff') {
+            if ($slug === 'agent') {
+                $user->setRoles(['ROLE_AGENT']);
+            }elseif ($slug === 'manager') {
+                $user->setRoles(['ROLE_MANAGER']);
+            }elseif ($slug === 'staff') {
                 $user->setRoles(['ROLE_STAFF', 'ROLE_CONTROL']);
             }elseif($slug === 'staff_admin') {
                 $user->setRoles(['ROLE_STAFF_ADMIN', 'ROLE_STAFF', 'ROLE_CONTROL']);
