@@ -213,7 +213,7 @@ class TransferController extends AbstractController
                 'file.pdf'
             );*/
             $view = $this->renderView('transfer/pdf_show.html.twig', [
-                'link' => 'https://127.0.0.1:8000/' . 'uploads/temp/' . $time . '.pdf'
+                'link' => $this->getParameter('app.base_url') . 'uploads/temp/' . $time . '.pdf'
             ]);
             return new JsonResponse([
                 'view' => $view,
