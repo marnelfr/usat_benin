@@ -19,6 +19,8 @@ class ProcessingController extends AbstractController
      */
     public function index(ProcessingRepository $processingRepository): Response
     {
+        $this->get('app.log')->add('Processing', 'index');
+
         return $this->render('processing/index.html.twig', [
             'processings' => $processingRepository->findAll(),
         ]);

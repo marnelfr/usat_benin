@@ -21,6 +21,7 @@ class ConditionController extends AbstractController
     public function index(ConditionRepository $conditionRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('Condition', 'index');
         return $this->render('condition/index.html.twig', [
             'conditions' => $conditionRepository->findAll(),
         ]);
