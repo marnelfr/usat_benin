@@ -24,6 +24,8 @@ class AdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add('AdminDashboard', 'index');
+
         return $this->render('actors/admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);

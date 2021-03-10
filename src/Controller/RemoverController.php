@@ -23,8 +23,7 @@ class RemoverController extends AbstractController
     public function index(RemoverRepository $removerRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('Remover', 'index');
 
         return $this->render('remover/index.html.twig', [
             'removers' => $removerRepository->findAll(),

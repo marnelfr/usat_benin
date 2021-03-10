@@ -8,10 +8,11 @@ parameters:
     app.local_dir: '%kernel.project_dir%/public/local/'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
     app.base_url: 'https://127.0.0.1:8000/'
-    log.show: show #1
-    log.create: creation #2
-    log.edit: edit #3
-    log.delete: delete #4
+    log.index: 'displayed.index' #0
+    log.new: 'entity.creation' #1
+    log.show: 'displayed.entity' #2
+    log.edit: 'entity.edition' #3
+    log.delete: 'entity.deleted' #4
 
 services:
     # default configuration for services in *this* file

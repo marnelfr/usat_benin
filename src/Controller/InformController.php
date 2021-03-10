@@ -22,6 +22,7 @@ class InformController extends AbstractController
     public function index(InformRepository $informRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+        $this->get('app.log')->add('Inform', 'index');
 
         return $this->render('inform/index.html.twig', [
             'informs' => $informRepository->all(),

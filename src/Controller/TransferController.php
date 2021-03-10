@@ -40,6 +40,7 @@ class TransferController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('Transfer', 'index');
 
         return $this->render('transfer/index.html.twig', [
             'title' => 'En attente',

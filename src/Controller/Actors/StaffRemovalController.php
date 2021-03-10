@@ -88,6 +88,8 @@ class StaffRemovalController extends AbstractController
         $em->getRepository(Processing::class)->add($removal, 'removal');
         $em->flush();
 
+        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
+
         return $this->render('actors/staff/removal/show.html.twig', [
             'removal' => $removal,
         ]);

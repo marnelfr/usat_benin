@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\DemandeFile;
-use App\Entity\File;
-use App\Entity\Notification;
 use App\Entity\Removal;
 use App\Entity\Vehicle;
 use App\Form\RemovalType;
@@ -50,6 +47,7 @@ class RemovalController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('Removal', 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'En attente',

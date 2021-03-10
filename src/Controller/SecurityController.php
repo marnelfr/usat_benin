@@ -147,6 +147,8 @@ class SecurityController extends AbstractController
             $user->setIsVerified(1);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Code d\'accès modifier avec succès');
+            $this->get('app.log')->add('Security', 'edit');
+
             return new JsonResponse([
                 'typeMessage' => 'success',
                 'link'        => $this->generateUrl('security_check_user_profil')
