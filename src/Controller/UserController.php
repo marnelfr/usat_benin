@@ -31,7 +31,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
-        $this->get('app.log')->add('User', 'index');
+        $this->get('app.log')->add(User::class, 'index');
 
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->all(),
@@ -93,6 +93,8 @@ class UserController extends AbstractController
 
             $entityManager->flush();
 
+            $this->get('app.log')->add(User::class, 'new', $user->getId());
+
             return $this->redirectToRoute('user_index');
         }
 
@@ -112,6 +114,8 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
+        $this->get('app.log')->add(User::class, 'show', $user->getId(), ['id']);
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -119,6 +123,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return Response
      */
     public function edit(Request $request, User $user): Response
     {
@@ -135,6 +143,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->get('app.log')->add(User::class, 'edit', $user->getId(), ['id']);
+
             return $this->redirectToRoute('user_index');
         }
 
@@ -146,6 +156,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return Response
      */
     public function delete(Request $request, User $user): Response
     {
@@ -162,6 +176,8 @@ class UserController extends AbstractController
 //            $entityManager->remove($user);
             $this->addFlash('success', $message);
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('app.log')->add(User::class, 'delete', $user->getId(), ['id']);
         }
 
         return $this->redirectToRoute('user_index');

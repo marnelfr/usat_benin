@@ -20,7 +20,7 @@ class AdminController extends AbstractController
      *
      * @Route("/actors/admin", name="actors_admin_dashboard")
      */
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

@@ -88,7 +88,7 @@ class StaffRemovalController extends AbstractController
         $em->getRepository(Processing::class)->add($removal, 'removal');
         $em->flush();
 
-        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
+        $this->get('app.log')->add(Removal::class, 'treat', $removal->getId(), ['id']);
 
         return $this->render('actors/staff/removal/show.html.twig', [
             'removal' => $removal,
@@ -102,6 +102,8 @@ class StaffRemovalController extends AbstractController
      * @return Response
      */
     public function show(Removal $removal) {
+        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
+
         return $this->render('actors/staff/removal/show.html.twig', [
             'finalized' => true,
             'removal' => $removal
@@ -117,6 +119,8 @@ class StaffRemovalController extends AbstractController
     public function finalized(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add('Staff.Removal.Finalized', 'index');
 
         return $this->render('actors/staff/removal/index.html.twig', [
             'title' => 'Finalisées',
@@ -158,6 +162,9 @@ class StaffRemovalController extends AbstractController
             // TODO: Envoie un email au demandeur
 
             $entityManager->flush();
+
+            $this->get('app.log')->add(Removal::class, 'reject', $removal->getId(), ['id']);
+
             $this->addFlash('success', 'Demande rejetée avec succès');
             return $this->redirectToRoute('staff_removal_index');
         }
@@ -187,6 +194,7 @@ class StaffRemovalController extends AbstractController
 
         $removal->setStatus('finalized');
         $removal->getProcessing()->setVerdict(1);
+        $this->get('app.log')->add(Removal::class, 'approve', $removal->getId(), ['id']);
 
         $entityManager = $this->getDoctrine()->getManager();
 

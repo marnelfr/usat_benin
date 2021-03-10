@@ -23,7 +23,7 @@ class ControlController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(StaffController $staffController)
+    public function index(StaffController $staffController): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->get('app.log')->add('ControlDashboard', 'index');

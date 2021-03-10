@@ -47,7 +47,7 @@ class RemovalController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->get('app.log')->add('Removal', 'index');
+        $this->get('app.log')->add(Removal::class, 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'En attente',
@@ -65,6 +65,8 @@ class RemovalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add(Removal::class . '.InProgress', 'index');
+
         return $this->render('removal/index.html.twig', [
             'title' => 'en Cours',
             'noData' => 'Aucune demande en cours de traitement',
@@ -78,6 +80,8 @@ class RemovalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add(Removal::class . '.Rejected', 'index');
+
         return $this->render('removal/index.html.twig', [
             'title' => 'Rejetées',
             'noData' => 'Aucune demande rejetée',
@@ -90,6 +94,8 @@ class RemovalController extends AbstractController
     public function index_finalized(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Removal::class . '.Finalized', 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'Approuvées',
@@ -189,8 +195,10 @@ class RemovalController extends AbstractController
      * Affiche l'etape 3 du forumaire puis traite sa soumission
      *
      * @Route("/new/{id}/save", name="removal_new_saver", methods={"POST", "GET"})
-     * @param Request $request
-     * @param Vehicle $vehicle
+     * @param Request      $request
+     * @param Vehicle      $vehicle
+     *
+     * @param RefGenerator $generator
      *
      * @return Response
      */
@@ -236,6 +244,9 @@ class RemovalController extends AbstractController
                         $fileNotSent = true;
                     }
                 }
+
+                $this->get('app.log')->add(Removal::class, 'new', $removal->getId(), ['id' => $vehicle->getId()]);
+
                 if ($fileNotSent) {
                     $this->addFlash('warning', 'Demande d\'enlevement avec erreur d\'enregistrement. Veuiller modifier la demande et rajouter les fichiers scannés');
                 } else {
@@ -256,10 +267,15 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}", name="removal_show", methods={"GET"})
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function show(Removal $removal): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
 
         return $this->render('removal/show.html.twig', [
             'removal' => $removal,
@@ -279,7 +295,10 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/edit/{id}/saver", name="removal_edit_saver", methods={"GET","POST"}, requirements={"id":"\d+"})
-     * @throws \Exception
+     * @param Request $request
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function editSaver(Request $request, Removal $removal): Response
     {
@@ -310,6 +329,8 @@ class RemovalController extends AbstractController
 
             $objectManager->flush();
 
+            $this->get('app.log')->add(Removal::class, 'edit', $removal->getId(), ['id']);
+
             return $this->redirectToRoute('removal_index');
         }
 
@@ -323,6 +344,10 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}", name="removal_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function delete(Request $request, Removal $removal): Response
     {
@@ -332,6 +357,8 @@ class RemovalController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($removal);
             $entityManager->flush();
+
+            $this->get('app.log')->add(Removal::class, 'delete', $removal->getId(), ['id']);
         }
 
         return $this->redirectToRoute('removal_index');

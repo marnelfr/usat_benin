@@ -46,7 +46,7 @@ class StaffController extends AbstractController
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->get('app.log')->add('StaffDashboard', 'index');
@@ -77,6 +77,8 @@ class StaffController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add('Staff.Transfert.Waiting', 'index');
+
         return $this->render('actors/staff/transfer/index.html.twig', [
             'title' => 'En attente',
             'btnLabel' => 'Traiter',
@@ -95,6 +97,8 @@ class StaffController extends AbstractController
     public function removal(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add('Staff.Removal.Waiting', 'index');
 
         return $this->render('actors/staff/removal/index.html.twig', [
             'title' => 'En attente',

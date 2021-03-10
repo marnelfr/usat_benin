@@ -9,7 +9,7 @@ class MenuController extends AbstractController
 {
 
 
-    public function menu()
+    public function menu(): ?Response
     {
         try {
 
@@ -35,7 +35,7 @@ class MenuController extends AbstractController
             ];
             //dd($data, $role);
 
-            $profil = $user->getProfil()->getSlug();
+//            $profil = $user->getProfil()->getSlug();
             $data['change_password'] = false;
             //S'il s'agit pas d'un agent ni d'un manager, on ne vérifie en reéalité par le mail
             //La vérification de l'email se substitue ici à la personnalisation du mot de passe qui est obligatoire

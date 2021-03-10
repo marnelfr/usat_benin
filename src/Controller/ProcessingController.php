@@ -16,10 +16,13 @@ class ProcessingController extends AbstractController
 {
     /**
      * @Route("/", name="processing_index", methods={"GET"})
+     * @param ProcessingRepository $processingRepository
+     *
+     * @return Response
      */
     public function index(ProcessingRepository $processingRepository): Response
     {
-        $this->get('app.log')->add('Processing', 'index');
+        $this->get('app.log')->add(Processing::class, 'index');
 
         return $this->render('processing/index.html.twig', [
             'processings' => $processingRepository->findAll(),
@@ -28,6 +31,9 @@ class ProcessingController extends AbstractController
 
     /**
      * @Route("/new", name="processing_new", methods={"GET","POST"})
+     * @param Request $request
+     *
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -40,6 +46,8 @@ class ProcessingController extends AbstractController
             $entityManager->persist($processing);
             $entityManager->flush();
 
+            $this->get('app.log')->add(Processing::class, 'new', $processing->getId());
+
             return $this->redirectToRoute('processing_index');
         }
 
@@ -51,9 +59,14 @@ class ProcessingController extends AbstractController
 
     /**
      * @Route("/{id}", name="processing_show", methods={"GET"})
+     * @param Processing $processing
+     *
+     * @return Response
      */
     public function show(Processing $processing): Response
     {
+        $this->get('app.log')->add(Processing::class, 'show', $processing->getId(), ['id']);
+
         return $this->render('processing/show.html.twig', [
             'processing' => $processing,
         ]);
@@ -61,6 +74,10 @@ class ProcessingController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="processing_edit", methods={"GET","POST"})
+     * @param Request    $request
+     * @param Processing $processing
+     *
+     * @return Response
      */
     public function edit(Request $request, Processing $processing): Response
     {
@@ -69,6 +86,8 @@ class ProcessingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('app.log')->add(Processing::class, 'edit', $processing->getId(), ['id']);
 
             return $this->redirectToRoute('processing_index');
         }
@@ -81,6 +100,10 @@ class ProcessingController extends AbstractController
 
     /**
      * @Route("/{id}", name="processing_delete", methods={"DELETE"})
+     * @param Request    $request
+     * @param Processing $processing
+     *
+     * @return Response
      */
     public function delete(Request $request, Processing $processing): Response
     {
@@ -88,6 +111,8 @@ class ProcessingController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($processing);
             $entityManager->flush();
+
+            $this->get('app.log')->add(Processing::class, 'delete', $processing->getId(), ['id']);
         }
 
         return $this->redirectToRoute('processing_index');
