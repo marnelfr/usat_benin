@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\DemandeFile;
 use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\Vehicle;
@@ -10,7 +9,6 @@ use App\Form\VehicleType;
 use App\Repository\TransferRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
-use Knp\Bundle\SnappyBundle\Snappy\Response\JpegResponse;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
 use Symfony\Component\Form\FormError;
@@ -39,7 +37,7 @@ class TransferController extends AbstractController
      */
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $this->get('app.log')->add(Transfer::class, 'index');
 
@@ -57,7 +55,7 @@ class TransferController extends AbstractController
      */
     public function index_waiting(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $this->get('app.log')->add(Transfer::class . '.Waiting', 'index');
 
@@ -75,7 +73,7 @@ class TransferController extends AbstractController
      */
     public function index_finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $this->get('app.log')->add(Transfer::class . '.Finalized', 'index');
 
@@ -93,7 +91,7 @@ class TransferController extends AbstractController
      */
     public function index_rejected(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $this->get('app.log')->add(Transfer::class . '.Rejected', 'index');
 
@@ -114,7 +112,7 @@ class TransferController extends AbstractController
      */
     public function new(Request $request, FileUploader $uploader, RefGenerator $generator): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
 //        $transfer = new Transfer();
 //        $form = $this->createForm(TransferType::class, $transfer);
@@ -245,7 +243,7 @@ class TransferController extends AbstractController
                 $pdf->getOutputFromHtml($html),
                 'file.pdf'
             );*/
-            $this->get('app.log')->add(ucfirst($type) . 'PDF', 'show', $entity->getId(), ['id']);
+            $this->get('app.log')->add(ucfirst($type) . '.PDF', 'show', $entity->getId(), ['id']);
 
             $view = $this->renderView('transfer/pdf_show.html.twig', [
                 'link' => $this->getParameter('app.base_url') . 'uploads/temp/' . $time . '.pdf'
@@ -269,7 +267,7 @@ class TransferController extends AbstractController
      */
     public function edit(Request $request, Transfer $transfer, FileUploader $uploader): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -311,10 +309,14 @@ class TransferController extends AbstractController
 
     /**
      * @Route("/{id}", name="transfer_delete", methods={"DELETE"})
+     * @param Request  $request
+     * @param Transfer $transfer
+     *
+     * @return Response
      */
     public function delete(Request $request, Transfer $transfer): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         if ($this->isCsrfTokenValid('delete'.$transfer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

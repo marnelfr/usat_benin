@@ -43,7 +43,7 @@ class VehicleController extends AbstractController
      */
     public function index(VehicleRepository $vehicleRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
 
         $this->get('app.log')->add(Vehicle::class, 'index');
 
@@ -61,7 +61,7 @@ class VehicleController extends AbstractController
      */
     public function show(Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT', 'ROLE_STAFF']);
 
         $this->get('app.log')->add(Vehicle::class, 'show', $vehicle->getId(), ['id']);
 
@@ -110,7 +110,7 @@ class VehicleController extends AbstractController
      */
     public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false, bool $edit = false)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
         $entityManager = $this->getDoctrine()->getManager();
 
         //S'il s'agit d'un edit de removal, cette methode est appelé depuis removal_edit
@@ -216,7 +216,7 @@ class VehicleController extends AbstractController
      */
     public function edit(Request $request, Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
 
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
@@ -240,7 +240,7 @@ class VehicleController extends AbstractController
      */
     public function delete(Request $request, Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
 
         if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
             try{

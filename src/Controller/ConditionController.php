@@ -63,6 +63,9 @@ class ConditionController extends AbstractController
 
     /**
      * @Route("/show", name="condition_show", options={"expose" = true}, methods={"GET"})
+     * @param Request $request
+     *
+     * @return Response
      */
     public function show(Request $request): Response
     {
@@ -126,6 +129,10 @@ class ConditionController extends AbstractController
 
     /**
      * @Route("/{id}", name="condition_delete", methods={"DELETE"})
+     * @param Request   $request
+     * @param Condition $condition
+     *
+     * @return Response
      */
     public function delete(Request $request, Condition $condition): Response
     {
