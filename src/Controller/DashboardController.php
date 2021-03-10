@@ -9,7 +9,6 @@ use App\Service\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Actors\ManagerController;
 use App\Controller\Actors\StaffController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -39,7 +38,7 @@ class DashboardController extends AbstractController
         ControlController $control,
         AdminController $admin
     ) {
-
+        $this->get('app.log')->add('Dashboard', 0);
         if ($this->isGranted('ROLE_AGENT')) {
             return $agent->index($request, $em, $authenticator);
         }

@@ -16,7 +16,6 @@ use App\Repository\RemoverRepository;
 use App\Repository\TransferRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\JsonResponse;
