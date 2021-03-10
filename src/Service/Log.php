@@ -36,6 +36,10 @@ class Log
         'show' => 'displayed.entity',
         'edit' => 'entity.edition',
         'try' => 'search.error',
+        'treat' => 'entity.treatment',
+        'final' => 'entity.finalized',
+        'reject' => 'entity.rejected',
+        'approve' => 'entity.approved',
         'delete' => 'entity.deleted'
     ];
     /**

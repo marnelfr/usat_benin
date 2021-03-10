@@ -6,6 +6,7 @@ use App\Entity\Inform;
 use App\Form\InformType;
 use App\Repository\InformRepository;
 use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +19,15 @@ class InformController extends AbstractController
 {
     /**
      * @Route("/", name="inform_index", methods={"GET"})
+     * @param InformRepository $informRepository
+     *
+     * @return Response
      */
     public function index(InformRepository $informRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
-        $this->get('app.log')->add('Inform', 'index');
+
+        $this->get('app.log')->add(Inform::class, 'index');
 
         return $this->render('inform/index.html.twig', [
             'informs' => $informRepository->all(),
@@ -31,6 +36,10 @@ class InformController extends AbstractController
 
     /**
      * @Route("/new", name="inform_new", methods={"GET","POST"})
+     * @param Request      $request
+     * @param FileUploader $uploader
+     *
+     * @return Response
      */
     public function new(Request $request, FileUploader $uploader): Response
     {
@@ -51,6 +60,9 @@ class InformController extends AbstractController
                 $uploader->upload($image, 'inform', $inform, 'inform');
             }
             $entityManager->flush();
+
+            $this->get('app.log')->add(Inform::class, 'new', $inform->getId());
+
             $this->addFlash('success', 'Communiqué publié avec succès');
             return $this->redirectToRoute('inform_index');
         }
@@ -63,6 +75,11 @@ class InformController extends AbstractController
 
     /**
      * @Route("/{id}", name="inform_show", methods={"GET"})
+     * @param Request      $request
+     * @param Inform       $inform
+     * @param FileUploader $uploader
+     *
+     * @return Response
      */
     public function show(Request $request, Inform $inform, FileUploader $uploader): Response
     {
@@ -72,6 +89,9 @@ class InformController extends AbstractController
                 'inform' => $inform,
                 'link' => $uploader->fileLink($inform, 'inform', 'inform')
             ]);
+
+            $this->get('app.log')->add(Inform::class, 'show', $inform->getId(), ['id']);
+
             return new JsonResponse($data);
         }
         return new Response('Accès interdit');
@@ -79,6 +99,10 @@ class InformController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="inform_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Inform  $inform
+     *
+     * @return Response
      */
     public function edit(Request $request, Inform $inform): Response
     {
@@ -89,6 +113,8 @@ class InformController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('app.log')->add(Inform::class, 'edit', $inform->getId(), ['id']);
 
             return $this->redirectToRoute('inform_index');
         }
@@ -101,6 +127,10 @@ class InformController extends AbstractController
 
     /**
      * @Route("/{id}", name="inform_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Inform  $inform
+     *
+     * @return Response
      */
     public function delete(Request $request, Inform $inform): Response
     {
@@ -109,6 +139,9 @@ class InformController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$inform->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($inform);
+
+            $this->get('app.log')->add(Inform::class, 'delete', $inform->getId(), ['id']);
+
             $entityManager->flush();
         }
 
