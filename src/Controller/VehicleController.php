@@ -42,6 +42,7 @@ class VehicleController extends AbstractController
     public function index(VehicleRepository $vehicleRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('Vehicle', 'index');
 
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicleRepository->findBy(['user' => $this->getUser(), 'deleted' => 0], ['createdAt' => 'DESC']),

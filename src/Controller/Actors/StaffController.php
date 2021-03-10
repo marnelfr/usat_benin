@@ -49,6 +49,7 @@ class StaffController extends AbstractController
     public function index()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->get('app.log')->add('StaffDashboard', 'index');
 
         $data = $this->getMiniStatistics(false, true);
         return $this->render('actors/staff/index.html.twig', $data);

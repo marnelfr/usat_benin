@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Agent;
 use App\Entity\Manager;
-use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\FleetRepository;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\Exception\LogicException;

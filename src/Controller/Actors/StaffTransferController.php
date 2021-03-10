@@ -100,6 +100,8 @@ class StaffTransferController extends AbstractController
         $em->getRepository(Processing::class)->add($transfer, 'transfer');
         $em->flush();
 
+        $this->get('app.log')->add(Transfer::class, 'show', $transfer->getId(), ['id']);
+
         return $this->render('actors/staff/transfer/show.html.twig', [
             'transfer' => $transfer,
         ]);

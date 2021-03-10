@@ -30,7 +30,14 @@ class Log
      */
     private $stack;
 
-    private $actions = ['show', 'creation', 'edit', 'delete'];
+    private $actions = [
+        'index' => 'displayed.index',
+        'new' => 'entity.creation',
+        'show' => 'displayed.entity',
+        'edit' => 'entity.edition',
+        'try' => 'search.error',
+        'delete' => 'entity.deleted'
+    ];
     /**
      * @var RouterInterface
      */
@@ -53,6 +60,11 @@ class Log
     {
 //        try {
         $request = $this->stack->getCurrentRequest();
+        $idIndex = array_search('id', $routeParams);
+        if ($idIndex !== false) {
+            unset($routeParams[$idIndex]);
+            $routeParams['id'] = $id;
+        }
         $this->em->getRepository(Logger::class)->add(
             $entity,
             $id,

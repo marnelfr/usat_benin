@@ -12,6 +12,9 @@ class SearchController extends AbstractController
 {
     /**
      * @Route("/search/by/ref", name="search_by_ref")
+     * @param Request $request
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request)
     {
@@ -62,6 +65,7 @@ class SearchController extends AbstractController
         $this->addFlash('danger', 'Erreur de chargement');
 
         FIN:
+        $this->get('app.log')->add('Search', 'try');
         return new RedirectResponse($request->headers->get('referer'));
     }
 }
