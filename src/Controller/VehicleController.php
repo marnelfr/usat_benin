@@ -8,7 +8,6 @@ use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;

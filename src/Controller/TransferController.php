@@ -13,7 +13,6 @@ use App\Service\RefGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\JpegResponse;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;

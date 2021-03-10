@@ -6,7 +6,6 @@ use App\Entity\Remover;
 use App\Form\RemoverType;
 use App\Repository\RemoverRepository;
 use App\Service\FileUploader;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
