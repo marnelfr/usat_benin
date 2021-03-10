@@ -37,6 +37,7 @@ class ManagerController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
         $this->get('app.log')->add('ManagerDashboard', 'index');
 
         $transfertRepo = $em->getRepository(Transfer::class);

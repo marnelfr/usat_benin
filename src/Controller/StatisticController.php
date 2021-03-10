@@ -85,12 +85,14 @@ class StatisticController extends AbstractController
                 }
                 $statistics = ['global' => json_decode($global, true)];
                 $statistics['global']['global'] = $global;
+
+                $this->get('app.log')->add('Statistic', 'show');
+
             } else {
                 $statistics = ['global' => $this->getStatistics()];
             }
 
             $statistics['period'] = $this->getStatistics($debut, $fin);
-            $this->get('app.log')->add('Statistic', 'show');
 
             return new JsonResponse([
                 'typeMessage' => 'success',

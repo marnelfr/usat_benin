@@ -38,7 +38,7 @@ class StaffTransferController extends AbstractController
      */
     public function treatment(Request $request, Transfer $transfer): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
         /*return $this->render('actors/staff/transfer/print.approval.html.twig', [
             'transfer' => $transfer
         ]);*/
@@ -108,7 +108,7 @@ class StaffTransferController extends AbstractController
      */
     public function inprogress(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add('Staff.Transfer.InProgress', 'index');
 
@@ -122,11 +122,15 @@ class StaffTransferController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Request      $request
+     * @param Transfer     $transfer
+     * @param FileUploader $uploader
+     *
+     * @return JsonResponse
      * @Route("/staff/transfer/{id}/finalize", options={"expose" = true}, name="staff_finalize_transfer")
      */
     public function finalizer(Request $request, Transfer $transfer, FileUploader $uploader) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $form = $this->createFormBuilder()
             ->add('assurance', FileType::class, [
@@ -198,7 +202,7 @@ class StaffTransferController extends AbstractController
      */
     public function show(Transfer $transfer): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add(Transfer::class, 'show', $transfer->getId(), ['id']);
 
@@ -214,7 +218,7 @@ class StaffTransferController extends AbstractController
      */
     public function finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add('Staff.Transfer.Finalized', 'index');
 
@@ -233,7 +237,7 @@ class StaffTransferController extends AbstractController
      * @param Transfer $transfer
      */
     public function reject(Request $request, Transfer $transfer) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $form = $this->createFormBuilder()
             ->add('reason', TextareaType::class, [
@@ -287,10 +291,14 @@ class StaffTransferController extends AbstractController
 
     /**
      * @Route("/staff/transfer/{id}/approval", name="staff_approval_transfer")
-     * @param Request $request
+     * @param Transfer $transfer
+     * @param Request  $request
+     * @param Pdf      $pdf
+     *
+     * @return PdfResponse
      */
     public function approval(Transfer $transfer, Request $request, Pdf $pdf) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $transfer->getProcessing()->setVerdict(1);
         $this->getDoctrine()->getManager()->flush();

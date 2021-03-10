@@ -60,11 +60,11 @@ class Log
         $this->router = $router;
     }
 
-    public function add(string $entity, int $action, $id = null, array $routeParams = [])
+    public function add(string $entity, string $action, $id = null, array $routeParams = [])
     {
 //        try {
         $request = $this->stack->getCurrentRequest();
-        $idIndex = array_search('id', $routeParams);
+        $idIndex = array_search('id', $routeParams, true);
         if ($idIndex !== false) {
             unset($routeParams[$idIndex]);
             $routeParams['id'] = $id;

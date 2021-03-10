@@ -22,7 +22,7 @@ class AdminController extends AbstractController
      */
     public function index(): \Symfony\Component\HttpFoundation\Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->get('app.log')->add('AdminDashboard', 'index');
 
