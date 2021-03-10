@@ -2,19 +2,13 @@
 
 namespace App\Controller\Actors;
 
-use App\Entity\DemandeFile;
 use App\Entity\Notification;
 use App\Entity\Processing;
-use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\User;
 use App\Service\FileUploader;
-use AsyncAws\Core\Configuration;
-use AsyncAws\S3\S3Client;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -116,6 +110,8 @@ class StaffTransferController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add('Staff.Transfer.InProgress', 'index');
+
         return $this->render('actors/staff/transfer/index.html.twig', [
             'title' => 'En cours',
             'btnLabel' => 'Finaliser',
@@ -172,6 +168,8 @@ class StaffTransferController extends AbstractController
 
                 $transfer->setStatus('finalized');
 
+                $this->get('app.log')->add(Transfer::class, 'final', $transfer->getId(), ['id']);
+
                 $entityManager->getRepository(Notification::class)->transferNotif($transfer);
 
                 $entityManager->flush();
@@ -193,6 +191,23 @@ class StaffTransferController extends AbstractController
     }
 
     /**
+     * @param Transfer $transfer
+     *
+     * @return Response
+     * @Route("/staff/transfer/{id}/show", name="staff_transfer_show")
+     */
+    public function show(Transfer $transfer): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Transfer::class, 'show', $transfer->getId(), ['id']);
+
+        return $this->render('transfer/show.html.twig', [
+            'transfer' => $transfer,
+        ]);
+    }
+
+    /**
      * La liste des demande de transfert en cours afficher au staff
      *
      * @Route("/staff/transfer/finalized", name="staff_transfer_finalized", methods={"GET"})
@@ -201,25 +216,14 @@ class StaffTransferController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $this->get('app.log')->add('Staff.Transfer.Finalized', 'index');
+
         return $this->render('actors/staff/transfer/index.html.twig', [
             'title' => 'Finalisées',
             'btnLabel' => 'Voir',
             'btnPath' => 'staff_transfer_treatment',
             'noData' => 'Aucune demande finalisée pour le moment',
             'transfers' => $this->getDoctrine()->getRepository(Transfer::class)->getFinalizedTransfer(),
-        ]);
-    }
-
-    /**
-     * @return Response
-     * @Route("/staff/transfer/{id}/show", name="staff_transfer_show")
-     */
-    public function show(Transfer $transfer): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        return $this->render('transfer/show.html.twig', [
-            'transfer' => $transfer,
         ]);
     }
 
@@ -259,6 +263,9 @@ class StaffTransferController extends AbstractController
             $this->addFlash('success', 'Demande rejetée avec succès');
 
             $entityManager->flush();
+
+            $this->get('app.log')->add(Transfer::class, 'reject', $transfer->getId(), ['id']);
+
             return $this->redirectToRoute('staff_transfer_index');
         }
 
@@ -287,6 +294,8 @@ class StaffTransferController extends AbstractController
 
         $transfer->getProcessing()->setVerdict(1);
         $this->getDoctrine()->getManager()->flush();
+
+        $this->get('app.log')->add(Transfer::class, 'approve', $transfer->getId(), ['id']);
 
         $html = $this->renderView('actors/staff/transfer/print.approval.html.twig', array(
             'transfer'  => $transfer

@@ -20,12 +20,15 @@ class ImporterController extends AbstractController
 {
     /**
      * @Route("/", name="importer_index", methods={"GET"})
+     * @param ImporterRepository $importerRepository
+     *
+     * @return Response
      */
     public function index(ImporterRepository $importerRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $this->get('app.log')->add('Importer', 'index');
+        $this->get('app.log')->add(Importer::class, 'index');
 
         return $this->render('importer/index.html.twig', [
             'importers' => $importerRepository->findBy(['deleted' => 0, 'user' => $this->getUser()], ['id' => 'DESC']),
@@ -34,6 +37,12 @@ class ImporterController extends AbstractController
 
     /**
      * @Route("/new", name="importer_new", options={"expose"=true}, methods={"GET","POST"})
+     * @param Request            $request
+     * @param SluggerInterface   $slugger
+     * @param ProfilRepository   $profilRepo
+     * @param ImporterRepository $importerRepo
+     *
+     * @return Response
      */
     public function new(Request $request, SluggerInterface $slugger, ProfilRepository $profilRepo, ImporterRepository $importerRepo): Response
     {
@@ -68,6 +77,8 @@ class ImporterController extends AbstractController
 
             $entityManager->flush();
 
+            $this->get('app.log')->add(Importer::class, 'new', $importer->getId());
+
             $message = 'Importeur enregistré avec succès';
 
             if ($request->isXmlHttpRequest()) {
@@ -100,10 +111,15 @@ class ImporterController extends AbstractController
 
     /**
      * @Route("/{id}", name="importer_show", methods={"GET"})
+     * @param Importer $importer
+     *
+     * @return Response
      */
     public function show(Importer $importer): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Importer::class, 'show', $importer->getId(), ['id']);
 
         return $this->render('importer/show.html.twig', [
             'importer' => $importer,
@@ -122,6 +138,7 @@ class ImporterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->get('app.log')->add(Importer::class, 'edit', $importer->getId(), ['id']);
             $this->addFlash('success', 'Modifications enregistrées avec succès');
             return $this->redirectToRoute('importer_index');
         }
@@ -145,6 +162,9 @@ class ImporterController extends AbstractController
 //                $entityManager->remove($importer);
                 $importer->setDeleted(1);
                 $entityManager->flush();
+
+                $this->get('app.log')->add(Importer::class, 'delete', $importer->getId(), ['id']);
+
                 $this->addFlash('success', $importer->getFullname() . ' supprimer avec succès');
             }catch (\Exception $e) {
                 $this->addFlash('danger', 'Impossible de supprimer ' . $importer->getFullname() . ' pour le moment');

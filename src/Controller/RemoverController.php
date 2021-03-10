@@ -7,6 +7,7 @@ use App\Form\RemoverType;
 use App\Repository\RemoverRepository;
 use App\Service\FileUploader;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,14 @@ class RemoverController extends AbstractController
 {
     /**
      * @Route("/", name="remover_index", methods={"GET"})
+     * @param RemoverRepository $removerRepository
+     *
+     * @return Response
      */
     public function index(RemoverRepository $removerRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->get('app.log')->add('Remover', 'index');
+        $this->get('app.log')->add(Remover::class, 'index');
 
         return $this->render('remover/index.html.twig', [
             'removers' => $removerRepository->findAll(),
@@ -32,6 +36,10 @@ class RemoverController extends AbstractController
 
     /**
      * @Route("/new", name="remover_new", options={"expose"=true}, methods={"GET","POST"})
+     * @param Request      $request
+     * @param FileUploader $uploader
+     *
+     * @return Response
      */
     public function new(Request $request, FileUploader $uploader): Response
     {
@@ -52,6 +60,8 @@ class RemoverController extends AbstractController
             if ($cin && $uploader->upload($cin, 'cin', $remover, 'remover')) {
 
                 $message = 'Enleveur enregistré avec succès';
+
+                $this->get('app.log')->add(Remover::class, 'new', $remover->getId());
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -85,10 +95,15 @@ class RemoverController extends AbstractController
 
     /**
      * @Route("/{id}", name="remover_show", methods={"GET"})
+     * @param Remover $remover
+     *
+     * @return Response
      */
     public function show(Remover $remover): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Remover::class, 'show', $remover->getId(), ['id']);
 
         return $this->render('remover/show.html.twig', [
             'remover' => $remover,
@@ -97,6 +112,11 @@ class RemoverController extends AbstractController
 
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="remover_img", methods={"GET"})
+     * @param Request      $request
+     * @param Remover      $remover
+     * @param FileUploader $uploader
+     *
+     * @return JsonResponse|Response
      */
     public function img(Request $request, Remover $remover, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
@@ -105,6 +125,9 @@ class RemoverController extends AbstractController
                 'url' => $fileLink,
                 'alt' => 'Carte nationale d\'identité'
             ]);
+
+            $this->get('app.log')->add('Remover.Image', 'show', $remover->getId(), ['id']);
+
             return new JsonResponse([
                 'view' => $view,
                 'error' => $fileLink === false
@@ -115,6 +138,11 @@ class RemoverController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="remover_edit", methods={"GET","POST"})
+     * @param Request      $request
+     * @param Remover      $remover
+     * @param FileUploader $uploader
+     *
+     * @return Response
      */
     public function edit(Request $request, Remover $remover, FileUploader $uploader): Response
     {
@@ -136,6 +164,8 @@ class RemoverController extends AbstractController
             }
             $this->getDoctrine()->getManager()->flush();
 
+            $this->get('app.log')->add(Remover::class, 'edit', $remover->getId(), ['id']);
+
             return $this->redirectToRoute('remover_index');
         }
 
@@ -147,6 +177,10 @@ class RemoverController extends AbstractController
 
     /**
      * @Route("/{id}", name="remover_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Remover $remover
+     *
+     * @return Response
      */
     public function delete(Request $request, Remover $remover): Response
     {
@@ -156,6 +190,8 @@ class RemoverController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($remover);
             $entityManager->flush();
+
+            $this->get('app.log')->add(Remover::class, 'delete', $remover->getId(), ['id']);
         }
 
         return $this->redirectToRoute('remover_index');

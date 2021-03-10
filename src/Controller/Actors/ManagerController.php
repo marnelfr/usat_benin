@@ -29,7 +29,7 @@ class ManagerController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator)
+    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator): \Symfony\Component\HttpFoundation\Response
     {
         $emailVerifySuccessfully = $request->getSession()->getFlashBag()->get('emailVerifySuccessfully');
         if (isset($emailVerifySuccessfully[0])) {
