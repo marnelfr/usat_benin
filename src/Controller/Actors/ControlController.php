@@ -25,8 +25,10 @@ class ControlController extends AbstractController
      */
     public function index(StaffController $staffController): \Symfony\Component\HttpFoundation\Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
+
         $this->get('app.log')->add('ControlDashboard', 'index');
+
         $data = $staffController->getMiniStatistics(true, false);
         return $this->render('actors/staff/index.html.twig', $data);
     }

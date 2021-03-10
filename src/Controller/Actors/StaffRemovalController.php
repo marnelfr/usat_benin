@@ -35,7 +35,7 @@ class StaffRemovalController extends AbstractController
      */
     public function treatment(Request $request, Removal $removal): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         //On definit les differents message affichable à l'utilisateur
         $message = 'La demande à déjà été traitée par ';
@@ -118,7 +118,7 @@ class StaffRemovalController extends AbstractController
      */
     public function finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add('Staff.Removal.Finalized', 'index');
 
@@ -137,7 +137,7 @@ class StaffRemovalController extends AbstractController
      * @param Removal $removal
      */
     public function reject(Request $request, Removal $removal) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $form = $this->createFormBuilder()
             ->add('reason', TextareaType::class, [
@@ -187,10 +187,14 @@ class StaffRemovalController extends AbstractController
 
     /**
      * @Route("/staff/removal/{id}/approval", name="staff_approval_removal")
+     * @param Removal $removal
      * @param Request $request
+     * @param Pdf     $pdf
+     *
+     * @return PdfResponse
      */
     public function approval(Removal $removal, Request $request, Pdf $pdf) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $removal->setStatus('finalized');
         $removal->getProcessing()->setVerdict(1);

@@ -48,7 +48,7 @@ class StaffController extends AbstractController
      */
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
         $this->get('app.log')->add('StaffDashboard', 'index');
 
         $data = $this->getMiniStatistics(false, true);
@@ -75,7 +75,7 @@ class StaffController extends AbstractController
      */
     public function transfer(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add('Staff.Transfert.Waiting', 'index');
 
@@ -96,7 +96,7 @@ class StaffController extends AbstractController
      */
     public function removal(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
 
         $this->get('app.log')->add('Staff.Removal.Waiting', 'index');
 

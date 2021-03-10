@@ -26,7 +26,7 @@ class RemoverController extends AbstractController
      */
     public function index(RemoverRepository $removerRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
         $this->get('app.log')->add(Remover::class, 'index');
 
         return $this->render('remover/index.html.twig', [
@@ -43,7 +43,7 @@ class RemoverController extends AbstractController
      */
     public function new(Request $request, FileUploader $uploader): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $remover = new Remover();
         $form = $this->createForm(RemoverType::class, $remover);
@@ -101,7 +101,7 @@ class RemoverController extends AbstractController
      */
     public function show(Remover $remover): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $this->get('app.log')->add(Remover::class, 'show', $remover->getId(), ['id']);
 
@@ -146,7 +146,7 @@ class RemoverController extends AbstractController
      */
     public function edit(Request $request, Remover $remover, FileUploader $uploader): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $form = $this->createForm(RemoverType::class, $remover);
         $form->handleRequest($request);
@@ -184,7 +184,7 @@ class RemoverController extends AbstractController
      */
     public function delete(Request $request, Remover $remover): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         if ($this->isCsrfTokenValid('delete'.$remover->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

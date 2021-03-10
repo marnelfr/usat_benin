@@ -38,6 +38,7 @@ class AgentController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_AGENT');
+
         $this->get('app.log')->add('AgentDashboard', 'index');
 
         $removalRepo = $em->getRepository(Removal::class);
