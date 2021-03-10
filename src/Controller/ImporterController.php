@@ -7,7 +7,6 @@ use App\Form\ImporterType;
 use App\Repository\ImporterRepository;
 use App\Repository\ProfilRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

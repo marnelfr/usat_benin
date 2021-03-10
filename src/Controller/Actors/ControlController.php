@@ -3,7 +3,7 @@
 namespace App\Controller\Actors;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

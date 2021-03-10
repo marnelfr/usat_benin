@@ -8,6 +8,10 @@ parameters:
     app.local_dir: '%kernel.project_dir%/public/local/'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
     app.base_url: 'https://127.0.0.1:8000/'
+    log.show: show #1
+    log.create: creation #2
+    log.edit: edit #3
+    log.delete: delete #4
 
 services:
     # default configuration for services in *this* file
@@ -37,6 +41,7 @@ services:
         arguments:
             $targetDirectory: '%app.bol_dir%'
             $localDirectory: '%app.local_dir%'
+
     App\Service\LocalFileUploader:
         arguments:
             $targetDirectory: '%app.local_dir%'

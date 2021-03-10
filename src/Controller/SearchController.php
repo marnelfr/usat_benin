@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Removal;
 use App\Entity\Transfer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

@@ -11,7 +11,6 @@ use App\Repository\FleetRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\Form\Exception\OutOfBoundsException;
 use Symfony\Component\Form\Exception\RuntimeException;

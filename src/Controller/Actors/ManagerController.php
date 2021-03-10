@@ -6,7 +6,7 @@ use App\Entity\Importer;
 use App\Entity\Transfer;
 use App\Service\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
