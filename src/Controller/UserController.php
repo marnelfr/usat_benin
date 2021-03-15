@@ -166,10 +166,12 @@ class UserController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             if ($user->getStatus()) {
-                $message = $user->getFullname() . ' a été bloqué avec succès';
+//                $message = $user->getFullname() . ' a été bloqué avec succès';
+                $message = 'L\'utilisateur a été bloqué avec succès';
                 $user->setStatus(0);
             }else{
-                $message = $user->getFullname() . ' a été débloqué avec succès';
+//                $message = $user->getFullname() . ' a été débloqué avec succès';
+                $message = 'L\'utilisateur a été débloqué avec succès';
                 $user->setStatus(1);
             }
 //            $entityManager->remove($user);
