@@ -6,7 +6,6 @@ use App\Repository\BrandRepository;
 use App\Repository\FleetRepository;
 use App\Repository\ShipRepository;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 

@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\DemandeFile;
+use App\Entity\Removal;
 use App\Entity\Transfer;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\TransferRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Snappy\Image;
+use Knp\Snappy\Pdf;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +37,9 @@ class TransferController extends AbstractController
      */
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
+        $this->get('app.log')->add(Transfer::class, 'index');
 
         return $this->render('transfer/index.html.twig', [
             'title' => 'En attente',
@@ -52,7 +55,9 @@ class TransferController extends AbstractController
      */
     public function index_waiting(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
+        $this->get('app.log')->add(Transfer::class . '.Waiting', 'index');
 
         return $this->render('transfer/index.html.twig', [
             'title' => 'en Cours',
@@ -68,7 +73,9 @@ class TransferController extends AbstractController
      */
     public function index_finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
+        $this->get('app.log')->add(Transfer::class . '.Finalized', 'index');
 
         return $this->render('transfer/index.html.twig', [
             'title' => 'Approuvées',
@@ -84,7 +91,9 @@ class TransferController extends AbstractController
      */
     public function index_rejected(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
+        $this->get('app.log')->add(Transfer::class . '.Rejected', 'index');
 
         return $this->render('transfer/index.html.twig', [
             'title' => 'Rejetées',
@@ -95,10 +104,15 @@ class TransferController extends AbstractController
 
     /**
      * @Route("/new", name="transfer_new", methods={"GET","POST"})
+     * @param Request      $request
+     * @param FileUploader $uploader
+     * @param RefGenerator $generator
+     *
+     * @return Response
      */
     public function new(Request $request, FileUploader $uploader, RefGenerator $generator): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
 //        $transfer = new Transfer();
 //        $form = $this->createForm(TransferType::class, $transfer);
@@ -131,6 +145,8 @@ class TransferController extends AbstractController
 
                     $entityManager->flush();
 
+                    $this->get('app.log')->add(Transfer::class, 'new', $transfer->getId());
+
                     $this->addFlash($typeMessage, $message);
 
                     return $this->redirectToRoute('transfer_index');
@@ -149,10 +165,15 @@ class TransferController extends AbstractController
 
     /**
      * @Route("/{id}", name="transfer_show", methods={"GET"})
+     * @param Transfer $transfer
+     *
+     * @return Response
      */
     public function show(Transfer $transfer): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $this->get('app.log')->add(Transfer::class, 'show', $transfer->getId(), ['id']);
 
         return $this->render('transfer/show.html.twig', [
             'transfer' => $transfer,
@@ -161,6 +182,11 @@ class TransferController extends AbstractController
 
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="transfer_img", methods={"GET"})
+     * @param Request      $request
+     * @param Transfer     $transfer
+     * @param FileUploader $uploader
+     *
+     * @return JsonResponse|Response
      */
     public function img(Request $request, Transfer $transfer, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
@@ -169,6 +195,9 @@ class TransferController extends AbstractController
                 'url' => $fileLink,
                 'alt' => 'Assurance'
             ]);
+
+            $this->get('app.log')->add('Transfer.Image', 'show', $transfer->getId(), ['id']);
+
             return new JsonResponse([
                 'view' => $view,
                 'error' => $fileLink === false
@@ -177,12 +206,68 @@ class TransferController extends AbstractController
         return new Response('access denied');
     }
 
+
+    /**
+     * @Route("/{id}/pdf", options = { "expose" = true }, name="transfer_attestation_pdf", methods={"GET"})
+     * @param Request      $request
+     * @param FileUploader $uploader
+     * @param Pdf          $pdf
+     * @param Image        $imager
+     *
+     * @return JsonResponse|Response
+     */
+    public function pdf(Request $request, FileUploader $uploader, Pdf $pdf, Image $imager) {
+        if ($request->isXmlHttpRequest()) {
+            $type = $request->get('type');
+            if ($type === 'transfer') {
+                $entity = Transfer::class;
+            }else {
+                $entity = Removal::class;
+            }
+            $entity = $this->getDoctrine()->getRepository($entity)->find($request->get('id'));
+            if (!$entity) {
+                return new Response('Error');
+            }
+            $html = $this->renderView('actors/staff/'. $type .'/print.approval.html.twig', array(
+                $type  => $entity
+            ));
+            /*return new JpegResponse(
+                $imager->getOutputFromHtml($html),
+                'image.jpg'
+            );*/
+
+
+            $time = time();
+            $pdf->generateFromHtml($html, $this->getParameter('app.bol_dir') . 'temp/' . $time . '.pdf');
+            /*$response = new PdfResponse(
+                $pdf->getOutputFromHtml($html),
+                'file.pdf'
+            );*/
+            $this->get('app.log')->add(ucfirst($type) . '.PDF', 'show', $entity->getId(), ['id']);
+
+            $view = $this->renderView('transfer/pdf_show.html.twig', [
+                'link' => $this->getParameter('app.base_url') . 'uploads/temp/' . $time . '.pdf'
+            ]);
+            return new JsonResponse([
+                'view' => $view,
+                'error' => false
+            ]);
+        }
+        return new Response('access denied');
+    }
+
+
     /**
      * @Route("/{id}/edit", name="transfer_edit", methods={"GET","POST"})
+     * @param Request      $request
+     * @param Transfer     $transfer
+     * @param FileUploader $uploader
+     *
+     * @return Response
      */
     public function edit(Request $request, Transfer $transfer, FileUploader $uploader): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -195,7 +280,6 @@ class TransferController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $bol */
             $bol = $form->get('bol')->getData();
-
             if ($bol) {
                 try{
                     $uploader->upload($bol, 'bol', $vehicle, 'vehicle', true);
@@ -210,6 +294,8 @@ class TransferController extends AbstractController
             $em->persist($transfer);
             $em->flush();
 
+            $this->get('app.log')->add(Transfer::class, 'edit', $transfer->getId(), ['id']);
+
             $this->addFlash('success', 'Demande modifiée avec succès');
 
             return $this->redirectToRoute('transfer_index');
@@ -223,15 +309,21 @@ class TransferController extends AbstractController
 
     /**
      * @Route("/{id}", name="transfer_delete", methods={"DELETE"})
+     * @param Request  $request
+     * @param Transfer $transfer
+     *
+     * @return Response
      */
     public function delete(Request $request, Transfer $transfer): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
 
         if ($this->isCsrfTokenValid('delete'.$transfer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($transfer);
             $entityManager->flush();
+
+            $this->get('app.log')->add(Transfer::class, 'delete', $transfer->getId(), ['id']);
         }
 
         return $this->redirectToRoute('transfer_index');

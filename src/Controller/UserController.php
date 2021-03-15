@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +30,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+        $this->get('app.log')->add(User::class, 'index');
 
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->all(),
@@ -37,8 +39,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $encoder
+     *
+     *
+     * @param FileUploader                 $uploader
+     *
+     * @return Response
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, FileUploader $uploader): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
 
@@ -47,9 +56,16 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $image */
+            $image = $form->get('image')->getData();
+
             $entityManager = $this->getDoctrine()->getManager();
             $slug = $user->getProfil()->getSlug();
-            if ($slug === 'staff') {
+            if ($slug === 'agent') {
+                $user->setRoles(['ROLE_AGENT']);
+            }elseif ($slug === 'manager') {
+                $user->setRoles(['ROLE_MANAGER']);
+            }elseif ($slug === 'staff') {
                 $user->setRoles(['ROLE_STAFF', 'ROLE_CONTROL']);
             }elseif($slug === 'staff_admin') {
                 $user->setRoles(['ROLE_STAFF_ADMIN', 'ROLE_STAFF', 'ROLE_CONTROL']);
@@ -61,7 +77,7 @@ class UserController extends AbstractController
                 $user->setRoles(['ROLE_CONTROL']);
             }
             $user->setStatus(1);
-            $user->setIsVerified(1);
+            $user->setIsVerified(0);
             $user->setPassword(
                 $encoder->encodePassword(
                     $user,
@@ -69,7 +85,14 @@ class UserController extends AbstractController
                 )
             );
             $entityManager->persist($user);
+
+            if ($image) {
+                $uploader->upload($image, 'dp', $user, 'user', false, true);
+            }
+
             $entityManager->flush();
+
+            $this->get('app.log')->add(User::class, 'new', $user->getId());
 
             return $this->redirectToRoute('user_index');
         }
@@ -81,11 +104,16 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param User $user
      * @Route("/{id}", name="user_show", methods={"GET"})
+     *
+     * @return Response
      */
     public function show(User $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STAFF_ADMIN');
+
+        $this->get('app.log')->add(User::class, 'show', $user->getId(), ['id']);
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
@@ -94,6 +122,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return Response
      */
     public function edit(Request $request, User $user): Response
     {
@@ -110,6 +142,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->get('app.log')->add(User::class, 'edit', $user->getId(), ['id']);
+
             return $this->redirectToRoute('user_index');
         }
 
@@ -121,6 +155,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return Response
      */
     public function delete(Request $request, User $user): Response
     {
@@ -128,15 +166,19 @@ class UserController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             if ($user->getStatus()) {
-                $message = $user->getFullname() . ' a été bloqué avec succès';
+//                $message = $user->getFullname() . ' a été bloqué avec succès';
+                $message = 'L\'utilisateur a été bloqué avec succès';
                 $user->setStatus(0);
             }else{
-                $message = $user->getFullname() . ' a été débloqué avec succès';
+//                $message = $user->getFullname() . ' a été débloqué avec succès';
+                $message = 'L\'utilisateur a été débloqué avec succès';
                 $user->setStatus(1);
             }
 //            $entityManager->remove($user);
             $this->addFlash('success', $message);
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('app.log')->add(User::class, 'delete', $user->getId(), ['id']);
         }
 
         return $this->redirectToRoute('user_index');

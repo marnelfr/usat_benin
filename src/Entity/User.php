@@ -154,6 +154,16 @@ class User implements UserInterface, \Serializable
      */
     private $informs;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DemandeFile::class, mappedBy="user")
+     */
+    private $picture;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Logger::class, mappedBy="user")
+     */
+    private $Log;
+
 
 
 
@@ -170,6 +180,8 @@ class User implements UserInterface, \Serializable
         $this->createdNotifications = new ArrayCollection();
         $this->imforms = new ArrayCollection();
         $this->informs = new ArrayCollection();
+        $this->picture = new ArrayCollection();
+        $this->Log = new ArrayCollection();
     }
 
 
@@ -667,6 +679,65 @@ class User implements UserInterface, \Serializable
             // set the owning side to null (unless already changed)
             if ($inform->getUser() === $this) {
                 $inform->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPicture()
+    {
+        return $this->picture->last();
+    }
+
+    public function addPicture(DemandeFile $picture): self
+    {
+        if (!$this->picture->contains($picture)) {
+            $this->picture[] = $picture;
+            $picture->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(DemandeFile $picture): self
+    {
+        if ($this->picture->contains($picture)) {
+            $this->picture->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getUser() === $this) {
+                $picture->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Logger[]
+     */
+    public function getLog(): Collection
+    {
+        return $this->Log;
+    }
+
+    public function addLog(Logger $log): self
+    {
+        if (!$this->Log->contains($log)) {
+            $this->Log[] = $log;
+            $log->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLog(Logger $log): self
+    {
+        if ($this->Log->contains($log)) {
+            $this->Log->removeElement($log);
+            // set the owning side to null (unless already changed)
+            if ($log->getUser() === $this) {
+                $log->setUser(null);
             }
         }
 

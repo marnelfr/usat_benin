@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\DemandeFile;
-use App\Entity\File;
-use App\Entity\Notification;
 use App\Entity\Removal;
 use App\Entity\Vehicle;
 use App\Form\RemovalType;
@@ -12,7 +9,6 @@ use App\Repository\RemovalRepository;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,7 +46,8 @@ class RemovalController extends AbstractController
      */
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
+        $this->get('app.log')->add(Removal::class, 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'En attente',
@@ -66,7 +63,9 @@ class RemovalController extends AbstractController
      */
     public function index_inprogress(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
+
+        $this->get('app.log')->add(Removal::class . '.InProgress', 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'en Cours',
@@ -79,7 +78,9 @@ class RemovalController extends AbstractController
      */
     public function index_rejected(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
+
+        $this->get('app.log')->add(Removal::class . '.Rejected', 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'Rejetées',
@@ -92,7 +93,9 @@ class RemovalController extends AbstractController
      */
     public function index_finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
+
+        $this->get('app.log')->add(Removal::class . '.Finalized', 'index');
 
         return $this->render('removal/index.html.twig', [
             'title' => 'Approuvées',
@@ -111,7 +114,7 @@ class RemovalController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         //On génère le formulaire pour la vérification de l'existance des véhicules avec des constraintes et tout
         $form = $this->vehicleRepo->checkVehicleForm($this->createFormBuilder());
@@ -164,7 +167,10 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}/{use}/img", options = { "expose" = true }, name="removal_img", methods={"GET"})
-     * @param Request $request
+     * @param Request      $request
+     *
+     * @param Removal      $removal
+     * @param FileUploader $uploader
      *
      * @return Response
      */
@@ -192,14 +198,16 @@ class RemovalController extends AbstractController
      * Affiche l'etape 3 du forumaire puis traite sa soumission
      *
      * @Route("/new/{id}/save", name="removal_new_saver", methods={"POST", "GET"})
-     * @param Request $request
-     * @param Vehicle $vehicle
+     * @param Request      $request
+     * @param Vehicle      $vehicle
+     *
+     * @param RefGenerator $generator
      *
      * @return Response
      */
     public function newSaver(Request $request, Vehicle $vehicle, RefGenerator $generator): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $removal = new Removal();
         $removal->setVehicle($vehicle);
@@ -239,6 +247,9 @@ class RemovalController extends AbstractController
                         $fileNotSent = true;
                     }
                 }
+
+                $this->get('app.log')->add(Removal::class, 'new', $removal->getId(), ['id' => $vehicle->getId()]);
+
                 if ($fileNotSent) {
                     $this->addFlash('warning', 'Demande d\'enlevement avec erreur d\'enregistrement. Veuiller modifier la demande et rajouter les fichiers scannés');
                 } else {
@@ -259,10 +270,15 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}", name="removal_show", methods={"GET"})
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function show(Removal $removal): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
+
+        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
 
         return $this->render('removal/show.html.twig', [
             'removal' => $removal,
@@ -282,11 +298,14 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/edit/{id}/saver", name="removal_edit_saver", methods={"GET","POST"}, requirements={"id":"\d+"})
-     * @throws \Exception
+     * @param Request $request
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function editSaver(Request $request, Removal $removal): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         $form = $this->createForm(RemovalType::class, $removal);
         $form->handleRequest($request);
@@ -313,6 +332,8 @@ class RemovalController extends AbstractController
 
             $objectManager->flush();
 
+            $this->get('app.log')->add(Removal::class, 'edit', $removal->getId(), ['id']);
+
             return $this->redirectToRoute('removal_index');
         }
 
@@ -326,15 +347,21 @@ class RemovalController extends AbstractController
 
     /**
      * @Route("/{id}", name="removal_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Removal $removal
+     *
+     * @return Response
      */
     public function delete(Request $request, Removal $removal): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_AGENT');
 
         if ($this->isCsrfTokenValid('delete'.$removal->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($removal);
             $entityManager->flush();
+
+            $this->get('app.log')->add(Removal::class, 'delete', $removal->getId(), ['id']);
         }
 
         return $this->redirectToRoute('removal_index');
