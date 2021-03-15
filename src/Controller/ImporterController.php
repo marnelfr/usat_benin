@@ -168,9 +168,9 @@ class ImporterController extends AbstractController
 
                 $this->get('app.log')->add(Importer::class, 'delete', $importer->getId(), ['id']);
 
-                $this->addFlash('success', $importer->getFullname() . ' supprimer avec succès');
+                $this->addFlash('success', 'Importeur supprimer avec succès');
             }catch (\Exception $e) {
-                $this->addFlash('danger', 'Impossible de supprimer ' . $importer->getFullname() . ' pour le moment');
+                $this->addFlash('danger', 'Impossible de supprimer l\'importeur pour le moment');
             }
         }
 
