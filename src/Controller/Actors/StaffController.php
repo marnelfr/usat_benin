@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,9 +46,10 @@ class StaffController extends AbstractController
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
+        $this->get('app.log')->add('StaffDashboard', 'index');
 
         $data = $this->getMiniStatistics(false, true);
         return $this->render('actors/staff/index.html.twig', $data);
@@ -74,7 +75,9 @@ class StaffController extends AbstractController
      */
     public function transfer(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
+
+        $this->get('app.log')->add('Staff.Transfert.Waiting', 'index');
 
         return $this->render('actors/staff/transfer/index.html.twig', [
             'title' => 'En attente',
@@ -93,7 +96,9 @@ class StaffController extends AbstractController
      */
     public function removal(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
+
+        $this->get('app.log')->add('Staff.Removal.Waiting', 'index');
 
         return $this->render('actors/staff/removal/index.html.twig', [
             'title' => 'En attente',

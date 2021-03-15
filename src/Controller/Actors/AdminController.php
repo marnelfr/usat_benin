@@ -2,8 +2,8 @@
 
 namespace App\Controller\Actors;
 
+use App\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,9 +20,11 @@ class AdminController extends AbstractController
      *
      * @Route("/actors/admin", name="actors_admin_dashboard")
      */
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $this->get('app.log')->add('AdminDashboard', 'index');
 
         return $this->render('actors/admin/index.html.twig', [
             'controller_name' => 'AdminController',

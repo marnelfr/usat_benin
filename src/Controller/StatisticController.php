@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Agent;
 use App\Entity\Importer;
-use App\Entity\Manager;
 use App\Entity\Removal;
 use App\Entity\Remover;
 use App\Entity\Transfer;
@@ -16,9 +14,7 @@ use App\Repository\RemoverRepository;
 use App\Repository\TransferRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +85,9 @@ class StatisticController extends AbstractController
                 }
                 $statistics = ['global' => json_decode($global, true)];
                 $statistics['global']['global'] = $global;
+
+                $this->get('app.log')->add('Statistic', 'show');
+
             } else {
                 $statistics = ['global' => $this->getStatistics()];
             }

@@ -3,7 +3,7 @@
 namespace App\Controller\Actors;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,9 +23,11 @@ class ControlController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(StaffController $staffController)
+    public function index(StaffController $staffController): \Symfony\Component\HttpFoundation\Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
+
+        $this->get('app.log')->add('ControlDashboard', 'index');
 
         $data = $staffController->getMiniStatistics(true, false);
         return $this->render('actors/staff/index.html.twig', $data);

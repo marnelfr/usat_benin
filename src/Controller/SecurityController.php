@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +40,8 @@ class SecurityController extends AbstractController
      * @Route("/login/form", name="app_login_form")
      * @return Response
      */
-    public function login_form(AuthenticationUtils $authenticationUtils): Response {
+    public function login_form(AuthenticationUtils $authenticationUtils): Response
+    {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
@@ -57,7 +57,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/check/user/profil", name="security_check_user_profil")
      */
-    public function check_user_profil() {
+    public function check_user_profil()
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 //        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
 //            return $this->redirectToRoute('home_page');
@@ -83,24 +84,14 @@ class SecurityController extends AbstractController
         $user->setLastConnection(new \DateTime());
         $this->getDoctrine()->getManager()->flush();
 
-        if ($this->isGranted('ROLE_AGENT')) {
-            return $this->redirectToRoute('actors_agent_dashboard');
-        }
-
-        if ($this->isGranted('ROLE_MANAGER')) {
-            return $this->redirectToRoute('actors_manager_dashboard');
-        }
-
-        if ($this->isGranted('ROLE_STAFF')) {
-            return $this->redirectToRoute('actors_staff_dashboard');
-        }
-
-        if ($this->isGranted('ROLE_CONTROL')) {
-            return $this->redirectToRoute('actors_control_dashboard');
-        }
-
-        if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('actors_admin_dashboard');
+        if (
+            $this->isGranted('ROLE_AGENT') ||
+            $this->isGranted('ROLE_MANAGER') ||
+            $this->isGranted('ROLE_STAFF') ||
+            $this->isGranted('ROLE_CONTROL') ||
+            $this->isGranted('ROLE_ADMIN')
+        ) {
+            return $this->redirectToRoute('dashboard');
         }
 
         return $this->redirectToRoute('home_page');
@@ -115,33 +106,34 @@ class SecurityController extends AbstractController
      *
      * @param Request $request
      * @Route("/p/c/n", name="pcn", options={"expose"=true})
+     *
      * @return JsonResponse
      */
-    public function change_password(Request $request, UserPasswordEncoderInterface $encoder) {
+    public function change_password(Request $request, UserPasswordEncoderInterface $encoder)
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $form = $this->createFormBuilder()
             ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped' => false,
+                'type'            => PasswordType::class,
+                'mapped'          => false,
                 'invalid_message' => 'Vos codes d\'accès ne correspondent pas',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Code d\'accès'],
-                'second_options' => ['label' => 'Confirmez code'],
-                'constraints' => [
+                'options'         => ['attr' => ['class' => 'password-field']],
+                'required'        => true,
+                'first_options'   => ['label' => 'Code d\'accès'],
+                'second_options'  => ['label' => 'Confirmez code'],
+                'constraints'     => [
                     new NotBlank([
                         'message' => 'Veuillez entrez un code d\'accès',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min'        => 6,
                         'minMessage' => 'Votre code doit avoir au moins {{ limit }} charactères',
                         // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'max'        => 4096,
                     ]),
                 ]
-            ])->getForm()
-        ;
+            ])->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -155,16 +147,18 @@ class SecurityController extends AbstractController
             $user->setIsVerified(1);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Code d\'accès modifier avec succès');
+            $this->get('app.log')->add('Security', 'edit');
+
             return new JsonResponse([
                 'typeMessage' => 'success',
-                'link' => $this->generateUrl('security_check_user_profil')
+                'link'        => $this->generateUrl('security_check_user_profil')
             ]);
         }
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'typeMessage' => 'form',
-                'view' => $this->renderView('security/new_pwd_form.html.twig', [
+                'view'        => $this->renderView('security/new_pwd_form.html.twig', [
                     'form' => $form->createView()
                 ])
             ]);

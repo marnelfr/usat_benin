@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\DemandeFile;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use App\Service\FileUploader;
 use App\Service\RefGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,10 +37,15 @@ class VehicleController extends AbstractController
 
     /**
      * @Route("/", name="vehicle_index", methods={"GET"})
+     * @param VehicleRepository $vehicleRepository
+     *
+     * @return Response
      */
     public function index(VehicleRepository $vehicleRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
+
+        $this->get('app.log')->add(Vehicle::class, 'index');
 
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicleRepository->findBy(['user' => $this->getUser(), 'deleted' => 0], ['createdAt' => 'DESC']),
@@ -50,13 +53,17 @@ class VehicleController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}", name="vehicle_show", methods={"GET"})
+     * @param Vehicle $vehicle
+     *
+     * @return Response
      */
     public function show(Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT', 'ROLE_STAFF']);
+
+        $this->get('app.log')->add(Vehicle::class, 'show', $vehicle->getId(), ['id']);
 
         return $this->render('vehicle/show.html.twig', [
             'vehicle' => $vehicle,
@@ -65,6 +72,11 @@ class VehicleController extends AbstractController
 
     /**
      * @Route("/{id}/img", options = { "expose" = true }, name="vehicle_img", methods={"GET"})
+     * @param Request      $request
+     * @param Vehicle      $vehicle
+     * @param FileUploader $uploader
+     *
+     * @return JsonResponse|Response
      */
     public function img(Request $request, Vehicle $vehicle, FileUploader $uploader) {
         if ($request->isXmlHttpRequest()) {
@@ -73,6 +85,9 @@ class VehicleController extends AbstractController
                 'url' => $fileLink,
                 'alt' => 'Connaissement de véhicule'
             ]);
+
+            $this->get('app.log')->add('Vehicle.Image', 'show', $vehicle->getId(), ['id']);
+
             return new JsonResponse([
                 'view' => $view,
                 'error' => $fileLink === false
@@ -95,7 +110,7 @@ class VehicleController extends AbstractController
      */
     public function new(Request $request, RemovalController $removalController, array $data = [], bool $isXmlHttpRequest = false, bool $edit = false)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
         $entityManager = $this->getDoctrine()->getManager();
 
         //S'il s'agit d'un edit de removal, cette methode est appelé depuis removal_edit
@@ -138,6 +153,8 @@ class VehicleController extends AbstractController
                     }
 
                     $entityManager->flush();
+
+                    $this->get('app.log')->add(Vehicle::class, 'new', $vehicle->getId());
 
                     if ($edit) {
                         return $removalController->editSaver($request, $vehicle->getRemoval());
@@ -199,13 +216,15 @@ class VehicleController extends AbstractController
      */
     public function edit(Request $request, Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
 
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->get('app.log')->add(Vehicle::class, 'edit', $vehicle->getId(), ['id']);
 
             return $this->redirectToRoute('vehicle_index');
         }
@@ -221,7 +240,7 @@ class VehicleController extends AbstractController
      */
     public function delete(Request $request, Vehicle $vehicle): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted(['ROLE_MANAGER', 'ROLE_AGENT']);
 
         if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
             try{
@@ -230,6 +249,8 @@ class VehicleController extends AbstractController
                 $vehicle->setDeleted(1);
                 $entityManager->flush();
                 $this->addFlash('success', 'Véhicule supprimer avec succès');
+
+                $this->get('app.log')->add(Vehicle::class, 'delete', $vehicle->getId(), ['id']);
             } catch (\Exception $e) {
                 $this->addFlash('danger', 'Impossible de supprimer le véhicule pour le moment');
             }

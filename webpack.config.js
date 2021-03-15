@@ -76,7 +76,7 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = 3;
     })
-  .configureBabel(function (babelConfig) {
+    .configureBabel(function (babelConfig) {
     babelConfig.plugins.push("@babel/plugin-proposal-class-properties")
   })
 

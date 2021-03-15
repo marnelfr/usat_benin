@@ -1,32 +1,16 @@
-{#{% extends 'base.html.twig' %}#}
-
-{#{% block title %}Log in!{% endblock %}#}
-
-{#{% block body %}#}
 <div class="text-center panel-inscription p-2">
   <div class="mb-3">
     <img style="margin-bottom: 0.7em;" width="100%" src="{{ asset('build/images/guest/logo2.png') }}" alt="">
   </div>
-  {#<div>
-    <div class="form-group">
-      <input type="text" placeholder="Identifiant" name="id" class="form-control">
-    </div>
-    <div class="form-group">
-      <input type="password" placeholder="Code d'accès" name="pwd" class="form-control">
-    </div>
-  </div>
-  <div>
-    <button class="btn btn-info pl-3 pr-3">
-      <i class="fa fa-connectdevelop"></i>
-      Connexion
-    </button>
-  </div>#}
 
   <form action="{{ path('app_login') }}" method="post">
     {% set error_occured=0 %}
     {% if error %}
       {% set error_occured=1 %}
-      <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+      {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+      <div class="alert alert-danger">
+        <b>Nom d'utilisateur</b> ou <b>Mot de passe</b> incorrect.
+      </div>
     {% endif %}
 
     {% if app.user and app.user.roles|length > 1 %}
@@ -47,21 +31,15 @@
         <input type="hidden" id="lph" value="{{ path('app_logout') }}">
       {% endif %}
       <div>
-        {#<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>#}
         <div align="left" class="form-group mb-2">
           <label class="ml-2 mb-1" for="inputUsername">Identifiant</label>
           <input {% if error_occured == 1 %}autofocus{% endif %} type="text" placeholder="Identifiant" id="inputUsername" value="{{ last_username }}" required name="username" class="form-control">
         </div>
 
-        {#<label for="inputUsername">Username</label>#}
-        {#<input type="text" name="" class="form-control"  autofocus>#}
-
         <div align="left" class="form-group mt-0">
           <label class="ml-2 mb-1" for="inputPassword">Code d'accès</label>
           <input type="password" placeholder="Code d'accès" id="inputPassword" name="password" required class="form-control">
         </div>
-        {#<label for="inputPassword">Password</label>#}
-        {#<input type="password" name="" class="form-control" >#}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
       </div>
       {#Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -81,12 +59,6 @@
       <div class="text-center mt-1">
         <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
       </div>
-      {#<button class="btn btn-lg btn-primary" type="submit">#}
-      {#Sign in#}
-      {#</button>#}
     {% endif %}
   </form>
 </div>
-
-
-{#{% endblock %}#}

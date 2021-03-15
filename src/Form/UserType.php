@@ -34,9 +34,9 @@ class UserType extends AbstractType
                 'placeholder' => 'Selectionnez un rôle',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
-                        ->where('p.public=0')
+//                        ->where('p.public=0')
                         ->andWhere("p.slug <> 'importer'")
-                        ->orderBy('p.id', 'DESC')
+                        ->orderBy('p.name')
                         ;
                 },
             ])

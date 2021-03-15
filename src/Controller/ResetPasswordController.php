@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +35,10 @@ class ResetPasswordController extends AbstractController
      * Display & process form to request a password reset.
      *
      * @Route("", name="app_forgot_password_request")
+     * @param Request         $request
+     * @param MailerInterface $mailer
+     *
+     * @return Response
      */
     public function request(Request $request, MailerInterface $mailer): Response
     {
@@ -75,6 +78,11 @@ class ResetPasswordController extends AbstractController
      * Validates and process the reset URL that the user clicked in their email.
      *
      * @Route("/reset/{token}", name="app_reset_password")
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param string|null                  $token
+     *
+     * @return Response
      */
     public function reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
     {
@@ -94,10 +102,8 @@ class ResetPasswordController extends AbstractController
         try {
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('reset_password_error', sprintf(
-                'There was a problem validating your reset request - %s',
-                $e->getReason()
-            ));
+//            $this->addFlash('reset_password_error', sprintf('There was a problem validating your reset request - %s', $e->getReason()));
+            $this->addFlash('reset_password_error', 'Erreur lors du changement de mot de passe');
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -118,6 +124,7 @@ class ResetPasswordController extends AbstractController
 
             $user->setPassword($encodedPassword);
             $this->getDoctrine()->getManager()->flush();
+//            $this->get('app.log')->add('ResetPassword', 'edit');
 
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();

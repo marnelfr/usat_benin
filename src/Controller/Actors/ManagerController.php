@@ -6,7 +6,7 @@ use App\Entity\Importer;
 use App\Entity\Transfer;
 use App\Service\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +29,7 @@ class ManagerController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator)
+    public function index(Request $request, EntityManagerInterface $em, UserAuthenticator $authenticator): \Symfony\Component\HttpFoundation\Response
     {
         $emailVerifySuccessfully = $request->getSession()->getFlashBag()->get('emailVerifySuccessfully');
         if (isset($emailVerifySuccessfully[0])) {
@@ -37,6 +37,8 @@ class ManagerController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
+
+        $this->get('app.log')->add('ManagerDashboard', 'index');
 
         $transfertRepo = $em->getRepository(Transfer::class);
 
