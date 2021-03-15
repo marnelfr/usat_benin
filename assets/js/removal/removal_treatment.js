@@ -50,5 +50,5 @@ $(function () {
   u.showPicture('removal-show-bfu', 'removal_img')
   u.showPicture('removal-show-entry', 'removal_img')
   u.showPicture('removal-show-receipt', 'removal_img')
-
+  u.showPdf('removal-show-attestation', 'transfer_attestation_pdf', 'removal')
 })

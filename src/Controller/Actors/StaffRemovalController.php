@@ -9,7 +9,7 @@ use App\Entity\User;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ class StaffRemovalController extends AbstractController
      */
     public function treatment(Request $request, Removal $removal): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         //On definit les differents message affichable à l'utilisateur
         $message = 'La demande à déjà été traitée par ';
@@ -88,6 +88,8 @@ class StaffRemovalController extends AbstractController
         $em->getRepository(Processing::class)->add($removal, 'removal');
         $em->flush();
 
+        $this->get('app.log')->add(Removal::class, 'treat', $removal->getId(), ['id']);
+
         return $this->render('actors/staff/removal/show.html.twig', [
             'removal' => $removal,
         ]);
@@ -100,6 +102,8 @@ class StaffRemovalController extends AbstractController
      * @return Response
      */
     public function show(Removal $removal) {
+        $this->get('app.log')->add(Removal::class, 'show', $removal->getId(), ['id']);
+
         return $this->render('actors/staff/removal/show.html.twig', [
             'finalized' => true,
             'removal' => $removal
@@ -114,7 +118,9 @@ class StaffRemovalController extends AbstractController
      */
     public function finalized(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CONTROL');
+
+        $this->get('app.log')->add('Staff.Removal.Finalized', 'index');
 
         return $this->render('actors/staff/removal/index.html.twig', [
             'title' => 'Finalisées',
@@ -131,7 +137,7 @@ class StaffRemovalController extends AbstractController
      * @param Removal $removal
      */
     public function reject(Request $request, Removal $removal) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $form = $this->createFormBuilder()
             ->add('reason', TextareaType::class, [
@@ -156,6 +162,9 @@ class StaffRemovalController extends AbstractController
             // TODO: Envoie un email au demandeur
 
             $entityManager->flush();
+
+            $this->get('app.log')->add(Removal::class, 'reject', $removal->getId(), ['id']);
+
             $this->addFlash('success', 'Demande rejetée avec succès');
             return $this->redirectToRoute('staff_removal_index');
         }
@@ -178,13 +187,18 @@ class StaffRemovalController extends AbstractController
 
     /**
      * @Route("/staff/removal/{id}/approval", name="staff_approval_removal")
+     * @param Removal $removal
      * @param Request $request
+     * @param Pdf     $pdf
+     *
+     * @return PdfResponse
      */
     public function approval(Removal $removal, Request $request, Pdf $pdf) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_STAFF');
 
         $removal->setStatus('finalized');
         $removal->getProcessing()->setVerdict(1);
+        $this->get('app.log')->add(Removal::class, 'approve', $removal->getId(), ['id']);
 
         $entityManager = $this->getDoctrine()->getManager();
 

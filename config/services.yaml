@@ -5,6 +5,14 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.bol_dir: '%kernel.project_dir%/public/uploads/'
+    app.local_dir: '%kernel.project_dir%/public/local/'
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    app.base_url: 'https://127.0.0.1:8000/'
+    log.index: 'displayed.index' #0
+    log.new: 'entity.creation' #1
+    log.show: 'displayed.entity' #2
+    log.edit: 'entity.edition' #3
+    log.delete: 'entity.deleted' #4
 
 services:
     # default configuration for services in *this* file
@@ -33,3 +41,8 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%app.bol_dir%'
+            $localDirectory: '%app.local_dir%'
+
+    App\Service\LocalFileUploader:
+        arguments:
+            $targetDirectory: '%app.local_dir%'

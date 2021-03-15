@@ -39,9 +39,33 @@ $(function () {
     $('.contacte').hide('slow')
   })
 
-  /*$('.btn-enregistrement').on('click', function(){
-    $('.enregistrement').toggle('slow')
-  })*/
+  let modalEnregistrement = null
+  $('.btn-enregistrement').on('click', function(){
+    if (modalEnregistrement === null) {
+      modalEnregistrement = new Modal(false)
+    }
+    modalEnregistrement.setContent(`
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Enregistrement</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        Pour vous enregistrer sur la plateforme, 
+        <ul>
+          <li>Gardez sur vous, votre Carte d'Identité National</li>
+          <li>Rapprochez-vous d'un responsable USAT-Benin</li>
+          <li>Fournissez toute information supplémentaire necessaire à la création de compte</li>
+        </ul>
+      </div>
+      <div class="modal-footer text-left">
+        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+    `)
+    modalEnregistrement.show()
+  })
 
   $('.btn-ambition').on('click', function (e) {
     e.preventDefault()

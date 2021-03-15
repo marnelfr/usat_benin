@@ -24,17 +24,7 @@ class DemandeFileRepository extends ServiceEntityRepository
         $demandeFile = new DemandeFile();
         $demandeFile->setUsedFor($useFor);
         $demandeFile->setFile($file);
-        if ($entity_name === 'removal') {
-            $demandeFile->setRemoval($entity);
-        } elseif ($entity_name === 'vehicle'){
-            $demandeFile->setVehicle($entity);
-        } elseif ($entity_name === 'remover'){
-            $demandeFile->setRemover($entity);
-        } elseif ($entity_name === 'inform'){
-            $demandeFile->setInform($entity);
-        } else {
-            $demandeFile->setTransfer($entity);
-        }
+        $demandeFile = $this->fillEntity($demandeFile, $entity, $entity_name);
         $this->_em->persist($demandeFile);
         return $demandeFile;
     }
@@ -49,16 +39,34 @@ class DemandeFileRepository extends ServiceEntityRepository
         }
         $demandeFile->setUsedFor($useFor);
         $demandeFile->setFile($file);
+        $demandeFile = $this->fillEntity($demandeFile, $entity, $entity_name);
+        $this->_em->persist($demandeFile);
+        return $demandeFile;
+    }
+
+
+    /**
+     * @param DemandeFile $demandeFile
+     * @param             $entity
+     * @param             $entity_name
+     *
+     * @return DemandeFile
+     */
+    private function fillEntity(DemandeFile $demandeFile, $entity, $entity_name): DemandeFile
+    {
         if ($entity_name === 'removal') {
             $demandeFile->setRemoval($entity);
         } elseif ($entity_name === 'vehicle'){
             $demandeFile->setVehicle($entity);
         } elseif ($entity_name === 'remover'){
             $demandeFile->setRemover($entity);
+        } elseif ($entity_name === 'inform'){
+            $demandeFile->setInform($entity);
+        } elseif ($entity_name === 'user'){
+            $demandeFile->setUser($entity);
         } else {
             $demandeFile->setTransfer($entity);
         }
-        $this->_em->persist($demandeFile);
         return $demandeFile;
     }
 
