@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Agent;
 use App\Entity\Manager;
-use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\FleetRepository;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\Form\Exception\OutOfBoundsException;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -46,6 +43,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, FleetRepository $fleetRepo): Response
     {
+        return $this->redirectToRoute('home_page', [], 301);
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         if ($user->getUsername() === null) {
@@ -125,6 +123,8 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request): Response
     {
+        return $this->redirectToRoute('home_page', [], 301);
+
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $this->addFlash('onTheVerificationWay', true);
         }

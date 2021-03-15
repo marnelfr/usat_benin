@@ -74,5 +74,12 @@
               {{ removal.createdAt ? removal.createdAt|date('d/m/Y') ~ ' à ' ~ removal.createdAt|date('H:i:s') : '' }}
             </td>
         </tr>
+        {% if removal.status == 'finalized' %}
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button data-id="{{ removal.id }}" id="removal-show-attestation" class="btn btn-default"><i class="fas fa-eye"></i> Attestation d'Enlevement</button>
+                </td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
