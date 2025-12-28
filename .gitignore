@@ -1,5 +1,6 @@
 ###> symfony/framework-bundle ###
 /.env.local
+/.env
 /seances.nel
 /note.nel
 /.env.local.php
