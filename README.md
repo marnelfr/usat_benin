@@ -1,8 +1,8 @@
-# USAT Benin — Symfony 5.4 application
+# UsaTum — Symfony 5.4 application
 
 ## Overview
 
-A Symfony 5.4 web application used by USAT Benin. This repository contains the PHP backend (Symfony), frontend assets built with Webpack Encore, and a MySQL database dump (database.sql) to populate a working dataset for local testing.
+A Symfony 5.4 web application used by UsaTum. This repository contains the PHP backend (Symfony), frontend assets built with Webpack Encore, and a MySQL database dump (database.sql) to populate a working dataset for local testing.
 
 This README documents how to get the project running, using Yarn to manage frontend assets (Node v14), Composer for PHP dependencies, and the provided SQL dump to populate the database.
 
@@ -46,7 +46,7 @@ Exact values taken from package.json and composer.json)
 ### 1. Clone the repository
 ```shell
   git clone <repository-url>
-  cd usat_benin
+  cd usatum
 ```
 
 ### 2. Copy environment file and configure
@@ -56,7 +56,7 @@ Exact values taken from package.json and composer.json)
 
 Edit `.env.local` and set your DATABASE_URL and other variables. Example (MySQL):
 ```
-  DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/usat_benin?serverVersion=5.7"
+  DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/usatum?serverVersion=5.7"
 ```
 
 Note: composer.json includes auto-scripts that will run assets:install after composer install. The default public dir for this project is `public`.
@@ -108,18 +108,18 @@ The project includes `database.sql` at the repository root. It's a MySQL dump th
 #### login to mysql and create database
 ```shell
   mysql -u root -p
-  CREATE DATABASE usat_benin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  CREATE DATABASE usatum DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   exit
 ```
 
 ### 2) Import the dump:
 ```shell
-  mysql -u root -p usat_benin < database.sql
+  mysql -u root -p usatum < database.sql
 ```
 
 ### 3) Update `.env.local` to point to your DB (DATABASE_URL). Example:
 ```
-  DATABASE_URL="mysql://root:yourpassword@127.0.0.1:3306/usat_benin?serverVersion=5.7"
+  DATABASE_URL="mysql://root:yourpassword@127.0.0.1:3306/usatum?serverVersion=5.7"
 ```
 
 Alternative: if you'd rather run Doctrine migrations from scratch (no dump), update DATABASE_URL to your DB, create the DB and run:

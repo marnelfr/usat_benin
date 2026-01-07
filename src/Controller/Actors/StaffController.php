@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class StaffController
- * Le controlleur des actions spécifiques du personnel de USAT.
+ * Le controlleur des actions spécifiques du personnel de USATum.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
  */
@@ -39,7 +39,7 @@ class StaffController extends AbstractController
     }
 
     /**
-     * Le tableau de bord du personnel de USAT de la plateforme
+     * Le tableau de bord du personnel de USATum de la plateforme
      *
      * @Route("/actors/staff", name="actors_staff_dashboard")
      * @param EntityManagerInterface $em

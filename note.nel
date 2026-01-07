@@ -231,7 +231,7 @@ Les acteurs du système
 		heure etc.), les opérations les plus fréquentes.
 
 		(herite de personnel de CCIB ou MIT)
-		Le personnel de USAT Benin
+		Le personnel de UsaTum
 			- valider le compte des inscrits
 			- traiter les differents demandes
 				- accepter demande
@@ -253,7 +253,7 @@ Controllers
 		Commissionnaire ou Agent
 		Gestionnaire ou Manager
 		Admin
-		Staff : pour le personnel de USAT qui seront charger d'etudier les demandes
+		Staff : pour le personnel de UsaTum qui seront charger d'etudier les demandes
 		Control: pour le personnel de CCIB et MIT
 
       Pour le moment, je ne vois que le codage des tables de bord ici.
@@ -269,9 +269,9 @@ Après à l'enregistrer de transfère
   et sous-actions
 Après à l'enregistrer d'enlevement
   et sous-actions
-Après l'etude des demandes par usat
-Après la creation de personne usat, ccib et mit par usat
-Après creation de usat par les admin
+Après l'etude des demandes par usatum
+Après la creation de personne usatum, ccib et mit par usatum
+Après creation de usatum par les admin
 
 Les profils et hierachie
   Les users comme importer et autres n'ont aucun role
@@ -279,7 +279,7 @@ Les profils et hierachie
    agent: role_agent
    manager: role_manager
    ccib et mit: role_control
-   usat: role_control et role_staff
+   usatum: role_control et role_staff
    admin: role_admin
 
 Il faut penser à supprimer les templates de adminlte si je veux plus les utiliser

@@ -1,147 +1,138 @@
-<div class="d-none d-sm-block col-sm-12 col-md-12 pt-0 pb-1 mt-0 mb-1 body">
-  <div class="row">
-    <div class="col-6 col-sm-3">
-      <h3>TRANSITAIRE</h3>
-      <p class="text-justify">Tout savoir sur les transitaires et leur rôle dans la gestion des véhicules entrants</p>
-      <a class="btn-pls" data-toggle="modal" data-target="#modal-transitaire" href="#">
-        <img src="{{ asset('build/images/guest/plus.png') }}" alt="Plus">
+{# AMBITION & CIMA #}
+<section id="ambition" class="py-5 bg-white">
+  <div class="container py-4">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h6 class="text-success font-weight-bold text-uppercase mb-2">Notre Vision</h6>
+        <h2 class="font-weight-bold text-dark mb-4">Une ambition forte pour le secteur automobile</h2>
+        <p class="text-justify text-muted lead">Rendre visibles les merveilleuses réformes. La souscription à la police d’assurance pour tous les véhicules d’occasion avant leurs transferts vers les différents parcs de vente en application du code CIMA.</p>
+        {#<div class="bg-light p-3 rounded border-left border-primary mt-4">
+          <p class="font-weight-bold text-dark mb-0 small">PARTENARIAT : UsaTum - CCIB - MIT - The NewWays Enterprise</p>
+        </div>#}
+      </div>
+      <div class="col-md-5 mt-4 mt-md-0">
+        <div class="card border-0 shadow-lg bg-primary text-white p-4">
+          <h4 class="font-weight-bold mb-3"><i class="fas fa-shield-alt mr-2"></i>Code CIMA</h4>
+          <p class="small text-justify opacity-75">L'application du code CIMA (Article 200) rend obligatoire la souscription à une police d'assurance responsabilité civile dès le débarquement au quai jusqu'aux parcs de vente.</p>
+          <button class="btn btn-light btn-sm font-weight-bold mt-2 shadow-sm" data-toggle="modal" data-target="#modal-zoom text-primary">LIRE LA SUITE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# CAROUSEL SECTION (TRANSITAIRE, MANDATAIRE, ETC.) #}
+<section id="procedures" class="py-5 bg-light border-top border-bottom">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="font-weight-bold">Focus Métiers & Procédures</h2>
+      <p class="text-muted">Explorez les rôles clés de la chaîne logistique au Bénin</p>
+      <div class="bg-primary mx-auto rounded" style="height: 4px; width: 60px;"></div>
+    </div>
+
+    <div id="proceduresCarousel" class="carousel slide shadow-lg rounded bg-white overflow-hidden" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#proceduresCarousel" data-slide-to="0" class="active bg-primary rounded-circle" style="height: 12px; width: 12px;"></li>
+        <li data-target="#proceduresCarousel" data-slide-to="1" class="bg-primary rounded-circle" style="height: 12px; width: 12px;"></li>
+        <li data-target="#proceduresCarousel" data-slide-to="2" class="bg-primary rounded-circle" style="height: 12px; width: 12px;"></li>
+        <li data-target="#proceduresCarousel" data-slide-to="3" class="bg-primary rounded-circle" style="height: 12px; width: 12px;"></li>
+      </ol>
+
+      <div class="carousel-inner">
+        {# Item 1: Transitaire #}
+        <div class="carousel-item active p-5">
+          <div class="row align-items-center py-4">
+            <div class="col-md-4 text-center">
+              <i class="fas fa-ship fa-6x text-primary mb-3"></i>
+              <h3 class="font-weight-bold">TRANSITAIRE</h3>
+            </div>
+            <div class="col-md-8 border-left pl-md-5">
+              <h5 class="font-weight-bold text-dark">L'intermédiaire Logistique</h5>
+              <p class="text-justify text-muted">Mandaté par l'expéditeur, il gère le transport et les changements de modes successifs. Il est le garant du respect des régimes douaniers et de la fluidité des formalités administratives.</p>
+            </div>
+          </div>
+        </div>
+        {# Item 2: Mandataire #}
+        <div class="carousel-item p-5">
+          <div class="row align-items-center py-4">
+            <div class="col-md-4 text-center text-success">
+              <i class="fas fa-user-tie fa-6x mb-3"></i>
+              <h3 class="font-weight-bold">MANDATAIRE</h3>
+            </div>
+            <div class="col-md-8 border-left pl-md-5">
+              <h5 class="font-weight-bold text-dark">L'Acteur de Terrain</h5>
+              <p class="text-justify text-muted">Il agit au nom du commissionnaire agréé. UsaTum permet d'organiser ces 15 000 acteurs en les enregistrant numériquement pour une meilleure traçabilité et professionnalisation.</p>
+            </div>
+          </div>
+        </div>
+        {# Item 3: Transfert #}
+        <div class="carousel-item p-5">
+          <div class="row align-items-center py-4">
+            <div class="col-md-4 text-center text-info">
+              <i class="fas fa-exchange-alt fa-6x mb-3"></i>
+              <h3 class="font-weight-bold">TRANSFERT</h3>
+            </div>
+            <div class="col-md-8 border-left pl-md-5">
+              <h5 class="font-weight-bold text-dark">Sécurisation du Trajet</h5>
+              <p class="text-justify text-muted">Le passage du Port vers les parcs (Sèmé-Podji) est une phase critique. Notre plateforme assure que chaque véhicule est couvert par une police d'assurance CIMA avant son déplacement.</p>
+            </div>
+          </div>
+        </div>
+        {# Item 4: Enlèvement #}
+        <div class="carousel-item p-5">
+          <div class="row align-items-center py-4">
+            <div class="col-md-4 text-center text-danger">
+              <i class="fas fa-truck-loading fa-6x mb-3"></i>
+              <h3 class="font-weight-bold">ENLÈVEMENT</h3>
+            </div>
+            <div class="col-md-8 border-left pl-md-5">
+              <h5 class="font-weight-bold text-dark">Transparence Totale</h5>
+              <p class="text-justify text-muted">Fin des faux frais et des tracasseries. Grâce à la dématérialisation, l'enlèvement final se fait sans surcoût caché, garantissant un "Nouveau Départ" pour le secteur automobile béninois.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="carousel-control-prev" href="#proceduresCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3 shadow" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#proceduresCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-3 shadow" aria-hidden="true"></span>
       </a>
     </div>
-    <div class="col-6 col-sm-3">
-      <h3>MANDATAIRE</h3>
-      <p class="text-justify">Tout savoir sur les mandataires et leur rôle dans l'import et l'export des véhcules</p>
-      <a class="btn-pls" data-toggle="modal" data-target="#modal-mandataire" href="#">
-        <img src="{{ asset('build/images/guest/plus.png') }}" alt="Plus">
-      </a>
+  </div>
+</section>
+
+{# SEARCH SECTION (MODERNISÉE) #}
+<section id="recherche" class="py-5 bg-white">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="font-weight-bold">Recherche d'Informations</h2>
+      <p class="text-muted">Consultez les données en temps réel sur les acteurs agréés</p>
     </div>
-    <div class="col-6 col-sm-3">
-      <h3>TRANSFERT</h3>
-      <p class="text-justify">Tout savoir sur le transfert des véhicules après importation vers les parcs</p>
-      <a class="btn-pls" data-toggle="modal" data-target="#modal-transfert" href="#">
-        <img src="{{ asset('build/images/guest/plus.png') }}" alt="Plus">
-      </a>
-    </div>
-    <div class="col-6 col-sm-3">
-      <h3>ENLÈVEMENT</h3>
-      <p class="text-justify">Tout savoir sur les procédures à suivre pour l'enlèvement de votre véhicules en quelques heures</p>
-      <a class="btn-pls" data-toggle="modal" data-target="#modal-enlevement" href="#">
-        <img src="{{ asset('build/images/guest/plus.png') }}" alt="Plus">
-      </a>
+    <div class="row justify-content-center">
+      <div class="col-md-5 mb-4">
+        <div class="card h-100 shadow border-0 text-center p-3">
+          <div class="card-body">
+            <i class="fas fa-warehouse fa-3x text-primary mb-3"></i>
+            <h5 class="font-weight-bold">Gestionnaires de Parcs</h5>
+            <p class="small text-muted mb-4">Accédez à la liste complète et aux contacts des gestionnaires de parcs de vente.</p>
+            <select class="form-control mb-3 border-primary shadow-sm"><option>Sélectionner un parc...</option></select>
+            <button class="btn btn-primary btn-block font-weight-bold">VOIR LES INFOS</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 mb-4">
+        <div class="card h-100 shadow border-0 text-center p-3">
+          <div class="card-body">
+            <i class="fas fa-id-badge fa-3x text-success mb-3"></i>
+            <h5 class="font-weight-bold">Commissionnaires Agréés</h5>
+            <p class="small text-muted mb-4">Vérifiez les agréments en Douanes des commissionnaires opérant sur le territoire.</p>
+            <select class="form-control mb-3 border-success shadow-sm"><option>Sélectionner un commissionnaire...</option></select>
+            <button class="btn btn-success btn-block font-weight-bold">RECHERCHER</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="modal fade" id="modal-transitaire">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">TRANSITAIRE</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-justify">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transitaire vient du mot &quot;Transit&quot; C&rsquo;est &agrave;-dire qui s&rsquo;occupe des transits.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong> Quel est le r&ocirc;le du transitaire</strong>&nbsp;?</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Par d&eacute;finition, un transitaire est un interm&eacute;diaire qui g&egrave;re le transport d&rsquo;une marchandise lorsqu&rsquo;elle doit rencontrer un ou plusieurs changement de transports successifs. Pour faire simple, l&rsquo;agent de transit prend en charge une bonne partie de la logistique de transport.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Un Transitaire</strong>&nbsp;: est une personne ou une entreprise mandat&eacute;e par l&rsquo;exp&eacute;diteur d&rsquo;une marchandise qui doit subir plusieurs formalit&eacute;s successives.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Le transit douanier</strong><strong>&nbsp;</strong>: est un r&eacute;gime douanier sous lequel sont plac&eacute;es des marchandises transport&eacute;es sous contr&ocirc;le , d&rsquo;un bureau de douane &agrave; un autre bureau de douane, d&rsquo;un bureau d&rsquo;entr&eacute;e &agrave; un bureau de sortie&nbsp;; d&rsquo;un bureau d&rsquo;entr&eacute;e &agrave; un bureau int&eacute;rieur&nbsp;; d&rsquo;un bureau int&eacute;rieur &agrave; un bureau de sortie&hellip;</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Comment devenir un transitaire et un bon agent de transit&nbsp;?</strong></p>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous &ecirc;tes particuli&egrave;rement int&eacute;ress&eacute; par le m&eacute;tier de transitaire, il suffit d&rsquo;avoir un bon niveau intellectuel, s&rsquo;inscrire dans une &eacute;cole de formation d&eacute;di&eacute;e &agrave; la profession de transit. Ainsi vous devez prendre la responsabilit&eacute; sur vous d&rsquo;&ecirc;tre &agrave; cheval entre l&rsquo;administration, votre &eacute;cole de formation et le terrain.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Etant un mandataire, le transitaire &agrave; pour obligation principale&nbsp;: l&rsquo;ex&eacute;cution de la mission qui lui a &eacute;t&eacute; confi&eacute;. Mais il s&rsquo;agit d&rsquo;un professionnel de transport. Donc ce dernier est &eacute;galement tenu par un devoir de conseil.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Le transitaire&nbsp;: il lui &eacute;choit de faire ou de faire faire.</p>
-      </div>
-      <div class="modal-footer text-left">
-        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
-
-<div class="modal fade" id="modal-mandataire">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">MANDATAIRE</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-justify">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Faisant suite au transitaire &agrave; qui il &eacute;choit de faire ou de faire</strong>, celui &agrave; qui le transitaire ou l&rsquo;agent de transit ou le commissionnaire demande ou l&rsquo;importateur ou le client confie de r&ocirc;les, t&acirc;ches, missions ou commissions est un <strong>transitaire mandataire</strong>. Il agit au nom et en lieu et place du transitaire. Au B&eacute;nin, les transitaires mandataires sont les plus nombreux. On peut les retrouver au niveau des diff&eacute;rentes fronti&egrave;res, ports et a&eacute;roports. Ils sont pr&egrave;s de 15.&nbsp;000 personnes. C&rsquo;est la cat&eacute;gorie la moins organis&eacute;e de la chaine de transport au B&eacute;nin. Ce sont eux qui animent le secteur informel. Par cons&eacute;quent, la pr&eacute;sente plateforme Web va permettre de les enregistrer automatiquement ainsi que les conducteurs des v&eacute;hicules d&#39;occasion.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Avec leurs statuts, ils sont directement li&eacute;s &agrave; leurs clients par un contrat de mandat. D&egrave;s qu&rsquo;ils ont leurs mandats c&rsquo;est-&agrave;-dire le dossier, ils sont oblig&eacute;s de se rapprocher d&rsquo;un commissionnaire agr&eacute;er en douane de leur choix, aux fins d&rsquo;accomplir les formalit&eacute;s aff&eacute;rentes &agrave; la marchandise a leur confi&eacute;e par les clients. Apr&egrave;s toutes les formalit&eacute;s accomplies, le transitaire mandataire proc&egrave;de &agrave; l&rsquo;enl&egrave;vement de ladite marchandise qui est livr&eacute;e aux clients.</p>
-      </div>
-      <div class="modal-footer text-left">
-        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
-
-<div class="modal fade" id="modal-transfert">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">TRANSFERT</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-justify">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; En th&egrave;me claire, le transfert est le d&eacute;placement d&rsquo;une personne &agrave; une autre ou le d&eacute;placement d&rsquo;un lieu &agrave; un autre. Dans le contexte actuel, pour ce qui concerne la fili&egrave;re&nbsp; des v&eacute;hicules d&rsquo;occasion, les v&eacute;hicules sont d&eacute;barqu&eacute;s et d&eacute;charg&eacute;s au Port de Cotonou par les consignataires de navires au moment o&ugrave; tous les parcs de vente sont situ&eacute;s &agrave; &nbsp;SEKANDJI, MIVVO ( Ekp&egrave;), et DJEFFA dans la Commune de S&egrave;me Podji.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; En r&eacute;f&eacute;rence &agrave; la d&eacute;finition du mot transfert, l&rsquo;importateur doit donc d&eacute;placer son v&eacute;hicule du Parc Tampon Unique (SOBEMAP ou &nbsp;RORO, qui sont &agrave; ce jour, les seuls manutentionnaires principaux qui sont garantes de la marchandise pendant l&rsquo;acconage vers un parc de vente de son choix o&ugrave; il pourra exposer &agrave; la vente son v&eacute;hicule. Cette op&eacute;ration est le transfert.&nbsp; Et, comme tous les parcs de vente sont &agrave; l&rsquo;ext&eacute;rieur du port, il va falloir alors transf&eacute;rer lesdits v&eacute;hicules du port vers lesdits parcs de vente. Cette op&eacute;ration et les formalit&eacute;s y aff&eacute;rentes sont g&eacute;r&eacute;es entre la SOBEMAP, RORO, WEB FONTAINE, SEGUB, LA DOUANE et les PARCS DE VENTE. Il faut noter et attirer l&rsquo;attention de tous que depuis que cette op&eacute;ration existe, les v&eacute;hicules d&rsquo;occasion n&rsquo;ont jamais souscrits &agrave; aucune police d&rsquo;assurances lors de leurs transferts. C&rsquo;est vrai que la pr&eacute;sente plateforme Web est venue corriger ce fragrant vide juridique (la non application du code CIMA) en facilitant la t&acirc;che d&eacute;sormais aux importateurs et les gestionnaires de parcs de vente de v&eacute;hicules d&rsquo;occasion.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; En effet, si vous &ecirc;tes gestionnaire de parc de vent, vous avez &agrave; partir de la pr&eacute;sente plateforme Web la souscription et obtention en ligne la police d&rsquo;assurance pour votre v&eacute;hicule avant son transfert. Une op&eacute;ration simple et qui vous donne une garantie de couverture en cas de.....&nbsp;&nbsp;&nbsp; ./.&nbsp;&nbsp;</p>
-      </div>
-      <div class="modal-footer text-left">
-        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
-
-<div class="modal fade" id="modal-enlevement">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">ENLÈVEMENT</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-justify">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C&rsquo;est l&rsquo;action d&rsquo;enlever, s&rsquo;emparer de quelque chose et le d&eacute;tenir. Ainsi donc, les commissionnaires agr&eacute;&eacute;s en douane, les transitaires, les transitaires mandataires apr&egrave;s l&rsquo;accomplissement de toutes les formalit&eacute;s aff&eacute;rentes aux v&eacute;hicules en vigueur en R&eacute;publique du B&eacute;nin,&nbsp; proc&egrave;dent &agrave; l&rsquo;enl&egrave;vement desdits v&eacute;hicules &agrave; partir des parcs de vente et les livrent aux clients. Il faut d&eacute;plorer que, pendant longtemps, au cours des op&eacute;rations d&rsquo;enl&egrave;vement, les enleveurs subissent d&rsquo;&eacute;normes difficult&eacute;s qui ont pour nom&nbsp;: tracasseries, ran&ccedil;onnements et le payement de multiples faux frais qui hypoth&egrave;quent dangereusement la vision des merveilleuses r&eacute;formes du Gouvernement en cours dans ce secteur.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C&rsquo;est vrai que la pr&eacute;sente plateforme Web est venue mettre d&eacute;finitivement&nbsp; fin &agrave; ce ph&eacute;nom&egrave;ne de faux frais longtemps d&eacute;cri&eacute; par les transitaires mandataires lors des enl&egrave;vements. C&rsquo;est aussi vrai que la d&eacute;mat&eacute;rialisation tant souhait&eacute;e devient ainsi une r&eacute;alit&eacute; sous le Gouvernement de la Rupture de Son Excellence, le Pr&eacute;sident de la R&eacute;publique &nbsp;Patrice TALON pour un Nouveau D&eacute;part dans ce secteur.&nbsp;</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Et, c&rsquo;est d&rsquo;ailleurs le lieu pour les acteurs de transmettre leurs sinc&egrave;res salutations et reconnaissances au Ministre des Infrastructures&nbsp; et des Transports ainsi qu&rsquo;aux diff&eacute;rents cadres dudit Minist&egrave;re.</p>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>BON VENT A LA FILIERE DES VEHICULES D&rsquo;OCCASION ./.</strong></p>
-      </div>
-      <div class="modal-footer text-left">
-        <button type="reset" class="btn btn-default" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
+</section>

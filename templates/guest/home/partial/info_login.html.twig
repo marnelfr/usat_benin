@@ -1,89 +1,94 @@
-<div class="col-12 col-sm-12 col-md-12 pl-2 pr-2 body mb-0">
-  <div class="row pr-2 pl-2">
-    <div class="col-12 col-sm-4 pr-2 pt-2 pl-0">
+{# AUTH MODAL (LOGIN & REGISTER) #}
+<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-body p-0">
+        {# Nav Tabs #}
+        <ul class="nav nav-pills nav-fill bg-light p-2" id="authTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active font-weight-bold" id="login-tab" data-toggle="tab" href="#loginArea" role="tab">CONNEXION</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="register-tab" data-toggle="tab" href="#registerArea" role="tab">ENREGISTREMENT</a>
+          </li>
+        </ul>
 
-      <div class="parc-container col-12 text-center pl-0 pr-0">
-        <h3 class="parc-title mb-3 p-2">Parcs de ventes</h3>
-        <p>Liste des gestionnaires de parc. Veuillez selectionner un parc pour voir ses informations</p>
-        {{ form_start(parc, {action: path('guest_show_fleet')}) }}
-          <div class="form-group m-2">
-            {{ form_widget(parc.fleet) }}
+        <div class="tab-content p-4" id="authTabContent">
+          {# Login Form #}
+          <div class="tab-pane fade show active" id="loginArea" role="tabpanel">
+            <h4 class="text-center font-weight-bold text-primary mb-4">Accès Utilisateur</h4>
+            <form>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted text-uppercase">Email / Identifiant</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text bg-white border-right-0"><i class="fas fa-user text-muted"></i></span></div>
+                  <input type="text" class="form-control border-left-0 shadow-none" placeholder="nom@exemple.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted text-uppercase">Mot de passe</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text bg-white border-right-0"><i class="fas fa-lock text-muted"></i></span></div>
+                  <input type="password" class="form-control border-left-0 shadow-none">
+                </div>
+              </div>
+              <div class="text-right mb-3">
+                <a href="#" class="small font-weight-bold">Mot de passe oublié ?</a>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block py-2 font-weight-bold shadow-sm">SE CONNECTER</button>
+            </form>
           </div>
-          <div class="form-group mt-3 mb-2">
-            <button id="guest-show-fleet" class="btn btn-info pl-4 pr-4">
-              Afficher Info
-            </button>
+
+          {# Register Form #}
+          <div class="tab-pane fade" id="registerArea" role="tabpanel">
+            <h4 class="text-center font-weight-bold text-success mb-4">Nouveau Compte</h4>
+            <form>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted">VOTRE NOM COMPLET</label>
+                <input type="text" class="form-control shadow-none">
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted">VOTRE EMAIL</label>
+                <input type="email" class="form-control shadow-none">
+              </div>
+              <div class="form-group">
+                <label class="small font-weight-bold text-muted">TYPE D'ACTEUR</label>
+                <select class="form-control shadow-none">
+                  <option>Mandataire</option>
+                  <option>Transitaire</option>
+                  <option>Conducteur</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success btn-block py-2 font-weight-bold shadow-sm mt-4">CRÉER MON COMPTE</button>
+            </form>
           </div>
-        {{ form_end(parc) }}
-      </div>
-
-      <div class="parc-container col-12 text-center pl-0 pr-0 mt-3">
-        <h3 class="parc-title mb-3 p-2">Commissionnaires</h3>
-        <p>Liste des commissionnaires agréés en Douanes. Veuillez selectionnner un commissionnaire pour afficher ses
-          informations</p>
-        {{ form_start(commissionnaire, {action: path('guest_show_agent')}) }}
-        <div class="form-group m-2">
-          {{ form_widget(commissionnaire.agent) }}
         </div>
-        <div class="form-group mt-3 mb-2">
-          <button id="guest-show-agent" class="btn btn-info pl-4 pr-4">
-            Afficher Info
-          </button>
-        </div>
-        {{ form_end(commissionnaire) }}
       </div>
-
+      <div class="modal-footer bg-light border-0 justify-content-center">
+        <button type="button" class="btn btn-link btn-sm text-muted text-decoration-none" data-dismiss="modal">Fermer la fenêtre</button>
+      </div>
     </div>
+  </div>
+</div>
 
-
-    <div class="col-sm-8">
-      <div class="row">
-        <div class="col-12 col-sm-7 p-1 pl-1">
-          <div class="info text-justify mr-2">
-            <h5 style="
-    text-align: center;
-    color: RED;
-    font-weight: bolder;
-">COMMUNIQUES URGENTS</h5>
-            <ul>
-              {% for inform in informs %}
-                {% if inform.idFile == 0 %}
-                  <li class="mb-3">
-                    {{ inform.resume }}
-                    <br>
-                    <a class="btn_link" href="{{ path('inform_show', {id: inform.id}) }}">&gt;&gt; Lire la suite</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-
-        <div styl="z-index: 15980" class="col-12 col-sm-5 p-1 pl-1">
-          {#Login form#}
-          {% if login_form != 0 %}
-            {{ login_form|raw }}
-          {% else %}
-            {{ render(controller('App\\Controller\\SecurityController::login_form')) }}
-          {% endif %}
-        </div>
+{# MODAL ZOOM CIMA #}
+<div class="modal fade" id="modal-zoom" tabindex="-1">
+  <div class="modal-dialog modal-lg border-0 shadow-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title font-weight-bold">Global Zoom & Code CIMA</h5>
+        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
       </div>
-
-      <div class="row mt-3">
-        {% for inform in informs %}
-          {% if inform.idFile > 0 %}
-            <div class="col-12 col-sm-6">
-              <div class="img">
-                <img width="100%" height="190px" style="border: 1px solid #e1e1e1;" src="{{ asset(inform.link) }}" alt="">
-              </div>
-              <div class="text">
-                <ul>
-                  <li><a class="btn_link" href="{{ path('inform_show', {id: inform.id}) }}">{{ inform.resume }}</a></li>
-                </ul>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+      <div class="modal-body p-4 text-justify">
+        <p>L’une des insuffisances majeures du secteur au Bénin est la non application rigoureuse du code CIMA. UsaTum corrige ce vide juridique.</p>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item small"><i class="fas fa-check-circle text-success mr-2"></i> Création d'un répertoire unique des conducteurs.</li>
+          <li class="list-group-item small"><i class="fas fa-check-circle text-success mr-2"></i> Réduction des embouteillages au Port de Cotonou.</li>
+          <li class="list-group-item small"><i class="fas fa-check-circle text-success mr-2"></i> Prise en charge des accidents par les compagnies d'assurance.</li>
+        </ul>
+        <div class="bg-light p-3 font-italic small border-left border-primary text-dark">
+          NB : Conformément à la loi N°65-1, la souscription à une police d’assurance est désormais obligatoire dès le débarquement.
+        </div>
       </div>
     </div>
   </div>
