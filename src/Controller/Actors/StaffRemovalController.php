@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class StaffController
- * Le controlleur des actions spécifiques du personnel de USAT.
+ * Le controlleur des actions spécifiques du personnel de USATum.
  * Ne doit pas remplacer le CRUD des entités
  * @package App\Controller\Actors
  */

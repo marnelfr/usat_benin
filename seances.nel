@@ -7,12 +7,12 @@
     +marque + chassis = unique pour les vehicules
     +verifier l'existance des vehicules au niveau des commisionnaire
     +revoir la première connexion après l'incription. ça pose un problème bizarre là
-    +usat pourra virsualiser la demande,
+    +usatum pourra virsualiser la demande,
       +approuver la demande (pourra faire imprimer la fiche, pourra joindre le document de l'assurance apèrs le traitement [les demandeurs peuvent voir le document]),
       +rejeter la demande (donner la raison du rejet)
     +les importateurs sont des personnes morales
     +Tous les chasis ont 17 chiffres obligatoirement.
-    +Ne pas afficher celui qui à traiter la demande aux demandeur mais au personnel de usat
+    +Ne pas afficher celui qui à traiter la demande aux demandeur mais au personnel de usatum
     +les status: en attente, en cours de traitement, traité, rejeté
     Donc mettre en place une nouvelle table pour les stocker
     mettre les consignataires sous la forme de select.
@@ -42,9 +42,8 @@
     +la place de recherche google disponible pour tout le monde
 
     Proposition de nom de domain:
-        1-usatbenin-solutions.bj
-        2-usattechnologie.bj
-        3-beninusat-solution.bj
+        1-usatum.bj
+        2-usatumtech.bj
 
 
 

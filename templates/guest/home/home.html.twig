@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}UsaTum | Accueil{% endblock %}
 
 {% block stylesheets %}
   {{ parent() }}
@@ -30,7 +30,7 @@
   {% if emailNotVerified %}
     <script type="application/javascript">
       document.addEventListener('DOMContentLoaded', function () {
-        alert('Veuillez comfimer votre mail pour vous connecter.')
+        alert('Veuillez confimer votre mail pour vous connecter.')
         window.location = '/logout'
       })
     </script>
@@ -46,11 +46,9 @@
 
   {% include 'guest/home/partial/header.html.twig' %}
 
-  {% include 'guest/home/partial/info_login.html.twig' %}
-
-  {% include 'guest/home/partial/zoom.html.twig' %}
-
   {% include 'guest/home/partial/info_plus.html.twig' %}
+
+  {% include 'guest/home/partial/info_login.html.twig' %}
 
   {% include 'guest/home/partial/footer.html.twig' %}
 {% endblock %}
