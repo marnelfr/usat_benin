@@ -122,13 +122,17 @@ The project includes `database.sql` at the repository root. It's a MySQL dump th
   DATABASE_URL="mysql://root:yourpassword@127.0.0.1:3306/usatum?serverVersion=5.7"
 ```
 
-Alternative: if you'd rather run Doctrine migrations from scratch (no dump), update DATABASE_URL to your DB, create the DB and run:
+### Alternative
+If you'd rather run Doctrine migrations from scratch (no dump), update DATABASE_URL to your DB, create the DB and run:
 ```shell
   php bin/console doctrine:database:create
   php bin/console doctrine:migrations:migrate
+  php bin/console doctrine:fixtures:load
 ```
 
-Note: the SQL dump already contains inserted data and the doctrine_migration_versions table; if you import the SQL, you don't need to run migrations.
+Note: 
+- The SQL dump already contains inserted data and the doctrine_migration_versions table; if you import the SQL, you don't need to run migrations.
+- If you prefer to use the Fixtures, please, notice they only insert users and their profils data.
 
 ## Running the app (local development)
 
