@@ -39,4 +39,8 @@ $(document).ready(function() {
       }, 800);
     }
   });
+
+  if ($('#error-auth-modal').length) {
+    $("#authModal").modal('show');
+  }
 });
