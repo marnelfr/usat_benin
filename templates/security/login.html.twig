@@ -4,7 +4,7 @@
     {% if error %}
       {% set error_occured=1 %}
       {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-      <div class="alert alert-danger">
+      <div id="error-auth-modal" class="alert alert-danger">
         <b>Nom d'utilisateur</b> ou <b>Mot de passe</b> incorrect.
       </div>
     {% endif %}
